@@ -1,4 +1,4 @@
-module.exports = (cookiesString, cookieName) => {
+export default (cookiesString, cookieName) => {
     const cookies = `; ${cookiesString}`
     return cookies
         .split(`; ${cookieName}=`)

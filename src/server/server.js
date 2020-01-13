@@ -1,25 +1,30 @@
-require('dotenv').config()
-require('module-alias/register')
+import 'dotenv/config'
+import './aliases'
 
-const errorHandler = require('@middlewares/errorHandler')
-const buildPath = '../../build'
+import path from 'path'
+import http from 'http'
+import express from 'express'
 
-const path = require('path')
-const http = require('http')
-const express = require('express')
+// import '@database'
+
+import middlewares from '@middlewares'
+import routes from '@routes'
+
+import errorHandler from '@middlewares/errorHandler'
+
 const app = express()
 const server = http.createServer(app)
 
-require('@database')
-require('@middlewares').main(app, server)
-require('@routes')(app)
+middlewares.main(app, server)
+
+routes(app)
 
 errorHandler(app)
 
-app.use(express.static(path.resolve(__dirname, buildPath)))
+app.use(express.static(path.resolve(__dirname, '../build')))
 
 app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, buildPath, 'index.html'))
+    res.sendFile(path.resolve(__dirname, '../build', 'index.html'))
 })
 
 const port = process.env.PORT || 3001

@@ -1,8 +1,9 @@
-const passportJwt = require('passport-jwt')
+import passportJwt from 'passport-jwt'
+
 const JwtStrategy = passportJwt.Strategy
 const ExtractJwt = passportJwt.ExtractJwt
 
-module.exports = passport => {
+export default passport => {
     const extractJwtFromCookies = req => {
         const { token } = req.cookies
         if (token) {
@@ -19,7 +20,9 @@ module.exports = passport => {
                 ]),
                 secretOrKey: process.env.JWT_KEY
             },
-            async (data, done) => {}
+            async (data, done) => {
+                console.log(data, done)
+            }
         )
     )
 }

@@ -1,8 +1,8 @@
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken'
 
-const { getCookie } = require('@utils')
+import { getCookie } from '@utils'
 
-module.exports = io => {
+export default io => {
     io.set('authorization', (request, callback) => {
         const token = getCookie(request.headers.cookie, 'token')
         if (!token) {
@@ -12,6 +12,7 @@ module.exports = io => {
                 if (error) {
                     callback('Authentication error!', false)
                 } else {
+                    callback(null, true)
                 }
             })
         }

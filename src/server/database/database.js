@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize')
+import Sequelize from 'sequelize'
 
 const {
     DATABASE_NAME,
@@ -30,4 +30,4 @@ connection
         })
     })
 
-module.exports = {}
+export default {}

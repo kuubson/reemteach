@@ -1,6 +1,6 @@
-const passport = require('passport')
+import passport from 'passport'
 
-module.exports = (req, res, next) => {
+export default (req, res, next) => {
     const handleUnauthorizedUser = () => {
         const status = 401
         res.status(status).send({

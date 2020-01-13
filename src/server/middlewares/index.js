@@ -1,19 +1,22 @@
-const express = require('express')
-const cookieParser = require('cookie-parser')
-const helmet = require('helmet')
-const passport = require('passport')
-const io = require('socket.io')
-const csurf = require('csurf')
+import express from 'express'
+import cookieParser from 'cookie-parser'
+import helmet from 'helmet'
+import passport from 'passport'
+import io from 'socket.io'
+import csurf from 'csurf'
 
-require('./passport')(passport)
+import checkValidationResult from './checkValidationResult'
+import rateLimiter from './rateLimiter'
+import authWithJwt from './authWithJwt'
+import passportjs from './passport'
 
-const checkValidationResult = require('./checkValidationResult')
-const rateLimiter = require('./rateLimiter')
-const authWithJwt = require('./authWithJwt')
+import socketio from '../socketio/socketio'
 
-module.exports = {
+passportjs(passport)
+
+export default {
     main: (app, server) => {
-        require('../socket.io/socket.io')(io(server))
+        socketio(io(server))
         app.use(express.json())
         app.use(express.urlencoded({ extended: true }))
         app.use(passport.initialize())

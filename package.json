@@ -1,13 +1,18 @@
 {
-    "name": "remteach",
+    "name": "reemteach",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@babel/cli": "^7.8.0",
+        "@babel/core": "^7.8.0",
+        "@babel/node": "^7.8.0",
+        "@babel/preset-env": "^7.8.2",
         "@testing-library/jest-dom": "^4.2.4",
         "@testing-library/react": "^9.4.0",
         "@testing-library/user-event": "^7.2.1",
         "axios": "^0.19.1",
         "babel-plugin-macros": "^2.8.0",
+        "babel-watch": "^7.0.0",
         "bcryptjs": "^2.4.3",
         "concurrently": "^5.0.2",
         "cookie-parser": "^1.4.4",
@@ -22,6 +27,7 @@
         "mysql2": "^2.1.0",
         "passport": "^0.4.1",
         "passport-jwt": "^4.0.0",
+        "prettier": "^1.19.1",
         "query-string": "^6.9.0",
         "react": "^16.12.0",
         "react-app-rewire-hot-loader": "^2.0.1",
@@ -42,26 +48,18 @@
         "styled-components": "^4.4.1"
     },
     "scripts": {
-        "start": "react-app-rewired start",
-        "build": "react-app-rewired build",
-        "test": "react-app-rewired test",
-        "eject": "react-app-rewired eject"
-    },
-    "_moduleAliases": {
-        "@database": "src/server/database/database",
-        "@middlewares": "src/server/middlewares",
-        "@routes": "src/server/routes",
-        "@utils": "src/server/utils"
+        "start": "concurrently \"babel src/server -d dist\" \"react-app-rewired build && node dist/server.js\"",
+        "dev": "concurrently \"babel-watch src/server/server.js\" \"react-app-rewired start\""
     },
     "husky": {
         "hooks": {
             "pre-commit": "pretty-quick --staged"
         }
     },
-    "proxy": "http://localhost:3001",
     "eslintConfig": {
         "extends": "react-app"
     },
+    "proxy": "http://localhost:3001",
     "browserslist": {
         "production": [
             ">0.2%",

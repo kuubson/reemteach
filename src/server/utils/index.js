@@ -1,8 +1,8 @@
-const ApiError = require('./ApiError')
-const detectSanitization = require('./detectSanitization')
-const getCookie = require('./getCookie')
+import ApiError from './ApiError'
+import detectSanitization from './detectSanitization'
+import getCookie from './getCookie'
 
-module.exports = {
+export default {
     ApiError,
     detectSanitization,
     getCookie

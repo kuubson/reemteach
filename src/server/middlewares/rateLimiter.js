@@ -1,6 +1,6 @@
-const limiter = require('express-rate-limit')
+import limiter from 'express-rate-limit'
 
-module.exports = errorMessage => {
+export default errorMessage => {
     return limiter({
         windowMs: 30 * 60 * 1000, // 30 min
         max: 10,
