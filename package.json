@@ -27,7 +27,6 @@
         "mysql2": "^2.1.0",
         "passport": "^0.4.1",
         "passport-jwt": "^4.0.0",
-        "prettier": "^1.19.1",
         "query-string": "^6.9.0",
         "react": "^16.12.0",
         "react-app-rewire-hot-loader": "^2.0.1",
@@ -50,11 +49,6 @@
     "scripts": {
         "start": "concurrently \"babel src/server -d dist\" \"react-app-rewired build && node dist/server.js\"",
         "dev": "concurrently \"babel-watch src/server/server.js\" \"react-app-rewired start\""
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "pretty-quick --staged"
-        }
     },
     "eslintConfig": {
         "extends": "react-app"
