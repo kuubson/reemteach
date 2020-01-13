@@ -2,6 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router } from 'react-router-dom'
 
+import 'destyle.css'
+import '@styles/index.scss'
+
 import App from './components/App'
 
 import { serviceWorker, history } from '@utils'
