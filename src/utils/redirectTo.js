@@ -1,8 +1,7 @@
 import { history } from '@utils'
 
-export default (pathname, state) => {
-	history.push({
-		pathname,
-		state
-	})
-}
+export default (pathname, state) =>
+    history.push({
+        pathname,
+        state
+    })

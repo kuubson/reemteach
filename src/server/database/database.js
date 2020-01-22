@@ -1,21 +1,12 @@
 import Sequelize from 'sequelize'
 
-const {
-    DATABASE_NAME,
-    DATABASE_USERNAME,
-    DATABASE_PASSWORD,
-    DATABASE_HOST
-} = process.env
+const { DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_HOST } = process.env
 
-const connection = new Sequelize(
-    DATABASE_NAME,
-    DATABASE_USERNAME,
-    DATABASE_PASSWORD,
-    {
-        host: DATABASE_HOST,
-        dialect: 'mysql'
-    }
-)
+const connection = new Sequelize(DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD, {
+    host: DATABASE_HOST,
+    dialect: 'mysql'
+    //,logging:false
+})
 
 connection
     // .sync({ force: true })
@@ -30,4 +21,4 @@ connection
         })
     })
 
-export default {}
+export {}

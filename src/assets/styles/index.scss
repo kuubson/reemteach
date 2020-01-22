@@ -1,4 +1,20 @@
 * {
     font-family: 'Nunito', sans-serif;
     box-sizing: border-box;
+    letter-spacing: 2px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    display: block;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition-delay: 3600s;
 }

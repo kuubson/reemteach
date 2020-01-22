@@ -14,33 +14,30 @@ import socketio from '../socketio/socketio'
 
 passportjs(passport)
 
-export default {
-    main: (app, server) => {
-        socketio(io(server))
-        app.use(express.json())
-        app.use(express.urlencoded({ extended: true }))
-        app.use(passport.initialize())
-        app.use(cookieParser())
-        app.use(helmet())
-        app.use(
-            csurf({
-                cookie: {
-                    // secure: true,
-                    httpOnly: true,
-                    sameSite: true
-                }
-            })
-        )
-        app.use((req, res, next) => {
-            res.cookie('XSRF-TOKEN', req.csrfToken(), {
+const initializeMiddlewares = (app, server) => {
+    socketio(io(server))
+    app.use(express.json())
+    app.use(express.urlencoded({ extended: true }))
+    app.use(passport.initialize())
+    app.use(cookieParser())
+    app.use(helmet())
+    app.use(
+        csurf({
+            cookie: {
                 // secure: true,
+                httpOnly: true,
                 sameSite: true
-            })
-            next()
+            }
         })
-        app.set('trust proxy', 1)
-    },
-    checkValidationResult,
-    rateLimiter,
-    authWithJwt
+    )
+    app.use((req, res, next) => {
+        res.cookie('XSRF-TOKEN', req.csrfToken(), {
+            // secure: true,
+            sameSite: true
+        })
+        next()
+    })
+    app.set('trust proxy', 1)
 }
+
+export { initializeMiddlewares, checkValidationResult, rateLimiter, authWithJwt }

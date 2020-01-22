@@ -10,9 +10,7 @@ export default app => {
             })
                 .status(status)
                 .send({
-                    status,
-                    errorMessage:
-                        'Serwer wykrył niepożądane działanie z Twojej strony!'
+                    status
                 })
         } else {
             const status = error.status || 500

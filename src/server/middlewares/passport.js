@@ -15,13 +15,18 @@ export default passport => {
     passport.use(
         new JwtStrategy(
             {
-                jwtFromRequest: ExtractJwt.fromExtractors([
-                    extractJwtFromCookies
-                ]),
+                jwtFromRequest: ExtractJwt.fromExtractors([extractJwtFromCookies]),
                 secretOrKey: process.env.JWT_KEY
             },
             async (data, done) => {
-                console.log(data, done)
+                const { email, role } = data
+                if (role === 'teacher') {
+                    done(null, 'teacher')
+                } else if (role === 'student') {
+                    done(null, 'student')
+                } else {
+                    done(null, false)
+                }
             }
         )
     )

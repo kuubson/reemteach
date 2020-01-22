@@ -12,12 +12,21 @@ export default io => {
                 if (error) {
                     callback('Authentication error!', false)
                 } else {
-                    callback(null, true)
+                    const { email, role } = data
+                    if (role === 'teacher') {
+                        request.teacher = email
+                        callback(null, 'teacher')
+                    } else if (role === 'student') {
+                        request.student = email
+                        callback(null, 'student')
+                    } else {
+                        callback('Authentication error!', false)
+                    }
                 }
             })
         }
     })
     io.on('connection', socket => {
-        console.log(`User ${socket.id} has connected!`)
+        console.log(socket)
     })
 }

@@ -1,15 +1,15 @@
 const initialState = {
-	isLoading: false
+    isLoading: false
 }
 
 export default (state = initialState, { payload, type }) => {
-	switch (type) {
-		case 'setIsLoading':
-			return {
-				...state,
-				isLoading: payload
-			}
-		default:
-			return state
-	}
+    switch (type) {
+        case 'setIsLoading':
+            return {
+                ...state,
+                isLoading: payload
+            }
+        default:
+            return state
+    }
 }

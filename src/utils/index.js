@@ -5,6 +5,7 @@ import setFeedbackData from './setFeedbackData'
 import setIsLoading from './setIsLoading'
 import handleApiError from './handleApiError'
 import apiAxios from './apiAxios'
+import calculateDistanceBetweenCoords from './calculateDistanceBetweenCoords'
 
 export {
     serviceWorker,
@@ -13,5 +14,6 @@ export {
     setFeedbackData,
     setIsLoading,
     handleApiError,
-    apiAxios
+    apiAxios,
+    calculateDistanceBetweenCoords
 }

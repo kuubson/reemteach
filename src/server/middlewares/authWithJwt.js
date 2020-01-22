@@ -5,8 +5,7 @@ export default (req, res, next) => {
         const status = 401
         res.status(status).send({
             status,
-            errorMessage:
-                'Wystąpił niespodziewany problem przy autoryzacji Twojego konta!'
+            errorMessage: 'Wystąpił niespodziewany problem przy autoryzacji Twojego konta!'
         })
     }
     passport.authenticate('jwt', { session: false }, (error, user) => {

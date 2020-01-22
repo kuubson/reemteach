@@ -1,8 +1,7 @@
 import { store } from '@redux'
 
-export default isLoading => {
+export default isLoading =>
     store.dispatch({
         type: 'setIsLoading',
         payload: isLoading
     })
-}

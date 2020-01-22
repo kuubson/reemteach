@@ -1,6 +1,6 @@
 import { store } from '@redux'
 
-export default (message, buttonText, callback) => {
+export default (message, buttonText, callback) =>
     store.dispatch({
         type: 'setFeedbackData',
         payload: {
@@ -9,4 +9,3 @@ export default (message, buttonText, callback) => {
             callback
         }
     })
-}
