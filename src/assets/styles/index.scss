@@ -2,6 +2,7 @@
     font-family: 'Nunito', sans-serif;
     box-sizing: border-box;
     letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 html {
@@ -10,6 +11,12 @@ html {
 
 body {
     display: block;
+}
+
+input,
+button,
+textarea {
+    text-transform: inherit;
 }
 
 input:-webkit-autofill,

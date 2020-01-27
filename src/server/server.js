@@ -7,10 +7,8 @@ import express from 'express'
 
 import '@database'
 
-import { initializeMiddlewares } from '@middlewares'
+import { initializeMiddlewares, errorHandler } from '@middlewares'
 import routes from '@routes'
-
-import errorHandler from '@middlewares/errorHandler'
 
 const app = express()
 const server = http.createServer(app)
@@ -21,7 +19,7 @@ routes(app)
 
 errorHandler(app)
 
-const buildPath = '../build'
+const buildPath = '../../build'
 
 app.use(express.static(path.resolve(__dirname, buildPath)))
 

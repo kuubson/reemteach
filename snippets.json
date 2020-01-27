@@ -1,0 +1,108 @@
+{
+    "Auto Imports in index.js": {
+        "prefix": "aa",
+        "body": [
+            "const req = require.context('./', false, /^\\.\\/(?!index).*\\.js$/)",
+            "req.keys().forEach(fileName => {",
+            "    const exportName = fileName.replace('./', '').replace('.js', '')",
+            "    module.exports[exportName] = req(fileName).default",
+            "})",
+            ""
+        ],
+        "description": "Auto Imports in index.js"
+    },
+    "Main Component": {
+        "prefix": "sss",
+        "body": [
+            "import React from 'react'",
+            "import styled from 'styled-components'",
+            "",
+            "import Dashboard from './styled/Dashboard'",
+            "",
+            "const ${TM_FILENAME_BASE}Wrapper = styled.${1}`",
+            "  ${2}",
+            "`",
+            "",
+            "const ${TM_FILENAME_BASE} = () => {",
+            "    return <${TM_FILENAME_BASE}Wrapper></${TM_FILENAME_BASE}Wrapper>",
+            "}",
+            "",
+            "export default ${TM_FILENAME_BASE}",
+            ""
+        ],
+        "description": "Main Component"
+    },
+    "Styled Component": {
+        "prefix": "s",
+        "body": [
+            "import styled from 'styled-components'",
+            "",
+            "export default styled.${2}`",
+            "${3}",
+            "`"
+        ],
+        "description": "Styled Component"
+    },
+    "Hook useState": {
+        "prefix": "dd",
+        "body": ["const [${1},${2}set${1}] = useState()"],
+        "description": "Hook useState"
+    },
+    "Higher Order Component": {
+        "prefix": "ccc",
+        "body": [
+            "import React from 'react'",
+            "import { useDispatch, useSelector } from 'react-redux'",
+            "",
+            "export default Component => {",
+            "return props => {",
+            "const dispatch = useDispatch()",
+            "const ${1} = useSelector(state => state.loader.${1})",
+            "const ${2} = payload => dispatch({ type: '${2}', payload })",
+            "const features = {",
+            "${1},",
+            "${2}",
+            "}",
+            "const updatedProps = {",
+            "...props,",
+            "...features",
+            "}",
+            "return <Component {...updatedProps} />",
+            "}",
+            "}",
+            ""
+        ],
+        "description": "Higher Order Component"
+    },
+    "Import Higher Order Component": {
+        "prefix": "c",
+        "body": ["import { compose } from 'redux'", "import {${1}} from '@hoc'"],
+        "description": "Import Higher Order Component"
+    },
+    "Express Post Route": {
+        "prefix": "rr",
+        "body": [
+            "import {Router} from 'express'",
+            "",
+            "export default Router().post('/${TM_FILENAME_BASE}', (req, res) => {",
+            "    const {${2}} = req.body",
+            "    ${3}",
+            "})",
+            ""
+        ],
+        "description": "Express Post Route"
+    },
+    "Express Get Route": {
+        "prefix": "r",
+        "body": [
+            "import {Router} from 'express'",
+            "",
+            "export default Router().get('/${TM_FILENAME_BASE}', (req, res) => {",
+            "    const {${2}} = req.body",
+            "    ${3}",
+            "})",
+            ""
+        ],
+        "description": "Express Get Route"
+    }
+}

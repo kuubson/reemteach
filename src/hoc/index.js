@@ -1,7 +1,5 @@
-import { withRouter } from 'react-router-dom'
-
-import withLoader from './withLoader'
-import withFeedbackHandler from './withFeedbackHandler'
-import withSocket from './withSocket'
-
-export { withLoader, withFeedbackHandler, withRouter, withSocket }
+const req = require.context('./', false, /^\.\/(?!index).*\.js$/)
+req.keys().forEach(fileName => {
+    const exportName = fileName.replace('./', '').replace('.js', '')
+    module.exports[exportName] = req(fileName).default
+})

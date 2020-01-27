@@ -6,7 +6,7 @@ import { Teacher, Student } from '@database'
 export default Router().get('/api/confirmToken', (req, res, next) => {
     const clearCookie = () => {
         res.clearCookie('token', {
-            // secure: true,
+            secure: process.env.NODE_ENV === 'development' ? false : true,
             httpOnly: true,
             sameSite: true
         }).send({
@@ -20,17 +20,21 @@ export default Router().get('/api/confirmToken', (req, res, next) => {
             } else {
                 const { email, role } = data
                 if (role === 'teacher') {
-                    const foundTeacher = await Teacher.findOne({
-                        where: {
-                            email
-                        }
-                    })
-                    if (!foundTeacher) {
-                        clearCookie()
-                    } else {
-                        res.send({
-                            role: 'teacher'
+                    try {
+                        const foundTeacher = await Teacher.findOne({
+                            where: {
+                                email
+                            }
                         })
+                        if (!foundTeacher) {
+                            clearCookie()
+                        } else {
+                            res.send({
+                                role: 'teacher'
+                            })
+                        }
+                    } catch (error) {
+                        next(error)
                     }
                 } else if (role === 'student') {
                     try {

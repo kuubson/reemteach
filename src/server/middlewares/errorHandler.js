@@ -4,7 +4,7 @@ export default app => {
         if (error.code === 'EBADCSRFTOKEN') {
             const status = 403
             res.clearCookie('token', {
-                // secure: true,
+                secure: process.env.NODE_ENV === 'development' ? false : true,
                 httpOnly: true,
                 sameSite: true
             })

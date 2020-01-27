@@ -5,11 +5,12 @@ import passport from 'passport'
 import io from 'socket.io'
 import csurf from 'csurf'
 
+import errorHandler from './errorHandler'
 import checkValidationResult from './checkValidationResult'
 import rateLimiter from './rateLimiter'
 import authWithJwt from './authWithJwt'
-import passportjs from './passport'
 
+import passportjs from './passport'
 import socketio from '../socketio/socketio'
 
 passportjs(passport)
@@ -24,7 +25,7 @@ const initializeMiddlewares = (app, server) => {
     app.use(
         csurf({
             cookie: {
-                // secure: true,
+                secure: process.env.NODE_ENV === 'development' ? false : true,
                 httpOnly: true,
                 sameSite: true
             }
@@ -32,7 +33,7 @@ const initializeMiddlewares = (app, server) => {
     )
     app.use((req, res, next) => {
         res.cookie('XSRF-TOKEN', req.csrfToken(), {
-            // secure: true,
+            secure: process.env.NODE_ENV === 'development' ? false : true,
             sameSite: true
         })
         next()
@@ -40,4 +41,4 @@ const initializeMiddlewares = (app, server) => {
     app.set('trust proxy', 1)
 }
 
-export { initializeMiddlewares, checkValidationResult, rateLimiter, authWithJwt }
+export { initializeMiddlewares, errorHandler, checkValidationResult, rateLimiter, authWithJwt }
