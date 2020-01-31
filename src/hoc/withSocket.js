@@ -4,16 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 export default Component => {
     return props => {
         const dispatch = useDispatch()
-        const socket = useSelector(state => state.socket.socket)
+        const { socket } = useSelector(state => state.socket)
         const setSocket = payload => dispatch({ type: 'setSocket', payload })
         const features = {
             socket,
             setSocket
         }
-        const updatedProps = {
-            ...props,
-            ...features
-        }
-        return <Component {...updatedProps} />
+        return <Component {...props} {...features} />
     }
 }

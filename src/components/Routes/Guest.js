@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components/macro'
-import axios from 'axios'
 
 import { compose } from 'redux'
 import { withFeedbackHandler, withSocket } from '@hoc'
 
-import { redirectTo, handleApiError } from '@utils'
+import { delayedApiAxios, redirectTo } from '@utils'
 
 const GuestContainer = styled.div`
     ${({ blurred }) => {
@@ -21,20 +20,16 @@ const Guest = ({ children, shouldFeedbackHandlerAppear, socket, setSocket }) => 
     const [shouldChildrenAppear, setShouldChildrenAppear] = useState(false)
     const confirmToken = async () => {
         const url = '/api/confirmToken'
-        try {
-            const RESPONSE = await axios.get(url)
-            if (RESPONSE) {
-                const { role } = RESPONSE.data
-                if (role === 'teacher') {
-                    redirectTo('/profil-nauczyciela')
-                }
-                if (role === 'student') {
-                    redirectTo('/profil-ucznia')
-                }
-                setShouldChildrenAppear(true)
+        const RESPONSE = await delayedApiAxios.get(url)
+        if (RESPONSE) {
+            const { role } = RESPONSE.data
+            if (role === 'teacher') {
+                redirectTo('/profil-nauczyciela')
             }
-        } catch (error) {
-            handleApiError(error)
+            if (role === 'student') {
+                redirectTo('/profil-ucznia')
+            }
+            setShouldChildrenAppear(true)
         }
     }
     useEffect(() => {

@@ -5,20 +5,19 @@ const { DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_HOST } = p
 const connection = new Sequelize(DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD, {
     host: DATABASE_HOST,
     dialect: 'mysql'
-    //,logging:false
 })
 
-connection
-    // .sync({ force: true })
-    .sync()
-    .then(async () => {
-        console.log('Successfully connected to the database!')
-    })
-    .catch(error => {
+const initializeDatabaseConnection = async () => {
+    try {
+        // await connection.sync({force:true})
+        await connection.sync()
+    } catch (error) {
         console.log({
             error,
             message: 'There was a problem connecting to the database!'
         })
-    })
+    }
+}
+initializeDatabaseConnection()
 
 export {}

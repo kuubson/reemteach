@@ -1,9 +1,8 @@
 import { store } from '@redux'
 
-export default ({ callback }) => {
-    typeof callback === 'function' && callback()
+export default payload => {
     store.dispatch({
         type: 'setShouldFeedbackHandlerAppear',
-        payload: false
+        payload
     })
 }

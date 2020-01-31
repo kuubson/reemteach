@@ -6,32 +6,34 @@ import { withFeedbackHandler } from '@hoc'
 
 import Dashboard from './styled/Dashboard'
 
-import { closeFeedbackHandler } from './utils'
+import { setShouldFeedbackHandlerAppear } from '@utils'
 
 const FeedbackHandlerContainer = styled.div`
     width: 100%;
     height: 100vh;
     background: rgba(0, 0, 0, 0.8);
     color: white;
-    position: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    position: fixed;
     top: 0px;
     left: 0px;
-    z-index: 5;
+    z-index: 3;
 `
 
 const FeedbackHandler = ({ feedbackHandlerData: { message, buttonText, callback } }) => {
+    const closeFeedbackHandler = () => {
+        if (typeof callback === 'function') {
+            callback()
+        }
+        setShouldFeedbackHandlerAppear(false)
+    }
     return (
         <FeedbackHandlerContainer>
-            {message && <Dashboard.Text>{message}</Dashboard.Text>}
-            {buttonText && (
-                <Dashboard.Button onClick={() => closeFeedbackHandler({ callback })}>
-                    {buttonText}
-                </Dashboard.Button>
-            )}
+            <Dashboard.Text>{message}</Dashboard.Text>
+            <Dashboard.Button onClick={closeFeedbackHandler}>{buttonText}</Dashboard.Button>
         </FeedbackHandlerContainer>
     )
 }

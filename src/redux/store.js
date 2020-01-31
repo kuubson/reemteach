@@ -4,5 +4,8 @@ import { persistStore } from 'redux-persist'
 
 import reducers from './reducers'
 
-export const store = createStore(reducers, composeWithDevTools())
+export const store =
+    process.env.NODE_ENV === 'development'
+        ? createStore(reducers, composeWithDevTools())
+        : createStore(reducers)
 export const persistor = persistStore(store)

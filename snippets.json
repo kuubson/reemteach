@@ -48,6 +48,11 @@
         "body": ["const [${1},${2}set${1}] = useState()"],
         "description": "Hook useState"
     },
+    "Hook useEffect": {
+        "prefix": "d",
+        "body": ["useEffect(() => {", "${1}", "}, [])"],
+        "description": "Hook useState"
+    },
     "Higher Order Component": {
         "prefix": "ccc",
         "body": [
@@ -55,20 +60,16 @@
             "import { useDispatch, useSelector } from 'react-redux'",
             "",
             "export default Component => {",
-            "return props => {",
-            "const dispatch = useDispatch()",
-            "const ${1} = useSelector(state => state.loader.${1})",
-            "const ${2} = payload => dispatch({ type: '${2}', payload })",
-            "const features = {",
-            "${1},",
-            "${2}",
-            "}",
-            "const updatedProps = {",
-            "...props,",
-            "...features",
-            "}",
-            "return <Component {...updatedProps} />",
-            "}",
+            "    return props => {",
+            "        const dispatch = useDispatch()",
+            "        const { ${1} } = useSelector(state => state.${3})",
+            "        const ${2} = payload => dispatch({ type: '${2}', payload })",
+            "        const features = {",
+            "            ${1},",
+            "            ${2}",
+            "        }",
+            "        return <Component {...props} {...features} />",
+            "    }",
             "}",
             ""
         ],

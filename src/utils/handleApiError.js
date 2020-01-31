@@ -1,5 +1,7 @@
 import { setFeedbackData, redirectTo } from '@utils'
 
+const reloadWindow = () => window.location.reload()
+
 export default error => {
     console.log(error)
     if (error.response) {
@@ -13,7 +15,7 @@ export default error => {
                 setFeedbackData(
                     'Nie można nawiązać połączenia z serwerem lub wystąpił niespodziewany problem po jego stronie!',
                     'Odśwież aplikację',
-                    () => window.location.reload()
+                    reloadWindow
                 )
             }
         }
@@ -21,13 +23,13 @@ export default error => {
         setFeedbackData(
             'Serwer nie jest w stanie tymczasowo przetworzyć Twojego żądania!',
             'Odśwież aplikację',
-            () => window.location.reload()
+            reloadWindow
         )
     } else {
         setFeedbackData(
             'Wystąpił niespodziewany problem po stronie klienta!',
             'Odśwież aplikację',
-            () => window.location.reload()
+            reloadWindow
         )
     }
 }

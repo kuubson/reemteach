@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components/macro'
 import Spinner from 'react-spinkit'
 
+import Dashboard from './styled/Dashboard'
+
 const LoaderContainer = styled.div`
     width: 100%;
     height: 100vh;
@@ -12,18 +14,15 @@ const LoaderContainer = styled.div`
     position: fixed;
     top: 0px;
     left: 0px;
-    z-index: 4;
-    @media (max-width: 500px) {
-        div {
-            transform: scale(0.85);
-        }
-    }
+    z-index: 2;
 `
 
 const Loader = () => {
     return (
         <LoaderContainer>
-            <Spinner name="ball-spin-fade-loader" fadeIn="none" color="white" />
+            <Dashboard.SpinnerContainer>
+                <Spinner name="ball-spin-fade-loader" fadeIn="none" color="white" />
+            </Dashboard.SpinnerContainer>
         </LoaderContainer>
     )
 }

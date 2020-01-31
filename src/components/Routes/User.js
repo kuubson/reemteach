@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components/macro'
-import axios from 'axios'
 import io from 'socket.io-client'
 
 import { compose } from 'redux'
 import { withFeedbackHandler, withSocket } from '@hoc'
 
-import { redirectTo, handleApiError } from '@utils'
+import { delayedApiAxios, redirectTo } from '@utils'
 
 const UserContainer = styled.div`
     ${({ blurred }) => {
@@ -28,17 +27,13 @@ const User = ({
     const [shouldChildrenAppear, setShouldChildrenAppear] = useState(false)
     const confirmToken = async () => {
         const url = '/api/confirmToken'
-        try {
-            const RESPONSE = await axios.get(url)
-            if (RESPONSE) {
-                const { role } = RESPONSE.data
-                if (role === 'guest' || role !== roleToConfirm) {
-                    redirectTo('/')
-                }
-                setShouldChildrenAppear(true)
+        const RESPONSE = await delayedApiAxios.get(url)
+        if (RESPONSE) {
+            const { role } = RESPONSE.data
+            if (role === 'guest' || role !== roleToConfirm) {
+                redirectTo('/')
             }
-        } catch (error) {
-            handleApiError(error)
+            setShouldChildrenAppear(true)
         }
     }
     useEffect(() => {

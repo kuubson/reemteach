@@ -19,7 +19,7 @@ routes(app)
 
 errorHandler(app)
 
-const buildPath = '../../build'
+const buildPath = '../build'
 
 app.use(express.static(path.resolve(__dirname, buildPath)))
 

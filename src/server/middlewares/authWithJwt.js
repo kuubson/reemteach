@@ -1,7 +1,7 @@
 import passport from 'passport'
 
 export default (req, res, next) => {
-    const handleUnauthorizedUser = () => {
+    const rejectUnauthorizedUser = () => {
         const status = 401
         res.status(status).send({
             status,
@@ -10,7 +10,7 @@ export default (req, res, next) => {
     }
     passport.authenticate('jwt', { session: false }, (error, user) => {
         if (error || !user) {
-            handleUnauthorizedUser()
+            rejectUnauthorizedUser()
         } else {
             req.user = user
             next()

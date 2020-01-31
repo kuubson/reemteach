@@ -2,9 +2,7 @@ import axios from 'axios'
 
 import { handleApiError, setIsLoading } from '@utils'
 
-const apiAxios = axios.create({
-    baseURL: process.env.API_ROOT
-})
+const apiAxios = axios.create()
 
 apiAxios.interceptors.request.use(
     request => {
