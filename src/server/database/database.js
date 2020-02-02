@@ -7,8 +7,12 @@ const connection = new Sequelize(DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASS
     dialect: 'mysql'
 })
 
+const HeadTeacher = connection.import('./models/HeadTeacher')
+const Teacher = connection.import('./models/Teacher')
+
 const initializeDatabaseConnection = async () => {
     try {
+        // await connection.sync({alter:true})
         // await connection.sync({force:true})
         await connection.sync()
     } catch (error) {
@@ -20,4 +24,4 @@ const initializeDatabaseConnection = async () => {
 }
 initializeDatabaseConnection()
 
-export {}
+export { HeadTeacher, Teacher }
