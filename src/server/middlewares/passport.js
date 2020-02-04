@@ -20,7 +20,9 @@ export default passport => {
             },
             async (data, done) => {
                 const { email, role } = data
-                if (role === 'teacher') {
+                if (role === 'headTeacher') {
+                    done(null, 'headTeacher')
+                } else if (role === 'teacher') {
                     done(null, 'teacher')
                 } else if (role === 'student') {
                     done(null, 'student')

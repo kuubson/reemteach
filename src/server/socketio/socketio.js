@@ -13,7 +13,10 @@ export default io => {
                     callback('Authentication error!', false)
                 } else {
                     const { email, role } = data
-                    if (role === 'teacher') {
+                    if (role === 'headTeacher') {
+                        request.headTeacher = email
+                        callback(null, 'headTeacher')
+                    } else if (role === 'teacher') {
                         request.teacher = email
                         callback(null, 'teacher')
                     } else if (role === 'student') {

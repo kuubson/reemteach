@@ -25,7 +25,7 @@ const initializeMiddlewares = (app, server) => {
     app.use(
         csurf({
             cookie: {
-                secure: process.env.NODE_ENV === 'development' ? false : true,
+                secure: !process.env.NODE_ENV === 'development',
                 httpOnly: true,
                 sameSite: true
             }
@@ -33,7 +33,7 @@ const initializeMiddlewares = (app, server) => {
     )
     app.use((req, res, next) => {
         res.cookie('XSRF-TOKEN', req.csrfToken(), {
-            secure: process.env.NODE_ENV === 'development' ? false : true,
+            secure: !process.env.NODE_ENV === 'development',
             sameSite: true
         })
         next()

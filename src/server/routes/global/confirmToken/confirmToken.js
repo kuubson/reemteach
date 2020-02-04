@@ -6,7 +6,7 @@ import { Teacher, Student } from '@database'
 export default Router().get('/api/confirmToken', (req, res, next) => {
     const clearCookie = () => {
         res.clearCookie('token', {
-            secure: process.env.NODE_ENV === 'development' ? false : true,
+            secure: !process.env.NODE_ENV === 'development',
             httpOnly: true,
             sameSite: true
         }).send({
@@ -19,14 +19,31 @@ export default Router().get('/api/confirmToken', (req, res, next) => {
                 clearCookie()
             } else {
                 const { email, role } = data
-                if (role === 'teacher') {
+                if (role === 'headTeacher') {
                     try {
-                        const foundTeacher = await Teacher.findOne({
+                        const headTeacher = await Teacher.findOne({
                             where: {
                                 email
                             }
                         })
-                        if (!foundTeacher) {
+                        if (!headTeacher) {
+                            clearCookie()
+                        } else {
+                            res.send({
+                                role: 'headTeacher'
+                            })
+                        }
+                    } catch (error) {
+                        next(error)
+                    }
+                } else if (role === 'teacher') {
+                    try {
+                        const teacher = await Teacher.findOne({
+                            where: {
+                                email
+                            }
+                        })
+                        if (!teacher) {
                             clearCookie()
                         } else {
                             res.send({
@@ -38,12 +55,12 @@ export default Router().get('/api/confirmToken', (req, res, next) => {
                     }
                 } else if (role === 'student') {
                     try {
-                        const foundStudent = await Student.findOne({
+                        const student = await Student.findOne({
                             where: {
                                 email
                             }
                         })
-                        if (!foundStudent) {
+                        if (!student) {
                             clearCookie()
                         } else {
                             res.send({

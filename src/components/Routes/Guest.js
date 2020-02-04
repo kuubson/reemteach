@@ -23,11 +23,14 @@ const Guest = ({ children, shouldFeedbackHandlerAppear, socket, setSocket }) => 
         const RESPONSE = await delayedApiAxios.get(url)
         if (RESPONSE) {
             const { role } = RESPONSE.data
+            if (role === 'headTeacher') {
+                redirectTo('/dyrektor/profil')
+            }
             if (role === 'teacher') {
-                redirectTo('/profil-nauczyciela')
+                redirectTo('/nauczyciel/profil')
             }
             if (role === 'student') {
-                redirectTo('/profil-ucznia')
+                redirectTo('/uczeń/profil')
             }
             setShouldChildrenAppear(true)
         }

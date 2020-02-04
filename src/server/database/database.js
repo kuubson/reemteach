@@ -15,6 +15,7 @@ const initializeDatabaseConnection = async () => {
         // await connection.sync({alter:true})
         // await connection.sync({force:true})
         await connection.sync()
+        console.log('Successfully connected to the database!')
     } catch (error) {
         console.log({
             error,

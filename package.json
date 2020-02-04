@@ -53,8 +53,9 @@
     },
     "scripts": {
         "start": "babel src/server -d dist && node dist/server.js",
-        "heroku-postbuild": "react-app-rewired build",
-        "dev": "concurrently \"babel-watch src/server/server.js\" \"react-app-rewired start\""
+        "build": "react-app-rewired build",
+        "dev": "concurrently \"babel-watch src/server/server.js\" \"react-app-rewired start\"",
+        "heroku-postbuild": "npm run build"
     },
     "eslintConfig": {
         "extends": "react-app"

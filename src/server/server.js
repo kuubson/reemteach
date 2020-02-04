@@ -8,6 +8,7 @@ import express from 'express'
 import '@database'
 
 import { initializeMiddlewares, errorHandler } from '@middlewares'
+
 import routes from '@routes'
 
 const app = express()
@@ -23,7 +24,7 @@ const buildPath = '../build'
 
 app.use(express.static(path.resolve(__dirname, buildPath)))
 
-app.get('*', (req, res) => {
+app.get('*', (_, res) => {
     res.sendFile(path.resolve(__dirname, buildPath, 'index.html'))
 })
 

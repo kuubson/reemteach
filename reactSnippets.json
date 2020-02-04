@@ -1,4 +1,21 @@
 {
+    "Custom Hook": {
+        "prefix": "cc",
+        "body": [
+            "import { useEffect, useState } from 'react'",
+            "",
+            "import { apiAxios } from 'utils'",
+            "",
+            "export default () => {",
+            "    ${1}",
+            "    return {",
+            "       ",
+            "    }",
+            "}",
+            ""
+        ],
+        "description": "Custom Hook"
+    },
     "Auto Imports in index.js": {
         "prefix": "aa",
         "body": [
@@ -15,16 +32,16 @@
         "prefix": "sss",
         "body": [
             "import React from 'react'",
-            "import styled from 'styled-components'",
+            "import styled from 'styled-components/macro'",
             "",
             "import Dashboard from './styled/Dashboard'",
             "",
-            "const ${TM_FILENAME_BASE}Wrapper = styled.${1}`",
+            "const ${TM_FILENAME_BASE}Container = styled.${1}`",
             "  ${2}",
             "`",
             "",
             "const ${TM_FILENAME_BASE} = () => {",
-            "    return <${TM_FILENAME_BASE}Wrapper></${TM_FILENAME_BASE}Wrapper>",
+            "    return <${TM_FILENAME_BASE}Container></${TM_FILENAME_BASE}Container>",
             "}",
             "",
             "export default ${TM_FILENAME_BASE}",
@@ -35,7 +52,7 @@
     "Styled Component": {
         "prefix": "s",
         "body": [
-            "import styled from 'styled-components'",
+            "import styled from 'styled-components/macro'",
             "",
             "export default styled.${2}`",
             "${3}",
