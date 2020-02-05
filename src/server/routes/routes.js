@@ -1,7 +1,9 @@
-import confirmToken from './global/confirmToken/confirmToken'
-import logout from './global/logout/logout'
+import global from './global/global'
+
+import adminHeadTeacher from './admin/headTeacher/headTeacher'
 
 export default app => {
-    app.use('/', confirmToken)
-    app.use('/', logout)
+    app.use('/api', global)
+
+    app.use('/api', adminHeadTeacher)
 }

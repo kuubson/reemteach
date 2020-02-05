@@ -7,11 +7,12 @@ import Composed from '../composed'
 
 const HeadTeacherFormContainer = styled(Form.FormsContainer)`
     top: 50%;
-    left: 50%;
-    transform: translate(100%, -50%);
+    left: 100%;
+    transform: translate(0%, -50%);
     ${({ shouldSlideIn }) => {
         if (shouldSlideIn)
             return css`
+                left: 50%;
                 transform: translate(-50%, -50%);
             `
     }}

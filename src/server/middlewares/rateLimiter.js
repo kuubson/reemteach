@@ -4,7 +4,7 @@ export default errorMessage => {
     return limiter({
         windowMs: 30 * 60 * 1000, // 30 min
         max: 10,
-        handler: (_, res, __) => {
+        handler: (_, res) => {
             const status = 429
             res.status(status).send({
                 status,

@@ -20,7 +20,7 @@ const HomeContainer = styled.section`
 
 const Home = () => {
     const [shouldHeadTeacherFormAppear, setShouldHeadTeacherFormAppear] = useState(false)
-    const [shouldTeacherFormsAppear, setShouldTeacherFormsAppear] = useState(true)
+    const [shouldTeacherFormsAppear, setShouldTeacherFormsAppear] = useState(false)
     const [shouldStudentFormsAppear, setShouldStudentFormsAppear] = useState(false)
     return (
         <HomeContainer>

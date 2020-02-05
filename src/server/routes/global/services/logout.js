@@ -1,6 +1,4 @@
-import { Router } from 'express'
-
-export default Router().get('/api/logout', (req, res) => {
+export default (_, res) => {
     res.clearCookie('token', {
         secure: !process.env.NODE_ENV === 'development',
         httpOnly: true,
@@ -8,4 +6,4 @@ export default Router().get('/api/logout', (req, res) => {
     }).send({
         success: true
     })
-})
+}
