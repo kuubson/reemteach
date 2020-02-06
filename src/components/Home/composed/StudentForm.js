@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import styled, { css } from 'styled-components/macro'
+import validator from 'validator'
 
 import Form from '../styled/Form'
 
 import Composed from '../composed'
+
+import { apiAxios, redirectTo } from '@utils'
 
 const StudentFormContainer = styled(Form.FormsContainer)`
     top: 0%;
@@ -28,11 +31,38 @@ const StudentForm = ({ onClick, shouldSlideIn }) => {
     const [password, setPassword] = useState('')
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
+    const validate = () => {
+        setEmailError('')
+        setPasswordError('')
+        let isValidated = true
+        if (!validator.isEmail(email) || !email) {
+            setEmailError('Wprowadź poprawny adres e-mail!')
+            isValidated = false
+        }
+        if (!password) {
+            setPasswordError('Wprowadź hasło!')
+            isValidated = false
+        }
+        return isValidated
+    }
+    const handleSubmit = async e => {
+        e.preventDefault()
+        if (validate()) {
+            const url = '/api/student/login'
+            const response = await apiAxios.post(url, {
+                email,
+                password
+            })
+            if (response) {
+                redirectTo('/student/profil')
+            }
+        }
+    }
     return (
         <StudentFormContainer shouldSlideIn={shouldSlideIn}>
             <Form.FormContainer>
                 <Form.CloseButton onClick={onClick} />
-                <Form.Form>
+                <Form.Form onSubmit={handleSubmit}>
                     <Form.HeaderContainer>
                         <Form.Header>Uczeń</Form.Header>
                     </Form.HeaderContainer>

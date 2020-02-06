@@ -23,6 +23,9 @@ const Guest = ({ children, shouldFeedbackHandlerAppear, socket, setSocket }) => 
         const RESPONSE = await delayedApiAxios.get(url)
         if (RESPONSE) {
             const { role } = RESPONSE.data
+            if (role === 'admin') {
+                redirectTo('/admin/profil')
+            }
             if (role === 'headTeacher') {
                 redirectTo('/dyrektor/profil')
             }

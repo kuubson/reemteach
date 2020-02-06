@@ -7,13 +7,21 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import { compose } from 'redux'
 import { withLoader, withFeedbackHandler } from '@hoc'
 
-import Guest from '@components/Routes/Guest'
-import User from '@components/Routes/User'
+import Guest from './Routes/Guest'
+import User from './Routes/User'
 
-import FeedbackHandler from '@components/FeedbackHandler/FeedbackHandler'
-import Loader from '@components/Loader/Loader'
+import FeedbackHandler from './FeedbackHandler/FeedbackHandler'
+import Loader from './Loader/Loader'
 
-import Home from '@components/Home/Home'
+import Home from './Home/Home'
+
+import AdminProfile from './AdminProfile/AdminProfile'
+
+import HeadTeacherProfile from './HeadTeacherProfile/HeadTeacherProfile'
+
+import TeacherProfile from './TeacherProfile/TeacherProfile'
+
+import StudentProfile from './StudentProfile/StudentProfile'
 
 setConfig({
     reloadHooks: false
@@ -33,6 +41,38 @@ const App = ({ isLoading, shouldFeedbackHandlerAppear }) => {
             )
         },
         {
+            path: '/admin/profil',
+            render: () => (
+                <User role="admin">
+                    <AdminProfile />
+                </User>
+            )
+        },
+        {
+            path: '/headTeacher/profil',
+            render: () => (
+                <User role="headTeacher">
+                    <HeadTeacherProfile />
+                </User>
+            )
+        },
+        {
+            path: '/teacher/profil',
+            render: () => (
+                <User role="teacher">
+                    <TeacherProfile />
+                </User>
+            )
+        },
+        {
+            path: '/student/profil',
+            render: () => (
+                <User role="student">
+                    <StudentProfile />
+                </User>
+            )
+        },
+        {
             path: '*',
             render: () => <Redirect to="/" />
         }
@@ -43,12 +83,7 @@ const App = ({ isLoading, shouldFeedbackHandlerAppear }) => {
             {shouldFeedbackHandlerAppear && <FeedbackHandler />}
             <Switch>
                 {routes.map(({ path, shouldBeExactPath, render }) => (
-                    <Route
-                        key={path}
-                        exact={shouldBeExactPath ? true : false}
-                        path={path}
-                        render={render}
-                    />
+                    <Route key={path} exact={shouldBeExactPath} path={path} render={render} />
                 ))}
             </Switch>
         </AppContainer>

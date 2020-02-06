@@ -19,35 +19,41 @@ const HomeContainer = styled.section`
 `
 
 const Home = () => {
+    const [shouldAdminFormAppear, setShouldAdminFormAppear] = useState(false)
     const [shouldHeadTeacherFormAppear, setShouldHeadTeacherFormAppear] = useState(false)
-    const [shouldTeacherFormsAppear, setShouldTeacherFormsAppear] = useState(false)
-    const [shouldStudentFormsAppear, setShouldStudentFormsAppear] = useState(false)
+    const [shouldTeacherFormAppear, setShouldTeacherFormAppear] = useState(false)
+    const [shouldStudentFormAppear, setShouldStudentFormAppear] = useState(false)
     return (
         <HomeContainer>
             <Dashboard.Header>Witaj w aplikacji Reemteach</Dashboard.Header>
             <Dashboard.Annotation>Wybierz swoją pozycję w szkole</Dashboard.Annotation>
             <Dashboard.ButtonsContainer>
+                <Dashboard.AdminButton onDoubleClick={() => setShouldAdminFormAppear(true)} />
                 <Dashboard.Button onClick={() => setShouldHeadTeacherFormAppear(true)}>
                     Dyrektor
                 </Dashboard.Button>
-                <Dashboard.Button onClick={() => setShouldTeacherFormsAppear(true)}>
+                <Dashboard.Button onClick={() => setShouldTeacherFormAppear(true)}>
                     Nauczyciel
                 </Dashboard.Button>
-                <Dashboard.Button onClick={() => setShouldStudentFormsAppear(true)}>
+                <Dashboard.Button onClick={() => setShouldStudentFormAppear(true)}>
                     Uczeń
                 </Dashboard.Button>
             </Dashboard.ButtonsContainer>
+            <Composed.AdminForm
+                onClick={() => setShouldAdminFormAppear(false)}
+                shouldSlideIn={shouldAdminFormAppear}
+            />
             <Composed.HeadTeacherForm
                 onClick={() => setShouldHeadTeacherFormAppear(false)}
                 shouldSlideIn={shouldHeadTeacherFormAppear}
             />
             <Composed.TeacherForm
-                onClick={() => setShouldTeacherFormsAppear(false)}
-                shouldSlideIn={shouldTeacherFormsAppear}
+                onClick={() => setShouldTeacherFormAppear(false)}
+                shouldSlideIn={shouldTeacherFormAppear}
             />
             <Composed.StudentForm
-                onClick={() => setShouldStudentFormsAppear(false)}
-                shouldSlideIn={shouldStudentFormsAppear}
+                onClick={() => setShouldStudentFormAppear(false)}
+                shouldSlideIn={shouldStudentFormAppear}
             />
         </HomeContainer>
     )

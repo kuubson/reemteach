@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-import { Teacher, Student } from '@database'
+import { Admin, HeadTeacher, Teacher, Student } from '@database'
 
 export default (req, res) => {
     const clearCookie = () => {
@@ -18,44 +18,73 @@ export default (req, res) => {
                 clearCookie()
             } else {
                 const { email, role } = data
-                if (role === 'headTeacher') {
-                    const headTeacher = await Teacher.findOne({
-                        where: {
-                            email
-                        }
-                    })
-                    if (!headTeacher) {
-                        clearCookie()
-                    } else {
-                        res.send({
-                            role: 'headTeacher'
+                if (role === 'admin') {
+                    try {
+                        const admin = await Admin.findOne({
+                            where: {
+                                email
+                            }
                         })
+                        if (!admin) {
+                            clearCookie()
+                        } else {
+                            res.send({
+                                role: 'admin'
+                            })
+                        }
+                    } catch (error) {
+                        next(error)
+                    }
+                } else if (role === 'headTeacher') {
+                    try {
+                        const headTeacher = await HeadTeacher.findOne({
+                            where: {
+                                email
+                            }
+                        })
+                        if (!headTeacher) {
+                            clearCookie()
+                        } else {
+                            res.send({
+                                role: 'headTeacher'
+                            })
+                        }
+                    } catch (error) {
+                        next(error)
                     }
                 } else if (role === 'teacher') {
-                    const teacher = await Teacher.findOne({
-                        where: {
-                            email
-                        }
-                    })
-                    if (!teacher) {
-                        clearCookie()
-                    } else {
-                        res.send({
-                            role: 'teacher'
+                    try {
+                        const teacher = await Teacher.findOne({
+                            where: {
+                                email
+                            }
                         })
+                        if (!teacher) {
+                            clearCookie()
+                        } else {
+                            res.send({
+                                role: 'teacher'
+                            })
+                        }
+                    } catch (error) {
+                        next(error)
                     }
                 } else if (role === 'student') {
-                    const student = await Student.findOne({
-                        where: {
-                            email
-                        }
-                    })
-                    if (!student) {
-                        clearCookie()
-                    } else {
-                        res.send({
-                            role: 'student'
+                    try {
+                        const student = await Student.findOne({
+                            where: {
+                                email
+                            }
                         })
+                        if (!student) {
+                            clearCookie()
+                        } else {
+                            res.send({
+                                role: 'student'
+                            })
+                        }
+                    } catch (error) {
+                        next(error)
                     }
                 } else {
                     clearCookie()

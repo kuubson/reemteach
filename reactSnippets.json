@@ -122,5 +122,38 @@
             ""
         ],
         "description": "Express Get Route"
+    },
+    "Sequelize Model": {
+        "prefix": "ss",
+        "body": [
+            "import { Model, DataTypes } from 'sequelize'",
+            "import bcrypt from 'bcryptjs'",
+            "",
+            "const { STRING, TEXT, BOOLEAN } = DataTypes",
+            "",
+            "export default sequelize => {",
+            "    class ${TM_FILENAME_BASE} extends Model {}",
+            "    ${TM_FILENAME_BASE}.init(",
+            "        {",
+            "            value: {",
+            "                type: STRING,",
+            "                allowNull: false",
+            "            },",
+            "        },",
+            "        {",
+            "            sequelize,",
+            "            modelName: '${2}${TM_FILENAME_BASE}',",
+            "            hooks: {",
+            "                beforeCreate: ${2}${TM_FILENAME_BASE} => {",
+            "                    ${2}${TM_FILENAME_BASE}.password = bcrypt.hashSync(${2}${TM_FILENAME_BASE}.password, 11)",
+            "                }",
+            "            }",
+            "        }",
+            "    )",
+            "    return ${TM_FILENAME_BASE}",
+            "}",
+            ""
+        ],
+        "description": "Sequelize Model"
     }
 }

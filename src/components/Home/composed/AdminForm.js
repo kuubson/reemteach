@@ -8,25 +8,25 @@ import Composed from '../composed'
 
 import { apiAxios, redirectTo } from '@utils'
 
-const TeacherFormContainer = styled(Form.FormsContainer)`
-    top: 50%;
-    left: 0%;
-    transform: translate(-100%, -50%);
+const AdminFormContainer = styled(Form.FormsContainer)`
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, calc(0% + 5px));
     ${({ shouldSlideIn, flipped }) => {
         if (flipped)
             return css`
-                left: 50%;
+                top: 50%;
                 transform: translate(-50%, -50%) rotateY(180deg);
             `
         if (shouldSlideIn)
             return css`
-                left: 50%;
+                top: 50%;
                 transform: translate(-50%, -50%);
             `
     }}
 `
 
-const TeacherForm = ({ onClick, shouldSlideIn }) => {
+const AdminForm = ({ onClick, shouldSlideIn }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [emailError, setEmailError] = useState('')
@@ -48,29 +48,29 @@ const TeacherForm = ({ onClick, shouldSlideIn }) => {
     const handleSubmit = async e => {
         e.preventDefault()
         if (validate()) {
-            const url = '/api/teacher/login'
+            const url = '/api/admin/login'
             const response = await apiAxios.post(url, {
                 email,
                 password
             })
             if (response) {
-                redirectTo('/teacher/profil')
+                redirectTo('/admin/profil')
             }
         }
     }
     return (
-        <TeacherFormContainer shouldSlideIn={shouldSlideIn}>
+        <AdminFormContainer shouldSlideIn={shouldSlideIn}>
             <Form.FormContainer>
                 <Form.CloseButton onClick={onClick} />
                 <Form.Form onSubmit={handleSubmit}>
                     <Form.HeaderContainer>
-                        <Form.Header>Nauczyciel</Form.Header>
+                        <Form.Header>Admin</Form.Header>
                         <Form.Annotation>
-                            Zaloguj się żeby zarządzać swoimi uczniami
+                            Zaloguj się żeby zarządzać dyrektorami szkół
                         </Form.Annotation>
                     </Form.HeaderContainer>
                     <Composed.Input
-                        id="teacherEmail"
+                        id="adminEmail"
                         type="email"
                         label="E-mail"
                         value={email}
@@ -80,7 +80,7 @@ const TeacherForm = ({ onClick, shouldSlideIn }) => {
                         trim
                     />
                     <Composed.Input
-                        id="teacherPassword"
+                        id="adminPassword"
                         type="password"
                         label="Hasło"
                         value={password}
@@ -91,8 +91,8 @@ const TeacherForm = ({ onClick, shouldSlideIn }) => {
                     <Form.Submit>Zaloguj się</Form.Submit>
                 </Form.Form>
             </Form.FormContainer>
-        </TeacherFormContainer>
+        </AdminFormContainer>
     )
 }
 
-export default TeacherForm
+export default AdminForm

@@ -3,6 +3,7 @@ import styled from 'styled-components/macro'
 export default styled.div`
     height: 100%;
     width: 100%;
+    overflow: hidden;
     color: white;
     transform: ${({ back }) => (back ? 'rotateY(180deg)' : 'initial')};
     display: flex;
