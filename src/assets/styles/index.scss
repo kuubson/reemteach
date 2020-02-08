@@ -3,6 +3,7 @@
     box-sizing: border-box;
     letter-spacing: 2px;
     text-transform: uppercase;
+    outline: none;
 }
 
 html {
@@ -20,6 +21,7 @@ textarea,
 label {
     text-transform: inherit;
     display: block;
+    filter: none;
 }
 
 h1,
@@ -30,6 +32,10 @@ h5,
 h6,
 p {
     text-align: center;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 input:-webkit-autofill,

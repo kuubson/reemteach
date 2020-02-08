@@ -62,7 +62,7 @@ const AdminForm = ({ onClick, shouldSlideIn }) => {
         <AdminFormContainer shouldSlideIn={shouldSlideIn}>
             <Form.FormContainer>
                 <Form.CloseButton onClick={onClick} />
-                <Form.Form onSubmit={handleSubmit}>
+                <Form.Form onSubmit={handleSubmit} noValidate>
                     <Form.HeaderContainer>
                         <Form.Header>Admin</Form.Header>
                         <Form.Annotation>

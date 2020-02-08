@@ -1,13 +1,16 @@
 import { Router } from 'express'
 
-import { checkValidationResult } from '@middlewares'
-
-import { catchErrors } from '@utils'
+import { authWithJwt, checkValidationResult } from '@middlewares'
 
 import Services from './services'
 
 const router = Router()
 
-router.post('/headTeacher/login', checkValidationResult, catchErrors(Services.login()))
+router.post(
+    '/headTeacher/login',
+    Services.login.validation(),
+    checkValidationResult,
+    Services.login.default
+)
 
 export default router

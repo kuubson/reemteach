@@ -62,7 +62,7 @@ const StudentForm = ({ onClick, shouldSlideIn }) => {
         <StudentFormContainer shouldSlideIn={shouldSlideIn}>
             <Form.FormContainer>
                 <Form.CloseButton onClick={onClick} />
-                <Form.Form onSubmit={handleSubmit}>
+                <Form.Form onSubmit={handleSubmit} noValidate>
                     <Form.HeaderContainer>
                         <Form.Header>Uczeń</Form.Header>
                     </Form.HeaderContainer>

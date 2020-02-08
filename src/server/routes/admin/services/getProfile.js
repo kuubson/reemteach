@@ -1,8 +1,10 @@
-const main = (req, res) => {
-    const { email } = req.user
-    res.send({
-        email
-    })
+export default (req, res, next) => {
+    try {
+        const { email } = req.user
+        res.send({
+            email
+        })
+    } catch (error) {
+        next(error)
+    }
 }
-
-export default () => main

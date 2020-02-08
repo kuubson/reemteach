@@ -1,5 +1,5 @@
-import login from './login'
-import getProfile from './getProfile'
+import * as login from './login'
+import * as getProfile from './getProfile'
 
 export default {
     login,

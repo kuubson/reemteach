@@ -11,12 +11,8 @@ import Composed from './composed'
 
 import { apiAxios } from '@utils'
 
-const AdminProfileContainer = styled.section`
-    width: ${({ withMenu }) => (withMenu ? 'calc(100% - 350px)' : '100%')};
+const AdminProfileContainer = styled(Dashboard.Container)`
     height: 100vh;
-    padding: 0px 40px;
-    margin-left: ${({ withMenu }) => (withMenu ? '350px' : '0px')};
-    transition: width 0.8s ease-in-out, margin-left 0.8s ease-in-out;
     display: flex;
     justify-content: center;
     align-items: center;
