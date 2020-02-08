@@ -8,14 +8,13 @@ import Composed from './composed'
 const HomeContainer = styled.section`
     width: 100%;
     height: 100vh;
-    overflow: hidden;
     padding: 0px 50px;
     perspective: 1500px;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    position: relative;
 `
 
 const Home = () => {

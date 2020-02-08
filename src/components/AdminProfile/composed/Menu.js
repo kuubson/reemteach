@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
@@ -40,21 +40,33 @@ const Menu = ({ children, shouldMenuAppear, setShouldMenuAppear }) => {
         const response = await apiAxios.get(url)
         if (response) {
             setShouldMenuAppear(false)
-            redirectTo('/')
+            setTimeout(() => {
+                setShouldMenuAppear()
+                redirectTo('/')
+            }, 800)
         }
     }
+    useEffect(() => {
+        setTimeout(() => {
+            if (shouldMenuAppear === undefined) {
+                setShouldMenuAppear(false)
+            }
+        }, 800)
+    }, [])
     return (
         <>
             <StyledMenu.Button onClick={() => setShouldMenuAppear(true)} shown={!shouldMenuAppear}>
                 Menu
             </StyledMenu.Button>
-            <MenuContainer shown={shouldMenuAppear}>
-                <HForm.CloseButton onClick={() => setShouldMenuAppear(false)} />
-                <StyledMenu.OptionsContainer>
-                    {children}
-                    <StyledMenu.Option onClick={logout}>Wyloguj się</StyledMenu.Option>
-                </StyledMenu.OptionsContainer>
-            </MenuContainer>
+            {(shouldMenuAppear === true || shouldMenuAppear === false) && (
+                <MenuContainer shown={shouldMenuAppear}>
+                    <HForm.CloseButton onClick={() => setShouldMenuAppear(false)} />
+                    <StyledMenu.OptionsContainer>
+                        {children}
+                        <StyledMenu.Option onClick={logout}>Wyloguj się</StyledMenu.Option>
+                    </StyledMenu.OptionsContainer>
+                </MenuContainer>
+            )}
         </>
     )
 }

@@ -25,19 +25,21 @@ const User = ({
     role: roleToConfirm
 }) => {
     const [shouldChildrenAppear, setShouldChildrenAppear] = useState(false)
-    const confirmToken = async () => {
-        const url = '/api/confirmToken'
-        const RESPONSE = await delayedApiAxios.get(url)
-        if (RESPONSE) {
-            const { role } = RESPONSE.data
-            if (role === 'guest' || role !== roleToConfirm) {
-                redirectTo('/')
-            }
-            setShouldChildrenAppear(true)
-        }
-    }
     useEffect(() => {
+        const confirmToken = async () => {
+            const url = '/api/confirmToken'
+            const RESPONSE = await delayedApiAxios.get(url)
+            if (RESPONSE) {
+                const { role } = RESPONSE.data
+                if (role === 'guest' || role !== roleToConfirm) {
+                    redirectTo('/')
+                }
+            }
+        }
         confirmToken()
+        setTimeout(() => {
+            setShouldChildrenAppear(true)
+        }, 0)
     }, [])
     useEffect(() => {
         if (!socket) {

@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { hot } from 'react-hot-loader/root'
 import { setConfig } from 'react-hot-loader'
 import { Switch, Route, Redirect } from 'react-router-dom'
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 import { compose } from 'redux'
-import { withLoader, withFeedbackHandler } from '@hoc'
+import { withLoader, withFeedbackHandler, withRouter } from '@hoc'
 
 import Guest from './Routes/Guest'
 import User from './Routes/User'
@@ -16,6 +17,7 @@ import Loader from './Loader/Loader'
 import Home from './Home/Home'
 
 import AdminProfile from './AdminProfile/AdminProfile'
+import AdminHeadTeacherCreator from './AdminHeadTeacherCreator/AdminHeadTeacherCreator'
 
 import HeadTeacherProfile from './HeadTeacherProfile/HeadTeacherProfile'
 
@@ -29,10 +31,11 @@ setConfig({
 
 const AppContainer = styled.main``
 
-const App = ({ isLoading, shouldFeedbackHandlerAppear }) => {
+const App = ({ isLoading, shouldFeedbackHandlerAppear, location }) => {
     const routes = [
         {
             path: '/',
+            order: 1,
             shouldBeExactPath: true,
             render: () => (
                 <Guest>
@@ -42,6 +45,7 @@ const App = ({ isLoading, shouldFeedbackHandlerAppear }) => {
         },
         {
             path: '/admin/profil',
+            order: 2,
             render: () => (
                 <User role="admin">
                     <AdminProfile />
@@ -49,7 +53,17 @@ const App = ({ isLoading, shouldFeedbackHandlerAppear }) => {
             )
         },
         {
+            path: '/admin/dodawanie-dyrektora',
+            order: 3,
+            render: () => (
+                <User role="admin">
+                    <AdminHeadTeacherCreator />
+                </User>
+            )
+        },
+        {
             path: '/headTeacher/profil',
+            order: 2,
             render: () => (
                 <User role="headTeacher">
                     <HeadTeacherProfile />
@@ -58,6 +72,7 @@ const App = ({ isLoading, shouldFeedbackHandlerAppear }) => {
         },
         {
             path: '/teacher/profil',
+            order: 2,
             render: () => (
                 <User role="teacher">
                     <TeacherProfile />
@@ -66,6 +81,7 @@ const App = ({ isLoading, shouldFeedbackHandlerAppear }) => {
         },
         {
             path: '/student/profil',
+            order: 2,
             render: () => (
                 <User role="student">
                     <StudentProfile />
@@ -74,22 +90,66 @@ const App = ({ isLoading, shouldFeedbackHandlerAppear }) => {
         },
         {
             path: '*',
+            order: 1,
             render: () => <Redirect to="/" />
         }
     ]
+    const existingExactRoute = routes.filter(({ path }) => path === location.pathname)[0]
+    const existingSimilarRoute = routes.filter(({ path }) =>
+        path.startsWith(location.pathname.substring(0, 6))
+    )[0]
+    const currentKey = location.pathname
+    const [pageDirection, setPageDirection] = useState()
+    const [currentPath, setCurrentPath] = useState(location.pathname)
+    const [currentPathOrder, setCurrentPathOrder] = useState(
+        existingExactRoute
+            ? existingExactRoute.order
+            : existingSimilarRoute
+            ? existingSimilarRoute.order
+            : 30
+    )
+    useEffect(() => {
+        const newPath = location.pathname
+        const existingExactRoute = routes.filter(({ path }) => path === newPath)[0]
+        const existingSimilarRoute = routes.filter(({ path }) =>
+            path.startsWith(newPath.substring(0, 6))
+        )[0]
+        const newPathOrder = existingExactRoute
+            ? existingExactRoute.order
+            : existingSimilarRoute
+            ? existingSimilarRoute.order
+            : 30
+        if (newPath !== currentPath) {
+            const direction = currentPathOrder < newPathOrder ? 'left' : 'right'
+            setCurrentPath(newPath)
+            setCurrentPathOrder(newPathOrder)
+            setPageDirection(direction)
+        }
+    })
     return (
         <AppContainer>
             {isLoading && <Loader />}
             {shouldFeedbackHandlerAppear && <FeedbackHandler />}
-            <Switch>
-                {routes.map(({ path, shouldBeExactPath, render }) => (
-                    <Route key={path} exact={shouldBeExactPath} path={path} render={render} />
-                ))}
-            </Switch>
+            <TransitionGroup className={pageDirection}>
+                <CSSTransition key={currentKey} timeout={800} classNames="route">
+                    <div className="route__container">
+                        <Switch location={location}>
+                            {routes.map(({ path, shouldBeExactPath, render }) => (
+                                <Route
+                                    key={path}
+                                    exact={shouldBeExactPath}
+                                    path={path}
+                                    render={render}
+                                />
+                            ))}
+                        </Switch>
+                    </div>
+                </CSSTransition>
+            </TransitionGroup>
         </AppContainer>
     )
 }
 
 export default process.env.NODE_ENV === 'development'
-    ? compose(withLoader, withFeedbackHandler)(hot(App))
-    : compose(withLoader, withFeedbackHandler)(App)
+    ? compose(withLoader, withFeedbackHandler, withRouter)(hot(App))
+    : compose(withLoader, withFeedbackHandler, withRouter)(App)

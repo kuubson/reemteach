@@ -11,7 +11,7 @@ import { apiAxios, redirectTo } from '@utils'
 const HeadTeacherFormContainer = styled(Form.FormsContainer)`
     top: 50%;
     left: 100%;
-    transform: translate(0%, -50%);
+    transform: translate(calc(0% + 15px), -50%);
     ${({ shouldSlideIn }) => {
         if (shouldSlideIn)
             return css`

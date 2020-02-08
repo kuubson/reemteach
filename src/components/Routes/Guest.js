@@ -18,35 +18,37 @@ const GuestContainer = styled.div`
 
 const Guest = ({ children, shouldFeedbackHandlerAppear, socket, setSocket }) => {
     const [shouldChildrenAppear, setShouldChildrenAppear] = useState(false)
-    const confirmToken = async () => {
-        const url = '/api/confirmToken'
-        const RESPONSE = await delayedApiAxios.get(url)
-        if (RESPONSE) {
-            const { role } = RESPONSE.data
-            if (role === 'admin') {
-                redirectTo('/admin/profil')
-            }
-            if (role === 'headTeacher') {
-                redirectTo('/dyrektor/profil')
-            }
-            if (role === 'teacher') {
-                redirectTo('/nauczyciel/profil')
-            }
-            if (role === 'student') {
-                redirectTo('/uczeń/profil')
-            }
-            setShouldChildrenAppear(true)
-        }
-    }
     useEffect(() => {
+        const confirmToken = async () => {
+            const url = '/api/confirmToken'
+            const RESPONSE = await delayedApiAxios.get(url)
+            if (RESPONSE) {
+                const { role } = RESPONSE.data
+                if (role === 'admin') {
+                    redirectTo('/admin/profil')
+                }
+                if (role === 'headTeacher') {
+                    redirectTo('/dyrektor/profil')
+                }
+                if (role === 'teacher') {
+                    redirectTo('/nauczyciel/profil')
+                }
+                if (role === 'student') {
+                    redirectTo('/uczeń/profil')
+                }
+            }
+        }
         confirmToken()
+        setTimeout(() => {
+            setShouldChildrenAppear(true)
+        }, 0)
     }, [])
-    useEffect(() => {
-        if (socket) {
-            socket.disconnect()
-            setSocket()
-        }
-    }, [socket])
+    // useEffect(() => {
+    //     if (socket) {
+    //         socket.disconnect()
+    //         setSocket()
+    //     }
+    // }, [socket])
     return (
         shouldChildrenAppear && (
             <GuestContainer blurred={shouldFeedbackHandlerAppear}>{children}</GuestContainer>

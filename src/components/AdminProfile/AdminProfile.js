@@ -9,7 +9,7 @@ import Menu from './styled/Menu'
 
 import Composed from './composed'
 
-import { apiAxios } from '@utils'
+import { apiAxios, redirectTo } from '@utils'
 
 const AdminProfileContainer = styled(Dashboard.Container)`
     height: 100vh;
@@ -34,13 +34,13 @@ const AdminProfile = ({ shouldMenuAppear }) => {
     return (
         <AdminProfileContainer withMenu={shouldMenuAppear}>
             <Composed.Menu>
-                <Menu.Option>Dodaj dyrektora</Menu.Option>
+                <Menu.Option onClick={() => redirectTo('/admin/dodawanie-dyrektora')}>
+                    Dodaj dyrektora
+                </Menu.Option>
             </Composed.Menu>
-            {email && (
-                <Dashboard.Header>
-                    Zalogowany jako <span>{email}</span>
-                </Dashboard.Header>
-            )}
+            <Dashboard.Header>
+                Zalogowany jako <span>{email}</span>
+            </Dashboard.Header>
         </AdminProfileContainer>
     )
 }

@@ -1,5 +1,5 @@
 const initialState = {
-    shouldMenuAppear: false
+    shouldMenuAppear: undefined
 }
 
 export default (state = initialState, { payload, type }) => {
