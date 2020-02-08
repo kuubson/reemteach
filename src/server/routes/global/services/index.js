@@ -1,5 +1,5 @@
-import confirmToken from './confirmToken'
-import logout from './logout'
+import * as confirmToken from './confirmToken'
+import * as logout from './logout'
 
 export default {
     confirmToken,

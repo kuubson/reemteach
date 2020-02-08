@@ -1,5 +1,5 @@
-import loginTeacher from './loginTeacher'
+import login from './login'
 
 export default {
-    loginTeacher
+    login
 }

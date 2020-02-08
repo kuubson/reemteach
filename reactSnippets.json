@@ -100,12 +100,17 @@
     "Express Post Route": {
         "prefix": "rr",
         "body": [
-            "import {Router} from 'express'",
+            "import { check } from 'express-validator'",
             "",
-            "export default Router().post('/${TM_FILENAME_BASE}', (req, res) => {",
-            "    const {${2}} = req.body",
-            "    ${3}",
-            "})",
+            "import {} from '@database'",
+            "",
+            "import { ApiError } from '@utils'",
+            "",
+            "const main = (req, res) => {}",
+            "",
+            "const validation = () => []",
+            "",
+            "export default () => main",
             ""
         ],
         "description": "Express Post Route"
@@ -113,12 +118,13 @@
     "Express Get Route": {
         "prefix": "r",
         "body": [
-            "import {Router} from 'express'",
+            "import {} from '@database'",
             "",
-            "export default Router().get('/${TM_FILENAME_BASE}', (req, res) => {",
-            "    const {${2}} = req.body",
-            "    ${3}",
-            "})",
+            "import { ApiError } from '@utils'",
+            "",
+            "const main = (req, res) => {}",
+            "",
+            "export default () => main",
             ""
         ],
         "description": "Express Get Route"
@@ -129,7 +135,7 @@
             "import { Model, DataTypes } from 'sequelize'",
             "import bcrypt from 'bcryptjs'",
             "",
-            "const { STRING, TEXT, BOOLEAN } = DataTypes",
+            "const { STRING, TEXT,BOOLEAN } = DataTypes",
             "",
             "export default sequelize => {",
             "    class ${TM_FILENAME_BASE} extends Model {}",

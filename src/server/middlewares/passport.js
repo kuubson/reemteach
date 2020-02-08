@@ -1,5 +1,7 @@
 import passportJwt from 'passport-jwt'
 
+import { Admin, HeadTeacher, Teacher, Student } from '@database'
+
 const JwtStrategy = passportJwt.Strategy
 const ExtractJwt = passportJwt.ExtractJwt
 
@@ -20,12 +22,66 @@ export default passport => {
             },
             async (data, done) => {
                 const { email, role } = data
-                if (role === 'headTeacher') {
-                    done(null, 'headTeacher')
+                if (role === 'admin') {
+                    try {
+                        const admin = await Admin.findOne({
+                            where: {
+                                email
+                            }
+                        })
+                        if (!admin) {
+                            done(null, false)
+                        } else {
+                            done(null, admin)
+                        }
+                    } catch (error) {
+                        next(error)
+                    }
+                } else if (role === 'headTeacher') {
+                    try {
+                        const headTeacher = await HeadTeacher.findOne({
+                            where: {
+                                email
+                            }
+                        })
+                        if (!headTeacher) {
+                            done(null, false)
+                        } else {
+                            done(null, headTeacher)
+                        }
+                    } catch (error) {
+                        next(error)
+                    }
                 } else if (role === 'teacher') {
-                    done(null, 'teacher')
+                    try {
+                        const teacher = await Teacher.findOne({
+                            where: {
+                                email
+                            }
+                        })
+                        if (!teacher) {
+                            done(null, false)
+                        } else {
+                            done(null, teacher)
+                        }
+                    } catch (error) {
+                        next(error)
+                    }
                 } else if (role === 'student') {
-                    done(null, 'student')
+                    try {
+                        const student = await Student.findOne({
+                            where: {
+                                email
+                            }
+                        })
+                        if (!student) {
+                            done(null, false)
+                        } else {
+                            done(null, student)
+                        }
+                    } catch (error) {
+                        next(error)
+                    }
                 } else {
                     done(null, false)
                 }

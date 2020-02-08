@@ -6,7 +6,7 @@ import { Student } from '@database'
 
 import { ApiError } from '@utils'
 
-const main = () => async (req, res) => {
+const main = async (req, res) => {
     const { email, password } = req.body
     const student = await Student.findOne({
         where: {
@@ -42,4 +42,4 @@ const validation = () => [
         .withMessage('Wprowadź hasło!')
 ]
 
-export default () => (validation(), main())
+export default () => (validation, main)

@@ -1,5 +1,5 @@
-import loginStudent from './loginStudent'
+import login from './login'
 
 export default {
-    loginStudent
+    login
 }

@@ -5,6 +5,7 @@ import { combineReducers } from 'redux'
 import loader from './loader'
 import feedbackHandler from './feedbackHandler'
 import socket from './socket'
+import menu from './menu'
 
 // const config = {
 //     key: 'root',
@@ -14,5 +15,6 @@ import socket from './socket'
 export default combineReducers({
     loader,
     feedbackHandler,
-    socket
+    socket,
+    menu
 })

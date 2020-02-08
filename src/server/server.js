@@ -20,15 +20,17 @@ routes(app)
 
 errorHandler(app)
 
-const buildPath = '../build'
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+
+const developmentMode = process.env.NODE_ENV === 'development'
+
+const buildPath = developmentMode ? '../../build' : '../build'
 
 app.use(express.static(path.resolve(__dirname, buildPath)))
 
 app.get('*', (_, res) => {
     res.sendFile(path.resolve(__dirname, buildPath, 'index.html'))
 })
-
-process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
 const port = process.env.PORT || 3001
 

@@ -3,14 +3,11 @@ import styled from 'styled-components/macro'
 
 const CloseButtonContainer = styled.span`
     color: white;
-    font-size: 20px;
+    font-size: 19px;
     cursor: pointer;
     position: absolute;
     top: 20px;
     right: 20px;
-    @media (max-width: 900px) {
-        font-size: 19px;
-    }
     @media (max-width: 500px) {
         font-size: 18px;
     }

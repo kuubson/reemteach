@@ -1,13 +1,15 @@
 import { Router } from 'express'
 
-import { checkValidationResult } from '@middlewares'
+import { authWithJwt, checkValidationResult } from '@middlewares'
 
-import { catchError } from '@utils'
+import { catchErrors } from '@utils'
 
 import Services from './services'
 
 const router = Router()
 
-router.post('/admin/login', checkValidationResult, catchError(Services.loginAdmin()))
+router.post('/admin/login', checkValidationResult, catchErrors(Services.login()))
+
+router.get('/admin/getProfile', authWithJwt, catchErrors(Services.getProfile()))
 
 export default router

@@ -1,6 +1,6 @@
 import { check } from 'express-validator'
 
-const main = (_, res) => {
+export default (_, res) => {
     res.clearCookie('token', {
         secure: !process.env.NODE_ENV === 'development',
         httpOnly: true,
@@ -10,10 +10,8 @@ const main = (_, res) => {
     })
 }
 
-const validation = () => [
+export const validation = () => [
     check('token')
         .not()
         .isEmpty()
 ]
-
-export default () => (validation, main)

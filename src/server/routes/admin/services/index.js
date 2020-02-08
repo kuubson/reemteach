@@ -1,5 +1,7 @@
-import loginAdmin from './loginAdmin'
+import login from './login'
+import getProfile from './getProfile'
 
 export default {
-    loginAdmin
+    login,
+    getProfile
 }
