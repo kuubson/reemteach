@@ -35,7 +35,7 @@ export default passport => {
                             done(null, admin)
                         }
                     } catch (error) {
-                        next(error)
+                        done(true, false)
                     }
                 } else if (role === 'headTeacher') {
                     try {
@@ -50,7 +50,7 @@ export default passport => {
                             done(null, headTeacher)
                         }
                     } catch (error) {
-                        next(error)
+                        done(true, false)
                     }
                 } else if (role === 'teacher') {
                     try {
@@ -65,7 +65,7 @@ export default passport => {
                             done(null, teacher)
                         }
                     } catch (error) {
-                        next(error)
+                        done(true, false)
                     }
                 } else if (role === 'student') {
                     try {
@@ -80,7 +80,7 @@ export default passport => {
                             done(null, student)
                         }
                     } catch (error) {
-                        next(error)
+                        done(true, false)
                     }
                 } else {
                     done(null, false)
