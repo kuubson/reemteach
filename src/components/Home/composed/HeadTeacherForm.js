@@ -30,7 +30,7 @@ const HeadTeacherForm = ({ onClick, shouldSlideIn }) => {
         setEmailError('')
         setPasswordError('')
         let isValidated = true
-        if (!validator.isEmail(email) || !email) {
+        if (!email || !validator.isEmail(email)) {
             setEmailError('Wprowadź poprawny adres e-mail!')
             isValidated = false
         }
@@ -43,13 +43,29 @@ const HeadTeacherForm = ({ onClick, shouldSlideIn }) => {
     const handleSubmit = async e => {
         e.preventDefault()
         if (validate()) {
-            const url = '/api/headTeacher/login'
-            const response = await apiAxios.post(url, {
-                email,
-                password
-            })
-            if (response) {
-                redirectTo('/headTeacher/profil')
+            try {
+                const url = '/api/headTeacher/login'
+                const response = await apiAxios.post(url, {
+                    email,
+                    password
+                })
+                if (response) {
+                    redirectTo('/headTeacher/profil')
+                }
+            } catch (error) {
+                if (error.response) {
+                    const { status, validationResults } = error.response.data
+                    if (status === 422) {
+                        validationResults.forEach(({ parameter, error }) => {
+                            if (parameter === 'email') {
+                                setEmailError(error)
+                            }
+                            if (parameter === 'password') {
+                                setPasswordError(error)
+                            }
+                        })
+                    }
+                }
             }
         }
     }
@@ -57,14 +73,13 @@ const HeadTeacherForm = ({ onClick, shouldSlideIn }) => {
         <HeadTeacherFormContainer shouldSlideIn={shouldSlideIn}>
             <Form.FormContainer>
                 <Form.CloseButton onClick={onClick} />
-                <Form.Form onSubmit={handleSubmit} noValidate>
+                <Form.Form onSubmit={handleSubmit}>
                     <Form.HeaderContainer>
                         <Form.Header>Dyrektor</Form.Header>
                         <Form.Annotation>Zaloguj się żeby zarządzać swoją szkołą</Form.Annotation>
                     </Form.HeaderContainer>
                     <Composed.Input
                         id="headTeacherEmail"
-                        type="email"
                         label="E-mail"
                         value={email}
                         placeholder="Wprowadź adres e-mail..."
@@ -74,12 +89,12 @@ const HeadTeacherForm = ({ onClick, shouldSlideIn }) => {
                     />
                     <Composed.Input
                         id="headTeacherPassword"
-                        type="password"
                         label="Hasło"
                         value={password}
                         placeholder="Wprowadź hasło..."
                         error={passwordError}
                         onChange={setPassword}
+                        secure
                     />
                     <Form.Submit>Zaloguj się</Form.Submit>
                 </Form.Form>

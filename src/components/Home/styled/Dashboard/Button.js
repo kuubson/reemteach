@@ -10,7 +10,7 @@ export default styled.button`
     background: black;
     color: white;
     font-size: 10px;
-    transition: transform 0.5s;
+    transition: transform 0.5s ease-in-out;
     :hover {
         transform: scale(1.03);
     }

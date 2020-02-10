@@ -5,8 +5,6 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { ThemeProvider } from 'styled-components/macro'
 
-import * as serviceWorker from './serviceWorker'
-
 import { store, persistor } from '@redux'
 
 import theme from '@styles/theme'
@@ -16,6 +14,8 @@ import '@styles/index.scss'
 import App from '@components/App'
 
 import { history } from '@utils'
+
+import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
     <Router history={history}>
