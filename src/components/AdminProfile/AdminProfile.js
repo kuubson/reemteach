@@ -42,9 +42,9 @@ const AdminProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     Lista dyrektorów
                 </Menu.Option>
                 <Menu.Option
-                    onClick={() => closeMenuOnClick(() => redirectTo('/admin/dodawanie-dyrektora'))}
+                    onClick={() => closeMenuOnClick(() => redirectTo('/admin/tworzenie-dyrektora'))}
                 >
-                    Dodaj dyrektora
+                    Utwórz dyrektora
                 </Menu.Option>
             </Composed.Menu>
             {!isLoading && (

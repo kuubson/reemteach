@@ -43,9 +43,9 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     Strona główna
                 </APMenu.Option>
                 <APMenu.Option
-                    onClick={() => closeMenuOnClick(() => redirectTo('/admin/dodawanie-dyrektora'))}
+                    onClick={() => closeMenuOnClick(() => redirectTo('/admin/tworzenie-dyrektora'))}
                 >
-                    Dodaj dyrektora
+                    Utwórz dyrektora
                 </APMenu.Option>
             </APComposed.Menu>
             {!isLoading && (

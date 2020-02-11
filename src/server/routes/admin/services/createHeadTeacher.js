@@ -53,10 +53,8 @@ export default async (req, res, next) => {
             to: email,
             subject: `Konto dyrektorskie w aplikacji Reemteach`,
             html: `
-                    <h2>
-                        Administrator utworzył Twoje konto dyrektorskie!
-                        Zaloguj się, ustaw nowe hasło i utwórz swój oddział!
-                    </h2>
+                    <h2>Administrator utworzył Twoje konto dyrektorskie!</h2>
+                    <h3>Zaloguj się, ustaw nowe hasło i utwórz szkołę!</h3>
                     <p>E-mail: ${email}</p>
                     <p>Hasło: ${password}</p>
         		`

@@ -14,8 +14,8 @@ export default (req, res, next) => {
                 errorMessage: 'Wystąpił niespodziewany problem przy autoryzacji Twojego konta!'
             })
     }
-    passport.authenticate('jwt', { session: false }, (error, user) => {
-        if (error || !user) {
+    passport.authenticate('jwt', { session: false }, (error, { user, role }) => {
+        if (error || !user || role !== req.path.split('/')[1]) {
             rejectUnauthorizedUser()
         } else {
             req.user = user

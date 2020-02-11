@@ -5,7 +5,7 @@ import io from 'socket.io-client'
 import { compose } from 'redux'
 import { withSocket, withFeedbackHandler } from '@hoc'
 
-import { delayedApiAxios, redirectTo } from '@utils'
+import { delayedApiAxios, redirectTo, setShouldMenuAppear } from '@utils'
 
 const UserContainer = styled.div`
     ${({ blurred }) => {
@@ -32,7 +32,11 @@ const User = ({
             if (RESPONSE) {
                 const { role } = RESPONSE.data
                 if (role === 'guest' || role !== roleToConfirm) {
-                    redirectTo('/')
+                    setShouldMenuAppear(false)
+                    setTimeout(() => {
+                        setShouldMenuAppear()
+                        redirectTo('/')
+                    }, 800)
                 }
             }
         }

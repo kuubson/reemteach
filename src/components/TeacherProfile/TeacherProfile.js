@@ -12,7 +12,7 @@ const TeacherProfileContainer = styled.section`
 `
 
 const TeacherProfile = () => {
-    return <TeacherProfileContainer>Teacher</TeacherProfileContainer>
+    return <TeacherProfileContainer>Nauczyciel</TeacherProfileContainer>
 }
 
 export default TeacherProfile

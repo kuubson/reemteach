@@ -12,4 +12,7 @@ export default styled.h1`
     @media (max-width: 700px) {
         font-size: 13.5px;
     }
+    @media (max-width: 500px) {
+        font-size: 12.5px;
+    }
 `

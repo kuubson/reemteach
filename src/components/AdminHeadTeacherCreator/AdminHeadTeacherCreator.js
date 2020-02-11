@@ -72,7 +72,7 @@ const AdminHeadTeacherCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     Lista dyrektorów
                 </APMenu.Option>
             </APComposed.Menu>
-            <APDashboard.Header>Dodaj nowego dyrektora do systemu</APDashboard.Header>
+            <APDashboard.Header>Utwórz nowego dyrektora w systemie</APDashboard.Header>
             <Form.Form onSubmit={handleSubmit}>
                 <Composed.Input
                     id="headTeacherEmail"

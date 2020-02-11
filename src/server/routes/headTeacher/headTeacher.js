@@ -14,4 +14,6 @@ router.post(
     Services.login.default
 )
 
+router.get('/headTeacher/getProfile', authWithJwt, Services.getProfile.default)
+
 export default router

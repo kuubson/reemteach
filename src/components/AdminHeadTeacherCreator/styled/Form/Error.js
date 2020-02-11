@@ -3,6 +3,7 @@ import styled from 'styled-components/macro'
 export default styled.p`
     text-align: left;
     margin-top: 8px;
+    font-weight: 600;
     color: red;
     text-transform: initial;
     font-size: 11px;

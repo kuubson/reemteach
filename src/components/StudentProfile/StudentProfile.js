@@ -12,7 +12,7 @@ const StudentProfileContainer = styled.section`
 `
 
 const StudentProfile = () => {
-    return <StudentProfileContainer>Student</StudentProfileContainer>
+    return <StudentProfileContainer>Uczeń</StudentProfileContainer>
 }
 
 export default StudentProfile

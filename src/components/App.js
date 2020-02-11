@@ -21,6 +21,7 @@ import AdminHeadTeacherCreator from './AdminHeadTeacherCreator/AdminHeadTeacherC
 import AdminHeadTeachersList from './AdminHeadTeachersList/AdminHeadTeachersList'
 
 import HeadTeacherProfile from './HeadTeacherProfile/HeadTeacherProfile'
+import HeadTeacherSchoolCreator from './HeadTeacherSchoolCreator/HeadTeacherSchoolCreator'
 
 import TeacherProfile from './TeacherProfile/TeacherProfile'
 
@@ -54,7 +55,7 @@ const App = ({ location, isLoading, shouldFeedbackHandlerAppear }) => {
             )
         },
         {
-            path: '/admin/dodawanie-dyrektora',
+            path: '/admin/tworzenie-dyrektora',
             order: 3,
             render: () => (
                 <User role="admin">
@@ -77,6 +78,15 @@ const App = ({ location, isLoading, shouldFeedbackHandlerAppear }) => {
             render: () => (
                 <User role="headTeacher">
                     <HeadTeacherProfile />
+                </User>
+            )
+        },
+        {
+            path: '/dyrektor/tworzenie-szkoły',
+            order: 3,
+            render: () => (
+                <User role="headTeacher">
+                    <HeadTeacherSchoolCreator />
                 </User>
             )
         },

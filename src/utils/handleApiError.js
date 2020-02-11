@@ -1,4 +1,4 @@
-import { setFeedbackData, redirectTo } from '@utils'
+import { setFeedbackData, redirectTo, setShouldMenuAppear } from '@utils'
 
 const reloadWindow = () => window.location.reload()
 
@@ -7,7 +7,13 @@ export default error => {
     if (error.response) {
         const { status, errorMessage } = error.response.data
         if (status === 401) {
-            setFeedbackData(errorMessage, 'Zaloguj się ponownie', () => redirectTo('/'))
+            setFeedbackData(errorMessage, 'Zaloguj się ponownie', () => {
+                setShouldMenuAppear(false)
+                setTimeout(() => {
+                    setShouldMenuAppear()
+                    redirectTo('/')
+                }, 800)
+            })
         } else {
             if (errorMessage) {
                 setFeedbackData(errorMessage, 'Ok')
