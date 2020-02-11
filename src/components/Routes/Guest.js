@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withFeedbackHandler, withSocket } from '@hoc'
+import { withSocket, withFeedbackHandler } from '@hoc'
 
 import { delayedApiAxios, redirectTo } from '@utils'
 
@@ -16,7 +16,7 @@ const GuestContainer = styled.div`
     }}
 `
 
-const Guest = ({ children, shouldFeedbackHandlerAppear, socket, setSocket }) => {
+const Guest = ({ children, setSocket, socket, shouldFeedbackHandlerAppear }) => {
     const [shouldChildrenAppear, setShouldChildrenAppear] = useState(false)
     useEffect(() => {
         const confirmToken = async () => {
@@ -56,4 +56,4 @@ const Guest = ({ children, shouldFeedbackHandlerAppear, socket, setSocket }) => 
     )
 }
 
-export default compose(withFeedbackHandler, withSocket)(Guest)
+export default compose(withSocket, withFeedbackHandler)(Guest)

@@ -55,7 +55,7 @@ const StudentForm = ({ onClick, shouldSlideIn }) => {
                     password
                 })
                 if (response) {
-                    redirectTo('/student/profil')
+                    redirectTo('/uczeń/profil')
                 }
             } catch (error) {
                 if (error.response) {

@@ -6,9 +6,21 @@ export default Component => {
         const dispatch = useDispatch()
         const { shouldMenuAppear } = useSelector(state => state.menu)
         const setShouldMenuAppear = payload => dispatch({ type: 'setShouldMenuAppear', payload })
+        const closeMenuOnClick = callback => {
+            if (window.innerWidth <= 500) {
+                setShouldMenuAppear(false)
+                setTimeout(() => {
+                    setShouldMenuAppear()
+                    callback()
+                }, 800)
+            } else {
+                callback()
+            }
+        }
         const features = {
             shouldMenuAppear,
-            setShouldMenuAppear
+            setShouldMenuAppear,
+            closeMenuOnClick
         }
         return <Component {...props} {...features} />
     }

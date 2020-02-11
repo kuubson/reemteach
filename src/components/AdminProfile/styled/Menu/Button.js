@@ -7,7 +7,7 @@ export default styled.button`
     white-space: nowrap;
     background: black;
     color: white;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 10px;
     opacity: ${({ shown }) => (shown ? 1 : 0)};
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;

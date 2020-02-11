@@ -1,4 +1,4 @@
-export default (req, res, next) => {
+export default async (req, res, next) => {
     try {
         const { email } = req.user
         res.send({

@@ -34,4 +34,4 @@ app.get('*', (_, res) => {
 
 const port = process.env.PORT || 3001
 
-server.listen(port, () => console.log(`The server has been successfully started on port ${port}`))
+server.listen(port, () => console.log(`The server has been successfully started on port ${port}!`))

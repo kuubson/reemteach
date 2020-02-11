@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
+import validator from 'validator'
 
 import { compose } from 'redux'
 import { withMenu } from '@hoc'
@@ -11,7 +12,7 @@ import Form from './styled/Form'
 import APComposed from '@components/AdminProfile/composed'
 import Composed from './composed'
 
-import { redirectTo } from '@utils'
+import { apiAxios, setFeedbackData, redirectTo } from '@utils'
 
 const AdminHeadTeacherCreatorContainer = styled(APDashboard.Container)`
     height: 100vh;
@@ -21,18 +22,58 @@ const AdminHeadTeacherCreatorContainer = styled(APDashboard.Container)`
     flex-direction: column;
 `
 
-const AdminHeadTeacherCreator = ({ shouldMenuAppear }) => {
+const AdminHeadTeacherCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
     const [email, setEmail] = useState('')
     const [emailError, setEmailError] = useState('')
+    const validate = () => {
+        setEmailError('')
+        let isValidated = true
+        if (!email || !validator.isEmail(email)) {
+            setEmailError('Wprowadź poprawny adres e-mail!')
+            isValidated = false
+        }
+        return isValidated
+    }
+    const handleSubmit = async e => {
+        e.preventDefault()
+        if (validate()) {
+            try {
+                const url = '/api/admin/createHeadTeacher'
+                const response = await apiAxios.post(url, {
+                    email
+                })
+                if (response) {
+                    const { successMessage } = response.data
+                    setFeedbackData(successMessage, 'Ok')
+                }
+            } catch (error) {
+                if (error.response) {
+                    const { status, validationResults } = error.response.data
+                    if (status === 422) {
+                        validationResults.forEach(({ parameter, error }) => {
+                            if (parameter === 'email') {
+                                setEmailError(error)
+                            }
+                        })
+                    }
+                }
+            }
+        }
+    }
     return (
         <AdminHeadTeacherCreatorContainer withMenu={shouldMenuAppear}>
             <APComposed.Menu>
-                <APMenu.Option onClick={() => redirectTo('/admin/profil')}>
+                <APMenu.Option onClick={() => closeMenuOnClick(() => redirectTo('/admin/profil'))}>
                     Strona główna
+                </APMenu.Option>
+                <APMenu.Option
+                    onClick={() => closeMenuOnClick(() => redirectTo('/admin/lista-dyrektorów'))}
+                >
+                    Lista dyrektorów
                 </APMenu.Option>
             </APComposed.Menu>
             <APDashboard.Header>Dodaj nowego dyrektora do systemu</APDashboard.Header>
-            <Form.Form>
+            <Form.Form onSubmit={handleSubmit}>
                 <Composed.Input
                     id="headTeacherEmail"
                     label="E-mail"
@@ -42,7 +83,7 @@ const AdminHeadTeacherCreator = ({ shouldMenuAppear }) => {
                     onChange={setEmail}
                     trim
                 />
-                <Form.Submit>Dodaj dyrektora</Form.Submit>
+                <Form.Submit>Utwórz dyrektora</Form.Submit>
             </Form.Form>
         </AdminHeadTeacherCreatorContainer>
     )

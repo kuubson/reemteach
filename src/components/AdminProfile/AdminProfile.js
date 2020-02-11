@@ -9,7 +9,7 @@ import Menu from './styled/Menu'
 
 import Composed from './composed'
 
-import { apiAxios, redirectTo } from '@utils'
+import { delayedApiAxios, redirectTo } from '@utils'
 
 const AdminProfileContainer = styled(Dashboard.Container)`
     height: 100vh;
@@ -18,13 +18,15 @@ const AdminProfileContainer = styled(Dashboard.Container)`
     align-items: center;
 `
 
-const AdminProfile = ({ shouldMenuAppear }) => {
+const AdminProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
+    const [isLoading, setIsLoading] = useState(true)
     const [email, setEmail] = useState('')
     useEffect(() => {
         const getProfile = async () => {
             const url = '/api/admin/getProfile'
-            const response = await apiAxios.get(url)
+            const response = await delayedApiAxios.get(url)
             if (response) {
+                setIsLoading(false)
                 const { email } = response.data
                 setEmail(email)
             }
@@ -34,13 +36,22 @@ const AdminProfile = ({ shouldMenuAppear }) => {
     return (
         <AdminProfileContainer withMenu={shouldMenuAppear}>
             <Composed.Menu>
-                <Menu.Option onClick={() => redirectTo('/admin/dodawanie-dyrektora')}>
+                <Menu.Option
+                    onClick={() => closeMenuOnClick(() => redirectTo('/admin/lista-dyrektorów'))}
+                >
+                    Lista dyrektorów
+                </Menu.Option>
+                <Menu.Option
+                    onClick={() => closeMenuOnClick(() => redirectTo('/admin/dodawanie-dyrektora'))}
+                >
                     Dodaj dyrektora
                 </Menu.Option>
             </Composed.Menu>
-            <Dashboard.Header>
-                Zalogowany jako <span>{email}</span>
-            </Dashboard.Header>
+            {!isLoading && (
+                <Dashboard.Header>
+                    Zalogowany jako <span>{email}</span>
+                </Dashboard.Header>
+            )}
         </AdminProfileContainer>
     )
 }

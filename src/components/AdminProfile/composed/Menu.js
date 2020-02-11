@@ -8,7 +8,7 @@ import StyledMenu from '../styled/Menu'
 
 import HForm from '@components/Home/styled/Form'
 
-import { apiAxios, redirectTo } from '@utils'
+import { delayedApiAxios, redirectTo } from '@utils'
 
 const MenuContainer = styled.div`
     width: 350px;
@@ -37,7 +37,7 @@ const MenuContainer = styled.div`
 const Menu = ({ children, shouldMenuAppear, setShouldMenuAppear }) => {
     const logout = async () => {
         const url = '/api/logout'
-        const response = await apiAxios.get(url)
+        const response = await delayedApiAxios.get(url)
         if (response) {
             setShouldMenuAppear(false)
             setTimeout(() => {

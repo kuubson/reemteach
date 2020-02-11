@@ -10,13 +10,13 @@ import checkValidationResult from './checkValidationResult'
 import rateLimiter from './rateLimiter'
 import authWithJwt from './authWithJwt'
 
-import passportjs from './passport'
-import socketio from '../socketio/socketio'
+import initializePassport from './passport'
+import initializeSocketio from '../socketio/socketio'
 
-passportjs(passport)
+initializePassport(passport)
 
 const initializeMiddlewares = (app, server) => {
-    socketio(io(server))
+    initializeSocketio(io(server))
     app.use(express.json())
     app.use(express.urlencoded({ extended: true }))
     app.use(passport.initialize())

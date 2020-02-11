@@ -7,17 +7,24 @@ const connection = new Sequelize(DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASS
     dialect: 'mysql'
 })
 
+const Authentication = connection.import('./models/Authentication')
 const Admin = connection.import('./models/Admin')
 const HeadTeacher = connection.import('./models/HeadTeacher')
 const Teacher = connection.import('./models/Teacher')
 const Student = connection.import('./models/Student')
 
+Authentication.hasMany(Teacher)
+Authentication.hasMany(Student)
+
+Teacher.belongsTo(Authentication)
+Student.belongsTo(Authentication)
+
 const initializeDatabaseConnection = async () => {
     try {
-        // await connection.sync({alter:true})
+        // await connection.sync({ alter: true })
         // await connection.sync({ force: true })
         await connection.sync()
-        console.log('Successfully connected to the database!')
+        console.log('The database connection has been successfully established!')
     } catch (error) {
         console.log({
             error,

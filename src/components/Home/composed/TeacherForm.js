@@ -55,7 +55,7 @@ const TeacherForm = ({ onClick, shouldSlideIn }) => {
                     password
                 })
                 if (response) {
-                    redirectTo('/teacher/profil')
+                    redirectTo('/nauczyciel/profil')
                 }
             } catch (error) {
                 if (error.response) {

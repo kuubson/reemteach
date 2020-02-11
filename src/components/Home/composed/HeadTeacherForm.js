@@ -50,7 +50,7 @@ const HeadTeacherForm = ({ onClick, shouldSlideIn }) => {
                     password
                 })
                 if (response) {
-                    redirectTo('/headTeacher/profil')
+                    redirectTo('/dyrektor/profil')
                 }
             } catch (error) {
                 if (error.response) {

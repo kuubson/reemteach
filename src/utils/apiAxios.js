@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { handleApiError, setIsLoading } from '@utils'
+import { setIsLoading, handleApiError } from '@utils'
 
 const apiAxios = axios.create()
 

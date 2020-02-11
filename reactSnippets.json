@@ -16,7 +16,7 @@
         ],
         "description": "Custom Hook"
     },
-    "Auto Imports in index.js": {
+    "Auto Imports React": {
         "prefix": "aa",
         "body": [
             "const req = require.context('./', false, /^\\.\\/(?!index).*\\.js$/)",
@@ -26,7 +26,22 @@
             "})",
             ""
         ],
-        "description": "Auto Imports in index.js"
+        "description": "Auto Imports React"
+    },
+    "Auto Imports Node.js": {
+        "prefix": "a",
+        "body": [
+            "import fs from 'fs'",
+            "import path from 'path'",
+            "",
+            "fs.readdirSync(__dirname)",
+            "    .filter(file => file !== 'index.js')",
+            "    .forEach(",
+            "        file => (module.exports[file.replace('.js', '')] = require(path.resolve(__dirname, file)))",
+            "    )",
+            ""
+        ],
+        "description": "Auto Imports Node.js"
     },
     "Main Component": {
         "prefix": "sss",
@@ -62,12 +77,18 @@
     },
     "Hook useState": {
         "prefix": "dd",
-        "body": ["const [${1},${2}set${1}] = useState()"],
+        "body": [
+            "const [${1},${2}set${1}] = useState()"
+        ],
         "description": "Hook useState"
     },
     "Hook useEffect": {
         "prefix": "d",
-        "body": ["useEffect(() => {", "${1}", "}, [])"],
+        "body": [
+            "useEffect(() => {",
+            "${1}",
+            "}, [])"
+        ],
         "description": "Hook useState"
     },
     "Higher Order Component": {
@@ -94,11 +115,14 @@
     },
     "Import Higher Order Component": {
         "prefix": "c",
-        "body": ["import { compose } from 'redux'", "import {${1}} from '@hoc'"],
+        "body": [
+            "import { compose } from 'redux'",
+            "import {${1}} from '@hoc'"
+        ],
         "description": "Import Higher Order Component"
     },
     "Express Post Route": {
-        "prefix": "rr",
+        "prefix": "r",
         "body": [
             "import { check } from 'express-validator'",
             "",
@@ -106,30 +130,20 @@
             "",
             "import { ApiError } from '@utils'",
             "",
-            "const main = (req, res) => {}",
+            "export default async (req, res, next) => {",
+            "    try {",
+            "        ${1}",
+            "    } catch (error) {",
+            "        next(error)",
+            "    }",
+            "}",
             "",
-            "const validation = () => []",
-            "",
-            "export default () => main",
+            "export const validation = () => []",
             ""
         ],
         "description": "Express Post Route"
-    },
-    "Express Get Route": {
-        "prefix": "r",
-        "body": [
-            "import {} from '@database'",
-            "",
-            "import { ApiError } from '@utils'",
-            "",
-            "const main = (req, res) => {}",
-            "",
-            "export default () => main",
-            ""
-        ],
-        "description": "Express Get Route"
-    },
-    "Sequelize Model": {
+    }
+	"Sequelize Model": {
         "prefix": "ss",
         "body": [
             "import { Model, DataTypes } from 'sequelize'",

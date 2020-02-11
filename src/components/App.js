@@ -6,7 +6,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 import { compose } from 'redux'
-import { withLoader, withFeedbackHandler, withRouter } from '@hoc'
+import { withRouter, withLoader, withFeedbackHandler } from '@hoc'
 
 import Guest from './Routes/Guest'
 import User from './Routes/User'
@@ -18,6 +18,7 @@ import Home from './Home/Home'
 
 import AdminProfile from './AdminProfile/AdminProfile'
 import AdminHeadTeacherCreator from './AdminHeadTeacherCreator/AdminHeadTeacherCreator'
+import AdminHeadTeachersList from './AdminHeadTeachersList/AdminHeadTeachersList'
 
 import HeadTeacherProfile from './HeadTeacherProfile/HeadTeacherProfile'
 
@@ -31,7 +32,7 @@ setConfig({
 
 const AppContainer = styled.main``
 
-const App = ({ isLoading, shouldFeedbackHandlerAppear, location }) => {
+const App = ({ location, isLoading, shouldFeedbackHandlerAppear }) => {
     const routes = [
         {
             path: '/',
@@ -62,7 +63,16 @@ const App = ({ isLoading, shouldFeedbackHandlerAppear, location }) => {
             )
         },
         {
-            path: '/headTeacher/profil',
+            path: '/admin/lista-dyrektorów',
+            order: 4,
+            render: () => (
+                <User role="admin">
+                    <AdminHeadTeachersList />
+                </User>
+            )
+        },
+        {
+            path: '/dyrektor/profil',
             order: 2,
             render: () => (
                 <User role="headTeacher">
@@ -71,7 +81,7 @@ const App = ({ isLoading, shouldFeedbackHandlerAppear, location }) => {
             )
         },
         {
-            path: '/teacher/profil',
+            path: '/nauczyciel/profil',
             order: 2,
             render: () => (
                 <User role="teacher">
@@ -80,7 +90,7 @@ const App = ({ isLoading, shouldFeedbackHandlerAppear, location }) => {
             )
         },
         {
-            path: '/student/profil',
+            path: '/uczeń/profil',
             order: 2,
             render: () => (
                 <User role="student">
@@ -151,5 +161,5 @@ const App = ({ isLoading, shouldFeedbackHandlerAppear, location }) => {
 }
 
 export default process.env.NODE_ENV === 'development'
-    ? compose(withLoader, withFeedbackHandler, withRouter)(hot(App))
-    : compose(withLoader, withFeedbackHandler, withRouter)(App)
+    ? compose(withRouter, withLoader, withFeedbackHandler)(hot(App))
+    : compose(withRouter, withLoader, withFeedbackHandler)(App)

@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components/macro'
 import io from 'socket.io-client'
 
 import { compose } from 'redux'
-import { withFeedbackHandler, withSocket } from '@hoc'
+import { withSocket, withFeedbackHandler } from '@hoc'
 
 import { delayedApiAxios, redirectTo } from '@utils'
 
@@ -19,9 +19,9 @@ const UserContainer = styled.div`
 
 const User = ({
     children,
-    shouldFeedbackHandlerAppear,
-    socket,
     setSocket,
+    socket,
+    shouldFeedbackHandlerAppear,
     role: roleToConfirm
 }) => {
     const [shouldChildrenAppear, setShouldChildrenAppear] = useState(false)
@@ -53,4 +53,4 @@ const User = ({
     )
 }
 
-export default compose(withFeedbackHandler, withSocket)(User)
+export default compose(withSocket, withFeedbackHandler)(User)
