@@ -231,7 +231,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     )}
                     {isActivated && (
                         <>
-                            <APDashboard.Header>Twój profil</APDashboard.Header>
+                            <APDashboard.Header>Dane twojego profilu:</APDashboard.Header>
                             <Detail.DetailsContainer>
                                 <Composed.Detail label="Stanowisko:" value="Dyrektor" />
                                 <Composed.Detail label="Imię:" value={name} />

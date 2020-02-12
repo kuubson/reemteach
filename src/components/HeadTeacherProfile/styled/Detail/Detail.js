@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 
 export default styled.p`
-    margin-top: 8px;
+    margin-top: 12px;
     font-size: 15px;
     text-transform: initial;
     @media (max-width: 900px) {

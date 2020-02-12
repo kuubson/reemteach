@@ -4,7 +4,7 @@ import styled from 'styled-components/macro'
 import Form from '../styled/Form'
 
 const InputContainer = styled.div`
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     :last-of-type {
         margin-bottom: 0px;
     }
