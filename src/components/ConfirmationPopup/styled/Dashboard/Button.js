@@ -2,7 +2,7 @@ import styled from 'styled-components/macro'
 
 export default styled.button`
     color: white;
-    margin: 80px 15px 0px 15px;
+    margin: 0px 15px;
     padding: 15px 30px;
     font-size: 11.5px;
     border-radius: 10px;
@@ -12,5 +12,6 @@ export default styled.button`
     }
     @media (max-width: 500px) {
         font-size: 8.5px;
+        margin: 0px 12px;
     }
 `

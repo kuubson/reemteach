@@ -12,7 +12,13 @@ import HeadTeacher from './styled/HeadTeacher'
 import APComposed from '@components/AdminProfile/composed'
 import HTPComposed from '@components/HeadTeacherProfile/composed'
 
-import { delayedApiAxios, setFeedbackData, setConfirmationPopupData, redirectTo } from '@utils'
+import {
+    apiAxios,
+    delayedApiAxios,
+    setFeedbackData,
+    setConfirmationPopupData,
+    redirectTo
+} from '@utils'
 
 const AdminHeadTeachersListContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -44,13 +50,14 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
             'Nie',
             async () => {
                 const url = '/api/admin/removeHeadTeacher'
-                const response = await delayedApiAxios.post(url, {
+                const response = await apiAxios.post(url, {
                     id,
                     email
                 })
                 if (response) {
                     const { successMessage } = response.data
                     setFeedbackData(successMessage, 'Ok')
+                    setHeadTeachers(headTeachers.filter(headTeacher => headTeacher.id !== id))
                 }
             }
         )

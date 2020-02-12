@@ -33,7 +33,7 @@ const FeedbackHandler = ({
     }
     return (
         <FeedbackHandlerContainer>
-            <Dashboard.Text>{message}</Dashboard.Text>
+            <Dashboard.Message>{message}</Dashboard.Message>
             <Dashboard.Button onClick={closeFeedbackHandler}>{buttonText}</Dashboard.Button>
         </FeedbackHandlerContainer>
     )
