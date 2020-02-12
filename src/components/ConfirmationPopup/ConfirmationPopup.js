@@ -21,8 +21,8 @@ const ConfirmationPopupContainer = styled.div`
 `
 
 const ConfirmationPopup = ({
-    setShouldConfirmationPopupAppear,
-    confirmationPopupData: { message, confirmationButtonText, rejectionButtonText, callback }
+    confirmationPopupData: { message, confirmationButtonText, rejectionButtonText, callback },
+    setShouldConfirmationPopupAppear
 }) => {
     return (
         <ConfirmationPopupContainer>

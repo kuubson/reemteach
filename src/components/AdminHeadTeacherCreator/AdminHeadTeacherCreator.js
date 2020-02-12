@@ -12,7 +12,7 @@ import Form from './styled/Form'
 import APComposed from '@components/AdminProfile/composed'
 import Composed from './composed'
 
-import { apiAxios, setFeedbackData, redirectTo } from '@utils'
+import { apiAxios, redirectTo, setFeedbackData } from '@utils'
 
 const AdminHeadTeacherCreatorContainer = styled(APDashboard.Container)`
     height: 100vh;

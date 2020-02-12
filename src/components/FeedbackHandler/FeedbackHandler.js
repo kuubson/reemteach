@@ -22,8 +22,8 @@ const FeedbackHandlerContainer = styled.div`
 `
 
 const FeedbackHandler = ({
-    setShouldFeedbackHandlerAppear,
-    feedbackHandlerData: { message, buttonText, callback }
+    feedbackHandlerData: { message, buttonText, callback },
+    setShouldFeedbackHandlerAppear
 }) => {
     const closeFeedbackHandler = () => {
         if (typeof callback === 'function') {

@@ -6,7 +6,7 @@ import { detectSanitization } from '@utils'
 export default async (req, res, next) => {
     try {
         const { name, surname, age, password } = req.body
-        req.user.update({
+        await req.user.update({
             name,
             surname,
             age,

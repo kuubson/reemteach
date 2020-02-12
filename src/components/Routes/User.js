@@ -19,10 +19,10 @@ const UserContainer = styled.div`
 
 const User = ({
     children,
+    role: roleToConfirm,
     socket,
     setSocket,
-    shouldFeedbackHandlerAppear,
-    role: roleToConfirm
+    shouldFeedbackHandlerAppear
 }) => {
     const [shouldChildrenAppear, setShouldChildrenAppear] = useState(false)
     useEffect(() => {

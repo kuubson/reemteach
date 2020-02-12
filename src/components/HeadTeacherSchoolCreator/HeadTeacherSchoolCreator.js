@@ -11,7 +11,7 @@ import AHDCForm from '@components/AdminHeadTeacherCreator/styled/Form'
 import APComposed from '@components/AdminProfile/composed'
 import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 
-import { apiAxios, setFeedbackData, redirectTo } from '@utils'
+import { apiAxios, redirectTo, setFeedbackData } from '@utils'
 
 const HeadTeacherSchoolCreatorContainer = styled(APDashboard.Container)`
     min-height: 100vh;
