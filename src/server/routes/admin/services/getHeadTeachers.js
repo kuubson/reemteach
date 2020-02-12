@@ -13,7 +13,10 @@ export default async (_, res, next) => {
                 email,
                 name,
                 surname,
-                age
+                age,
+                nameError: '',
+                surnameError: '',
+                ageError: ''
             }
         })
         res.send({

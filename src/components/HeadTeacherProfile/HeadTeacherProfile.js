@@ -53,7 +53,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
         }
         getProfile()
     }, [])
-    const validate = () => {
+    const validate = updatingProfile => {
         setNameError('')
         setSurnameError('')
         setAgeError('')
@@ -84,42 +84,44 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
             default:
                 setAgeError('')
         }
-        const hasLowerCaseLetters = /^(?=.*[a-z])/
-        const hasUpperCaseLetters = /^(?=.*[A-Z])/
-        const hasNumbers = /^(?=.*[0-9])/
-        switch (true) {
-            case !password:
-                setPasswordError('Wprowadź hasło!')
+        if (updatingProfile) {
+            const hasLowerCaseLetters = /^(?=.*[a-z])/
+            const hasUpperCaseLetters = /^(?=.*[A-Z])/
+            const hasNumbers = /^(?=.*[0-9])/
+            switch (true) {
+                case !password:
+                    setPasswordError('Wprowadź hasło!')
+                    isValidated = false
+                    break
+                case password.length < 10:
+                    setPasswordError('Hasło musi zawierać co najmniej 10 znaków!')
+                    isValidated = false
+                    break
+                case !password.match(hasLowerCaseLetters):
+                    setPasswordError('Hasło musi zawierać małe litery!')
+                    isValidated = false
+                    break
+                case !password.match(hasUpperCaseLetters):
+                    setPasswordError('Hasło musi zawierać duże litery!')
+                    isValidated = false
+                    break
+                case !password.match(hasNumbers):
+                    setPasswordError('Hasło musi zawierać cyfry!')
+                    isValidated = false
+                    break
+                default:
+                    setPasswordError('')
+            }
+            if (password !== repeatedPassword) {
+                setRepeatedPasswordError('Hasła różnią się od siebie!')
                 isValidated = false
-                break
-            case password.length < 10:
-                setPasswordError('Hasło musi zawierać co najmniej 10 znaków!')
-                isValidated = false
-                break
-            case !password.match(hasLowerCaseLetters):
-                setPasswordError('Hasło musi zawierać małe litery!')
-                isValidated = false
-                break
-            case !password.match(hasUpperCaseLetters):
-                setPasswordError('Hasło musi zawierać duże litery!')
-                isValidated = false
-                break
-            case !password.match(hasNumbers):
-                setPasswordError('Hasło musi zawierać cyfry!')
-                isValidated = false
-                break
-            default:
-                setPasswordError('')
-        }
-        if (password !== repeatedPassword) {
-            setRepeatedPasswordError('Hasła różnią się od siebie!')
-            isValidated = false
+            }
         }
         return isValidated
     }
     const handleSubmit = async e => {
         e.preventDefault()
-        if (validate()) {
+        if (validate(true)) {
             try {
                 const url = '/api/headTeacher/updateProfile'
                 const response = await delayedApiAxios.post(url, {
@@ -156,6 +158,41 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                             }
                             if (parameter === 'repeatedPassword') {
                                 setRepeatedPasswordError(error)
+                            }
+                        })
+                    }
+                }
+            }
+        }
+    }
+    const updateDetails = async () => {
+        if (validate(false)) {
+            try {
+                const url = '/api/headTeacher/updateDetails'
+                const response = await delayedApiAxios.post(url, {
+                    name,
+                    surname,
+                    age
+                })
+                if (response) {
+                    setIsActivated(true)
+                }
+            } catch (error) {
+                if (error.response) {
+                    const { status, validationResults } = error.response.data
+                    if (status === 422) {
+                        setNameError('')
+                        setSurnameError('')
+                        setAgeError('')
+                        validationResults.forEach(({ parameter, error }) => {
+                            if (parameter === 'name') {
+                                setNameError(error)
+                            }
+                            if (parameter === 'surname') {
+                                setSurnameError(error)
+                            }
+                            if (parameter === 'age') {
+                                setAgeError(error)
                             }
                         })
                     }
@@ -233,11 +270,29 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                         <>
                             <APDashboard.Header>Dane twojego profilu:</APDashboard.Header>
                             <Detail.DetailsContainer>
-                                <Composed.Detail label="Stanowisko:" value="Dyrektor" />
-                                <Composed.Detail label="Imię:" value={name} />
-                                <Composed.Detail label="Nazwisko:" value={surname} />
-                                <Composed.Detail label="Wiek:" value={age} />
-                                <Composed.Detail label="E-mail:" value={email} />
+                                <Composed.Detail label="Stanowisko" value="Dyrektor" />
+                                <Composed.EditableDetail
+                                    label="Imię"
+                                    value={name}
+                                    error={nameError}
+                                    onChange={setName}
+                                    onBlur={updateDetails}
+                                />
+                                <Composed.EditableDetail
+                                    label="Nazwisko"
+                                    value={surname}
+                                    error={surnameError}
+                                    onChange={setSurname}
+                                    onBlur={updateDetails}
+                                />
+                                <Composed.EditableDetail
+                                    label="Wiek"
+                                    value={age}
+                                    error={ageError}
+                                    onChange={setAge}
+                                    onBlur={updateDetails}
+                                />
+                                <Composed.Detail label="E-mail" value={email} />
                             </Detail.DetailsContainer>
                         </>
                     )}

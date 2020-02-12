@@ -1,6 +1,7 @@
 import styled from 'styled-components/macro'
 
-export default styled.p`
+export default styled.input`
+    width: 100%;
     margin-top: 20px;
     font-size: 15px;
     text-transform: initial;

@@ -24,4 +24,12 @@ router.post(
     Services.updateProfile.default
 )
 
+router.post(
+    '/headTeacher/updateDetails',
+    Services.updateDetails.validation(),
+    checkValidationResult,
+    authWithJwt,
+    Services.updateDetails.default
+)
+
 export default router
