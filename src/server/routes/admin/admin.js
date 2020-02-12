@@ -26,4 +26,12 @@ router.post(
 
 router.get('/admin/getHeadTeachers', authWithJwt, Services.getHeadTeachers.default)
 
+router.post(
+    '/admin/removeHeadTeacher',
+    Services.removeHeadTeacher.validation(),
+    checkValidationResult,
+    authWithJwt,
+    Services.removeHeadTeacher.default
+)
+
 export default router

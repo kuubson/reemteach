@@ -5,7 +5,7 @@ export default styled.button`
     text-align: center;
     display: block;
     margin: 20px 0px;
-    padding: 20px 0px;
+    padding: 21px 0px;
     white-space: nowrap;
     background: black;
     color: white;

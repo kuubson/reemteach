@@ -9,7 +9,7 @@ import APMenu from '@components/AdminProfile/styled/Menu'
 import AHDCForm from '@components/AdminHeadTeacherCreator/styled/Form'
 
 import APComposed from '@components/AdminProfile/composed'
-import AHDCComposed from '@components/AdminHeadTeacherCreator/composed'
+import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 
 import { apiAxios, setFeedbackData, redirectTo } from '@utils'
 
@@ -49,6 +49,7 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
                 if (error.response) {
                     const { status, validationResults } = error.response.data
                     if (status === 422) {
+                        setNameError('')
                         validationResults.forEach(({ parameter, error }) => {
                             if (parameter === 'name') {
                                 setNameError(error)
@@ -60,7 +61,7 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
         }
     }
     return (
-        <HeadTeacherSchoolCreatorContainer withMenu={shouldMenuAppear}>
+        <HeadTeacherSchoolCreatorContainer withMenu={shouldMenuAppear} morePadding>
             <APComposed.Menu>
                 <APMenu.Option
                     onClick={() => closeMenuOnClick(() => redirectTo('/dyrektor/profil'))}
@@ -68,9 +69,9 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     Strona główna
                 </APMenu.Option>
             </APComposed.Menu>
-            <APDashboard.Header>Utwórz szkołę w systemie</APDashboard.Header>
+            <APDashboard.Header>Utwórz nową szkołę w systemie</APDashboard.Header>
             <AHDCForm.Form onSubmit={handleSubmit}>
-                <AHDCComposed.Input
+                <AHTCComposed.Input
                     id="name"
                     label="Nazwa szkoły"
                     value={name}

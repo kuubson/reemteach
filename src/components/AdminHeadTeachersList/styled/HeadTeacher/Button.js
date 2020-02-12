@@ -2,10 +2,10 @@ import styled from 'styled-components/macro'
 
 export default styled.button`
     margin: 40px auto 0px auto;
-    font-weight: 600;
-    border: 1px solid black;
+    font-weight: 700;
+    border: 1.5px solid black;
     text-align: center;
-    padding: 19px 40px;
+    padding: 18px 40px;
     font-size: 9.5px;
     color: black;
     transition: transform 0.5s ease-in-out;

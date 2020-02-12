@@ -9,7 +9,7 @@ export default styled.input`
     ::placeholder {
         color: black;
     }
-    @media (max-width: 500px) {
+    @media (max-width: 600px) {
         font-size: 11px;
     }
 `

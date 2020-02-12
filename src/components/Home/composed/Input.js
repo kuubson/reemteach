@@ -9,7 +9,7 @@ const InputContainer = styled.div`
         margin: 0px 20% 0px 20%;
     }
     @media (max-width: 500px) {
-        margin: 0px 15% 15px 15%;
+        margin: 0px 15% 20px 15%;
         :last-of-type {
             margin: 0px 15% 0px 15%;
         }

@@ -1,0 +1,73 @@
+import { check } from 'express-validator'
+import bcrypt from 'bcryptjs'
+
+import { detectSanitization } from '@utils'
+
+export default async (req, res, next) => {
+    try {
+        const { name, surname, age, password } = req.body
+        req.user.update({
+            name,
+            surname,
+            age,
+            password: bcrypt.hashSync(password, 11)
+        })
+        res.send({
+            success: true
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const validation = () => [
+    check('name')
+        .not()
+        .isEmpty()
+        .withMessage('Wprowadź imię!')
+        .bail()
+        .custom(detectSanitization)
+        .withMessage('Imię zawiera niedozwolone znaki!'),
+    check('surname')
+        .not()
+        .isEmpty()
+        .withMessage('Wprowadź nazwisko!')
+        .bail()
+        .custom(detectSanitization)
+        .withMessage('Nazwisko zawiera niedozwolone znaki!'),
+    check('age')
+        .not()
+        .isEmpty()
+        .withMessage('Wprowadź wiek!')
+        .bail()
+        .isInt({ min: 14, max: 100 })
+        .withMessage('Wiek musi mieścić się między 14 a 100!')
+        .bail()
+        .custom(detectSanitization)
+        .withMessage('Wiek zawiera niedozwolone znaki!'),
+    check('password')
+        .not()
+        .isEmpty()
+        .withMessage('Wprowadź hasło!')
+        .bail()
+        .matches(/^(?=.{10,})/)
+        .withMessage('Hasło musi zawierać conajmniej 10 znaków!')
+        .bail()
+        .matches(/^(?=.*[a-z])/)
+        .withMessage('Hasło musi zawierać małe litery!')
+        .bail()
+        .matches(/^(?=.*[A-Z])/)
+        .withMessage('Hasło musi zawierać duże litery!')
+        .bail()
+        .matches(/^(?=.*[0-9])/)
+        .withMessage('Hasło musi zawierać cyfry!'),
+    check('repeatedPassword')
+        .custom((repeatedPassword, { req }) => {
+            if (repeatedPassword !== req.body.password) {
+                throw new Error()
+            } else {
+                return repeatedPassword
+            }
+        })
+        .withMessage('Hasła różnią się od siebie!')
+]

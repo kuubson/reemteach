@@ -16,7 +16,7 @@ const GuestContainer = styled.div`
     }}
 `
 
-const Guest = ({ children, setSocket, socket, shouldFeedbackHandlerAppear }) => {
+const Guest = ({ children, socket, setSocket, shouldFeedbackHandlerAppear }) => {
     const [shouldChildrenAppear, setShouldChildrenAppear] = useState(false)
     useEffect(() => {
         const confirmToken = async () => {

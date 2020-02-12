@@ -10,8 +10,9 @@ import Dashboard from './styled/Dashboard'
 import HeadTeacher from './styled/HeadTeacher'
 
 import APComposed from '@components/AdminProfile/composed'
+import HTPComposed from '@components/HeadTeacherProfile/composed'
 
-import { delayedApiAxios, redirectTo } from '@utils'
+import { delayedApiAxios, setFeedbackData, setConfirmationPopupData, redirectTo } from '@utils'
 
 const AdminHeadTeachersListContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -36,8 +37,26 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
         }
         getHeadTeachers()
     }, [])
+    const removeHeadTeacher = (id, email) => {
+        setConfirmationPopupData(
+            `Czy napewno chcesz usunąć dyrektora ${email} z systemu?`,
+            'Tak',
+            'Nie',
+            async () => {
+                const url = '/api/admin/removeHeadTeacher'
+                const response = await delayedApiAxios.post(url, {
+                    id,
+                    email
+                })
+                if (response) {
+                    const { successMessage } = response.data
+                    setFeedbackData(successMessage, 'Ok')
+                }
+            }
+        )
+    }
     return (
-        <AdminHeadTeachersListContainer withMenu={shouldMenuAppear}>
+        <AdminHeadTeachersListContainer withMenu={shouldMenuAppear} morePadding>
             <APComposed.Menu>
                 <APMenu.Option onClick={() => closeMenuOnClick(() => redirectTo('/admin/profil'))}>
                     Strona główna
@@ -51,9 +70,26 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
             {!isLoading && (
                 <HeadTeacher.HeadTeachersContainer>
                     {headTeachers.length > 0 ? (
-                        headTeachers.map(({ email }) => {
-                            return <p>{email}</p>
-                        })
+                        headTeachers.map(({ isActivated, id, email, name, surname, age }) => (
+                            <HeadTeacher.DetailsContainer key={id}>
+                                <HTPComposed.Detail label="Id:" value={id} />
+                                {isActivated && (
+                                    <>
+                                        <HTPComposed.Detail label="Imię:" value={name} />
+                                        <HTPComposed.Detail label="Nazwisko:" value={surname} />
+                                        <HTPComposed.Detail label="Wiek:" value={age} />
+                                    </>
+                                )}
+                                <HTPComposed.Detail label="E-mail:" value={email} />
+                                {!isActivated && (
+                                    <HeadTeacher.Button
+                                        onClick={() => removeHeadTeacher(id, email)}
+                                    >
+                                        Usuń
+                                    </HeadTeacher.Button>
+                                )}
+                            </HeadTeacher.DetailsContainer>
+                        ))
                     ) : (
                         <Dashboard.Warning>
                             W systemie nie ma jeszcze żadnego dyrektora!

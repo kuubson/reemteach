@@ -19,8 +19,8 @@ const UserContainer = styled.div`
 
 const User = ({
     children,
-    setSocket,
     socket,
+    setSocket,
     shouldFeedbackHandlerAppear,
     role: roleToConfirm
 }) => {

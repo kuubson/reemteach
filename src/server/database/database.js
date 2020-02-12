@@ -13,8 +13,8 @@ const HeadTeacher = connection.import('./models/HeadTeacher')
 const Teacher = connection.import('./models/Teacher')
 const Student = connection.import('./models/Student')
 
-Authentication.hasMany(Teacher)
-Authentication.hasMany(Student)
+Authentication.hasOne(Teacher)
+Authentication.hasOne(Student)
 
 Teacher.belongsTo(Authentication)
 Student.belongsTo(Authentication)

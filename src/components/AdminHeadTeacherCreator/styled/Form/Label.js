@@ -8,7 +8,7 @@ export default styled.label`
     @media (max-width: 700px) {
         font-size: 10.5px;
     }
-    @media (max-width: 500px) {
+    @media (max-width: 600px) {
         font-size: 9.5px;
     }
 `

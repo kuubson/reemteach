@@ -10,7 +10,7 @@ export default sequelize => {
                 type: TEXT,
                 allowNull: false
             },
-            isAuthorized: {
+            isAuthenticated: {
                 type: BOOLEAN,
                 defaultValue: false
             }

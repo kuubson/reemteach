@@ -6,12 +6,13 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 import { compose } from 'redux'
-import { withRouter, withLoader, withFeedbackHandler } from '@hoc'
+import { withRouter, withLoader, withFeedbackHandler, withConfirmationPopup } from '@hoc'
 
 import Guest from './Routes/Guest'
 import User from './Routes/User'
 
 import FeedbackHandler from './FeedbackHandler/FeedbackHandler'
+import ConfirmationPopup from './ConfirmationPopup/ConfirmationPopup'
 import Loader from './Loader/Loader'
 
 import Home from './Home/Home'
@@ -33,7 +34,12 @@ setConfig({
 
 const AppContainer = styled.main``
 
-const App = ({ location, isLoading, shouldFeedbackHandlerAppear }) => {
+const App = ({
+    location,
+    isLoading,
+    shouldFeedbackHandlerAppear,
+    shouldConfirmationPopupAppear
+}) => {
     const routes = [
         {
             path: '/',
@@ -150,6 +156,7 @@ const App = ({ location, isLoading, shouldFeedbackHandlerAppear }) => {
         <AppContainer>
             {isLoading && <Loader />}
             {shouldFeedbackHandlerAppear && <FeedbackHandler />}
+            {shouldConfirmationPopupAppear && <ConfirmationPopup />}
             <TransitionGroup className={pageDirection}>
                 <CSSTransition key={currentKey} timeout={800} classNames="route">
                     <div className="route__container">
@@ -171,5 +178,5 @@ const App = ({ location, isLoading, shouldFeedbackHandlerAppear }) => {
 }
 
 export default process.env.NODE_ENV === 'development'
-    ? compose(withRouter, withLoader, withFeedbackHandler)(hot(App))
-    : compose(withRouter, withLoader, withFeedbackHandler)(App)
+    ? compose(withRouter, withLoader, withFeedbackHandler, withConfirmationPopup)(hot(App))
+    : compose(withRouter, withLoader, withFeedbackHandler, withConfirmationPopup)(App)

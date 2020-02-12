@@ -77,18 +77,12 @@
     },
     "Hook useState": {
         "prefix": "dd",
-        "body": [
-            "const [${1},${2}set${1}] = useState()"
-        ],
+        "body": ["const [${1},${2}set${1}] = useState()"],
         "description": "Hook useState"
     },
     "Hook useEffect": {
         "prefix": "d",
-        "body": [
-            "useEffect(() => {",
-            "${1}",
-            "}, [])"
-        ],
+        "body": ["useEffect(() => {", "${1}", "}, [])"],
         "description": "Hook useState"
     },
     "Higher Order Component": {
@@ -115,13 +109,10 @@
     },
     "Import Higher Order Component": {
         "prefix": "c",
-        "body": [
-            "import { compose } from 'redux'",
-            "import {${1}} from '@hoc'"
-        ],
+        "body": ["import { compose } from 'redux'", "import {${1}} from '@hoc'"],
         "description": "Import Higher Order Component"
     },
-    "Express Post Route": {
+    "Express Route": {
         "prefix": "r",
         "body": [
             "import { check } from 'express-validator'",
@@ -132,7 +123,7 @@
             "",
             "export default async (req, res, next) => {",
             "    try {",
-            "        ${1}",
+            "        const {${1}} = req.body",
             "    } catch (error) {",
             "        next(error)",
             "    }",
@@ -141,9 +132,9 @@
             "export const validation = () => []",
             ""
         ],
-        "description": "Express Post Route"
-    }
-	"Sequelize Model": {
+        "description": "Express Route"
+    },
+    "Sequelize Model": {
         "prefix": "ss",
         "body": [
             "import { Model, DataTypes } from 'sequelize'",

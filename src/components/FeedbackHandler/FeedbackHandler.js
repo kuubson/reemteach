@@ -6,8 +6,6 @@ import { withFeedbackHandler } from '@hoc'
 
 import Dashboard from './styled/Dashboard'
 
-import { setShouldFeedbackHandlerAppear } from '@utils'
-
 const FeedbackHandlerContainer = styled.div`
     width: 100%;
     height: 100vh;
@@ -23,7 +21,10 @@ const FeedbackHandlerContainer = styled.div`
     z-index: 3;
 `
 
-const FeedbackHandler = ({ feedbackHandlerData: { message, buttonText, callback } }) => {
+const FeedbackHandler = ({
+    setShouldFeedbackHandlerAppear,
+    feedbackHandlerData: { message, buttonText, callback }
+}) => {
     const closeFeedbackHandler = () => {
         if (typeof callback === 'function') {
             callback()

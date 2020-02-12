@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled, { css } from 'styled-components/macro'
 
 export default styled.section`
     width: ${({ withMenu }) => (withMenu ? 'calc(100% - 350px)' : '100%')};
@@ -25,4 +25,19 @@ export default styled.section`
         margin-left: 0px;
         padding: 64.8px 50px 0px 50px;
     }
+    ${({ morePadding }) => {
+        if (morePadding)
+            return css`
+                padding-top: 148px;
+                padding-bottom: 47.2px;
+                @media (max-width: 1000px) {
+                    padding-top: 146px;
+                    padding-bottom: 46.4px;
+                }
+                @media (max-width: 500px) {
+                    padding-top: 132px;
+                    padding-bottom: 44.8px;
+                }
+            `
+    }}
 `

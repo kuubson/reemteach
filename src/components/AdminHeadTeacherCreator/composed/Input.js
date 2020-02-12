@@ -3,7 +3,12 @@ import styled from 'styled-components/macro'
 
 import Form from '../styled/Form'
 
-const InputContainer = styled.div``
+const InputContainer = styled.div`
+    margin-bottom: 20px;
+    :last-of-type {
+        margin-bottom: 0px;
+    }
+`
 
 const Input = ({ id, label, value, placeholder, error, onChange, secure, trim }) => {
     const handleOnChange = ({ target }) => {

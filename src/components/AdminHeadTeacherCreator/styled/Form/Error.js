@@ -10,7 +10,7 @@ export default styled.p`
     @media (max-width: 700px) {
         font-size: 10px;
     }
-    @media (max-width: 500px) {
+    @media (max-width: 600px) {
         font-size: 9px;
     }
 `

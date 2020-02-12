@@ -10,6 +10,6 @@ export default styled.form`
         width: 80%;
     }
     @media (max-width: 500px) {
-        width: 90%;
+        width: 100%;
     }
 `

@@ -16,4 +16,12 @@ router.post(
 
 router.get('/headTeacher/getProfile', authWithJwt, Services.getProfile.default)
 
+router.post(
+    '/headTeacher/updateProfile',
+    Services.updateProfile.validation(),
+    checkValidationResult,
+    authWithJwt,
+    Services.updateProfile.default
+)
+
 export default router

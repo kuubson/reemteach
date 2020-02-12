@@ -7,10 +7,7 @@ import { HeadTeacher } from '@database'
 import { ApiError } from '@utils'
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    requireTLS: true,
+    service: 'gmail',
     auth: {
         user: process.env.NODEMAILER_USERNAME,
         pass: process.env.NODEMAILER_PASSWORD
@@ -38,10 +35,7 @@ export default async (req, res, next) => {
             }
         })
         if (headTeacher) {
-            throw new ApiError(
-                'Dyrektor z podanym adresem e-mail znajduje się już w systemie!',
-                409
-            )
+            throw new ApiError(`Dyrektor z adresem ${email} znajduje się już w systemie!`, 409)
         }
         const password = crypto.randomBytes(20).toString('hex')
         await HeadTeacher.create({

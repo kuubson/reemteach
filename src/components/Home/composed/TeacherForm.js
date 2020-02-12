@@ -61,6 +61,8 @@ const TeacherForm = ({ onClick, shouldSlideIn }) => {
                 if (error.response) {
                     const { status, validationResults } = error.response.data
                     if (status === 422) {
+                        setEmailError('')
+                        setPasswordError('')
                         validationResults.forEach(({ parameter, error }) => {
                             if (parameter === 'email') {
                                 setEmailError(error)
