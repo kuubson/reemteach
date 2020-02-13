@@ -56,7 +56,7 @@ export default async (req, res, next) => {
         transporter.sendMail(mailOptions, async (error, info) => {
             if (error || !info) {
                 throw new ApiError(
-                    'Wystąpił niespodziewany problem przy wysyłaniu e-maila z danymi do zalogowania sie na konto dyrektorskie!',
+                    'Wystąpił niespodziewany problem przy wysyłaniu e-maila z danymi do zalogowania się na konto dyrektorskie!',
                     500
                 )
             }
@@ -71,12 +71,11 @@ export default async (req, res, next) => {
 
 export const validation = () => [
     check('email')
-        .not()
-        .isEmpty()
+        .trim()
+        .notEmpty()
         .withMessage('Wprowadź adres e-mail!')
         .bail()
         .isEmail()
         .withMessage('Wprowadź poprawny adres e-mail!')
-        .bail()
         .normalizeEmail()
 ]

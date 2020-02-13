@@ -28,10 +28,18 @@ router.get('/admin/getHeadTeachers', authWithJwt, Services.getHeadTeachers.defau
 
 router.post(
     '/admin/removeHeadTeacher',
+    authWithJwt,
     Services.removeHeadTeacher.validation(),
     checkValidationResult,
-    authWithJwt,
     Services.removeHeadTeacher.default
+)
+
+router.post(
+    '/admin/updateHeadTeacher',
+    authWithJwt,
+    Services.updateHeadTeacher.validation(),
+    checkValidationResult,
+    Services.updateHeadTeacher.default
 )
 
 export default router

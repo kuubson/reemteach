@@ -2,8 +2,6 @@ import { check } from 'express-validator'
 
 import { HeadTeacher } from '@database'
 
-import { detectSanitization } from '@utils'
-
 export default async (req, res, next) => {
     try {
         const { id, email } = req.body
@@ -13,7 +11,7 @@ export default async (req, res, next) => {
             }
         })
         res.send({
-            successMessage: `Pomyślnie usunięto dyrektora ${email} z systemu`
+            successMessage: `Pomyślnie usunięto dyrektora ${email} z systemu!`
         })
     } catch (error) {
         next(error)
@@ -22,8 +20,7 @@ export default async (req, res, next) => {
 
 export const validation = () => [
     check('id')
-        .not()
-        .isEmpty()
+        .trim()
+        .notEmpty()
         .isInt()
-        .custom(detectSanitization)
 ]

@@ -32,16 +32,14 @@ export default async (req, res, next) => {
 
 export const validation = () => [
     check('email')
-        .not()
-        .isEmpty()
+        .trim()
+        .notEmpty()
         .withMessage('Wprowadź adres e-mail!')
         .bail()
         .isEmail()
         .withMessage('Wprowadź poprawny adres e-mail!')
-        .bail()
         .normalizeEmail(),
     check('password')
-        .not()
-        .isEmpty()
+        .notEmpty()
         .withMessage('Wprowadź hasło!')
 ]

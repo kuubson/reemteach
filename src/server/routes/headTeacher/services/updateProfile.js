@@ -22,22 +22,22 @@ export default async (req, res, next) => {
 
 export const validation = () => [
     check('name')
-        .not()
-        .isEmpty()
+        .trim()
+        .notEmpty()
         .withMessage('Wprowadź imię!')
         .bail()
         .custom(detectSanitization)
         .withMessage('Imię zawiera niedozwolone znaki!'),
     check('surname')
-        .not()
-        .isEmpty()
+        .trim()
+        .notEmpty()
         .withMessage('Wprowadź nazwisko!')
         .bail()
         .custom(detectSanitization)
         .withMessage('Nazwisko zawiera niedozwolone znaki!'),
     check('age')
-        .not()
-        .isEmpty()
+        .trim()
+        .notEmpty()
         .withMessage('Wprowadź wiek!')
         .bail()
         .isInt({ min: 14, max: 100 })
@@ -46,8 +46,7 @@ export const validation = () => [
         .custom(detectSanitization)
         .withMessage('Wiek zawiera niedozwolone znaki!'),
     check('password')
-        .not()
-        .isEmpty()
+        .notEmpty()
         .withMessage('Wprowadź hasło!')
         .bail()
         .matches(/^(?=.{10,})/)

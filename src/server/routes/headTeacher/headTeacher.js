@@ -18,17 +18,17 @@ router.get('/headTeacher/getProfile', authWithJwt, Services.getProfile.default)
 
 router.post(
     '/headTeacher/updateProfile',
+    authWithJwt,
     Services.updateProfile.validation(),
     checkValidationResult,
-    authWithJwt,
     Services.updateProfile.default
 )
 
 router.post(
     '/headTeacher/updateDetails',
+    authWithJwt,
     Services.updateDetails.validation(),
     checkValidationResult,
-    authWithJwt,
     Services.updateDetails.default
 )
 

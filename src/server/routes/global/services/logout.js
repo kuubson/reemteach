@@ -16,6 +16,7 @@ export default (_, res, next) => {
 
 export const validation = () => [
     check('token')
-        .not()
-        .isEmpty()
+        .trim()
+        .notEmpty()
+        .isJWT()
 ]

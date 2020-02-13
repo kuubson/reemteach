@@ -1,17 +1,27 @@
 import { check } from 'express-validator'
 
+import { HeadTeacher } from '@database'
+
 import { detectSanitization } from '@utils'
 
 export default async (req, res, next) => {
     try {
-        const { name, surname, age } = req.body
-        await req.user.update({
-            name,
-            surname,
-            age
-        })
+        const { id, email, name, surname, age } = req.body
+        await HeadTeacher.update(
+            {
+                name,
+                surname,
+                age
+            },
+            {
+                where: {
+                    id,
+                    email
+                }
+            }
+        )
         res.send({
-            success: true
+            successMessage: `Pomyślnie zaktualizowano profil dyrektora ${name} ${surname}!`
         })
     } catch (error) {
         next(error)
@@ -19,6 +29,21 @@ export default async (req, res, next) => {
 }
 
 export const validation = () => [
+    check('id')
+        .trim()
+        .notEmpty()
+        .withMessage('Wprowadź adres e-mail!')
+        .bail()
+        .isInt()
+        .withMessage('Wprowadź poprawny adres e-mail!'),
+    check('email')
+        .trim()
+        .notEmpty()
+        .withMessage('Wprowadź adres e-mail!')
+        .bail()
+        .isEmail()
+        .withMessage('Wprowadź poprawny adres e-mail!')
+        .normalizeEmail(),
     check('name')
         .trim()
         .notEmpty()
