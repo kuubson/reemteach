@@ -120,30 +120,25 @@ const App = ({
             render: () => <Redirect to="/" />
         }
     ]
-    const existingExactRoute = routes.filter(({ path }) => path === location.pathname)[0]
-    const existingSimilarRoute = routes.filter(({ path }) =>
-        path.startsWith(location.pathname.substring(0, 6))
-    )[0]
+    const getExactRoute = value => routes.filter(({ path }) => path === value)[0]
+    const getSimilarRoute = value =>
+        routes.filter(({ path }) => path.startsWith(value.substring(0, 6)))[0]
     const currentKey = location.pathname
     const [pageDirection, setPageDirection] = useState()
     const [currentPath, setCurrentPath] = useState(location.pathname)
     const [currentPathOrder, setCurrentPathOrder] = useState(
-        existingExactRoute
-            ? existingExactRoute.order
-            : existingSimilarRoute
-            ? existingSimilarRoute.order
+        getExactRoute(currentKey)
+            ? getExactRoute(currentKey).order
+            : getSimilarRoute(currentKey)
+            ? getSimilarRoute(currentKey).order
             : 30
     )
     useEffect(() => {
         const newPath = location.pathname
-        const existingExactRoute = routes.filter(({ path }) => path === newPath)[0]
-        const existingSimilarRoute = routes.filter(({ path }) =>
-            path.startsWith(newPath.substring(0, 6))
-        )[0]
-        const newPathOrder = existingExactRoute
-            ? existingExactRoute.order
-            : existingSimilarRoute
-            ? existingSimilarRoute.order
+        const newPathOrder = getExactRoute(newPath)
+            ? getExactRoute(newPath).order
+            : getSimilarRoute(newPath)
+            ? getSimilarRoute(newPath).order
             : 30
         if (newPath !== currentPath) {
             const direction = currentPathOrder < newPathOrder ? 'left' : 'right'
