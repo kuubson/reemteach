@@ -32,17 +32,13 @@ export const validation = () => [
     check('id')
         .trim()
         .notEmpty()
-        .withMessage('Wprowadź adres e-mail!')
         .bail()
-        .isInt()
-        .withMessage('Wprowadź poprawny adres e-mail!'),
+        .isInt(),
     check('email')
         .trim()
         .notEmpty()
-        .withMessage('Wprowadź adres e-mail!')
         .bail()
         .isEmail()
-        .withMessage('Wprowadź poprawny adres e-mail!')
         .normalizeEmail(),
     check('name')
         .trim()

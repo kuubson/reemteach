@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import { check } from 'express-validator'
 
 import { Admin, HeadTeacher, Teacher, Student } from '@database'
 
@@ -101,3 +102,12 @@ export default (req, res, next) => {
         next(error)
     }
 }
+
+export const validation = () => [
+    check('token')
+        .optional()
+        .trim()
+        .notEmpty()
+        .bail()
+        .isJWT()
+]

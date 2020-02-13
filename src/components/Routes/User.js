@@ -28,9 +28,9 @@ const User = ({
     useEffect(() => {
         const confirmToken = async () => {
             const url = '/api/confirmToken'
-            const RESPONSE = await delayedApiAxios.get(url)
-            if (RESPONSE) {
-                const { role } = RESPONSE.data
+            const response = await delayedApiAxios.get(url)
+            if (response) {
+                const { role } = response.data
                 if (role === 'guest' || role !== roleToConfirm) {
                     setShouldMenuAppear(false)
                     setTimeout(() => {

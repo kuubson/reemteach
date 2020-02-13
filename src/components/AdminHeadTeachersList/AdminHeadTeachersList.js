@@ -15,9 +15,9 @@ import HTPComposed from '@components/HeadTeacherProfile/composed'
 import {
     apiAxios,
     delayedApiAxios,
+    redirectTo,
     setFeedbackData,
-    setConfirmationPopupData,
-    redirectTo
+    setConfirmationPopupData
 } from '@utils'
 
 const AdminHeadTeachersListContainer = styled(APDashboard.Container)`

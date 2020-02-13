@@ -13,7 +13,7 @@ import APComposed from '@components/AdminProfile/composed'
 import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 import Composed from './composed'
 
-import { delayedApiAxios, redirectTo } from '@utils'
+import { apiAxios, delayedApiAxios, redirectTo } from '@utils'
 
 const HeadTeacherProfileContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -124,7 +124,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
         if (validate(true)) {
             try {
                 const url = '/api/headTeacher/updateProfile'
-                const response = await delayedApiAxios.post(url, {
+                const response = await apiAxios.post(url, {
                     name,
                     surname,
                     age,

@@ -22,5 +22,6 @@ export const validation = () => [
     check('id')
         .trim()
         .notEmpty()
+        .bail()
         .isInt()
 ]

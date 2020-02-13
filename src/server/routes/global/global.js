@@ -8,6 +8,11 @@ const router = Router()
 
 router.get('/logout', Services.logout.validation(), checkValidationResult, Services.logout.default)
 
-router.get('/confirmToken', Services.confirmToken.default)
+router.get(
+    '/confirmToken',
+    Services.confirmToken.validation(),
+    checkValidationResult,
+    Services.confirmToken.default
+)
 
 export default router
