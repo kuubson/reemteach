@@ -1,4 +1,4 @@
-import { setFeedbackData, redirectTo, setShouldMenuAppear } from '@utils'
+import { setFeedbackData, delayedRedirectTo } from '@utils'
 
 const reloadWindow = () => window.location.reload()
 
@@ -7,13 +7,7 @@ export default error => {
     if (error.response) {
         const { status, errorMessage } = error.response.data
         if (status === 401) {
-            setFeedbackData(errorMessage, 'Zaloguj się ponownie', () => {
-                setShouldMenuAppear(false)
-                setTimeout(() => {
-                    setShouldMenuAppear()
-                    redirectTo('/')
-                }, 800)
-            })
+            setFeedbackData(errorMessage, 'Zaloguj się ponownie', () => delayedRedirectTo('/'))
         } else {
             if (errorMessage) {
                 setFeedbackData(errorMessage, 'Ok')
@@ -33,7 +27,7 @@ export default error => {
         )
     } else {
         setFeedbackData(
-            'Wystąpił niespodziewany problem po stronie klienta!',
+            'Wystąpił niespodziewany problem w Twojej przeglądarce!',
             'Odśwież aplikację',
             reloadWindow
         )

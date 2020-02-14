@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 
 export default styled.button`
-    margin: 40px auto 0px auto;
+    margin: 0px auto 20px auto;
     font-weight: 700;
     border: 1.5px solid black;
     text-align: center;

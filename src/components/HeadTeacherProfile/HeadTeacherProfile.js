@@ -6,14 +6,14 @@ import { withMenu } from '@hoc'
 
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
 import APMenu from '@components/AdminProfile/styled/Menu'
-import AHDCForm from '@components/AdminHeadTeacherCreator/styled/Form'
+import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
 import Detail from './styled/Detail'
 
 import APComposed from '@components/AdminProfile/composed'
 import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 import Composed from './composed'
 
-import { apiAxios, delayedApiAxios, redirectTo } from '@utils'
+import { apiAxios, delayedApiAxios, redirectTo, setFeedbackData } from '@utils'
 
 const HeadTeacherProfileContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -26,6 +26,7 @@ const HeadTeacherProfileContainer = styled(APDashboard.Container)`
 const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [isActivated, setIsActivated] = useState(false)
+    const [shouldScrollToError, setShouldScrollToError] = useState(false)
     const [email, setEmail] = useState('')
     const [name, setName] = useState('')
     const [age, setAge] = useState('')
@@ -53,7 +54,13 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
         }
         getProfile()
     }, [])
+    useEffect(() => {
+        if (shouldScrollToError) {
+            document.querySelector('.error').scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+    }, [shouldScrollToError])
     const validate = updatingProfile => {
+        setShouldScrollToError()
         setNameError('')
         setSurnameError('')
         setAgeError('')
@@ -77,8 +84,8 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                 setAgeError('Wprowadź poprawy wiek!')
                 isValidated = false
                 break
-            case age < 14 || age > 100:
-                setAgeError('Wiek musi mieścić się między 14 a 100!')
+            case age < 24 || age > 100:
+                setAgeError('Wiek musi mieścić się między 24 a 100!')
                 isValidated = false
                 break
             default:
@@ -117,6 +124,9 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                 isValidated = false
             }
         }
+        setTimeout(() => {
+            setShouldScrollToError(!isValidated)
+        }, 0)
         return isValidated
     }
     const handleSubmit = async e => {
@@ -132,6 +142,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     repeatedPassword
                 })
                 if (response) {
+                    setFeedbackData('Pomyślnie zaktualizowano profil!', 'Ok')
                     setIsActivated(true)
                 }
             } catch (error) {
@@ -175,6 +186,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     age
                 })
                 if (response) {
+                    setFeedbackData('Pomyślnie zaktualizowano profil!', 'Ok')
                     setIsActivated(true)
                 }
             } catch (error) {
@@ -214,7 +226,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     {!isActivated && (
                         <>
                             <APDashboard.Header>Zaktualizuj swoje dane</APDashboard.Header>
-                            <AHDCForm.Form onSubmit={handleSubmit}>
+                            <AHTCForm.Form onSubmit={handleSubmit}>
                                 <AHTCComposed.Input
                                     id="name"
                                     label="Imię"
@@ -262,8 +274,8 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                     secure
                                     trim
                                 />
-                                <AHDCForm.Submit>Zaktualizuj dane</AHDCForm.Submit>
-                            </AHDCForm.Form>
+                                <AHTCForm.Submit>Zaktualizuj dane</AHTCForm.Submit>
+                            </AHTCForm.Form>
                         </>
                     )}
                     {isActivated && (

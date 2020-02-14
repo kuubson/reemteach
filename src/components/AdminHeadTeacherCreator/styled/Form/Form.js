@@ -7,9 +7,9 @@ export default styled.form`
         width: 400px;
     }
     @media (max-width: 850px) {
-        width: 80%;
+        width: 85%;
     }
-    @media (max-width: 500px) {
+    @media (max-width: 600px) {
         width: 100%;
         margin-top: 60px;
     }

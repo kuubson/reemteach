@@ -7,7 +7,6 @@ import { withMenu } from '@hoc'
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
 import APMenu from '@components/AdminProfile/styled/Menu'
 import Dashboard from './styled/Dashboard'
-import HeadTeacher from './styled/HeadTeacher'
 
 import APComposed from '@components/AdminProfile/composed'
 import HTPComposed from '@components/HeadTeacherProfile/composed'
@@ -104,7 +103,7 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                 </APMenu.Option>
             </APComposed.Menu>
             {!isLoading && (
-                <HeadTeacher.HeadTeachersContainer>
+                <Dashboard.HeadTeachersContainer>
                     {headTeachers.length > 0 ? (
                         headTeachers.map(
                             ({
@@ -121,7 +120,7 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                 shouldSaveButtonAppear
                             }) => {
                                 return (
-                                    <HeadTeacher.DetailsContainer key={id}>
+                                    <Dashboard.DetailsContainer key={id}>
                                         <HTPComposed.Detail label="Id" value={id} />
                                         {isActivated && (
                                             <>
@@ -130,7 +129,12 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                                     value={name}
                                                     error={nameError}
                                                     onChange={name =>
-                                                        updateHeadTeachers(id, 'name', name)
+                                                        updateHeadTeachers(
+                                                            id,
+                                                            'name',
+                                                            name,
+                                                            validateHeadTeacher(name, surname, age)
+                                                        )
                                                     }
                                                     onBlur={() => {
                                                         if (!name) {
@@ -158,7 +162,12 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                                     value={surname}
                                                     error={surnameError}
                                                     onChange={surname =>
-                                                        updateHeadTeachers(id, 'surname', surname)
+                                                        updateHeadTeachers(
+                                                            id,
+                                                            'surname',
+                                                            surname,
+                                                            validateHeadTeacher(name, surname, age)
+                                                        )
                                                     }
                                                     onBlur={() => {
                                                         if (!surname) {
@@ -186,7 +195,12 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                                     value={age}
                                                     error={ageError}
                                                     onChange={age =>
-                                                        updateHeadTeachers(id, 'age', age)
+                                                        updateHeadTeachers(
+                                                            id,
+                                                            'age',
+                                                            age,
+                                                            validateHeadTeacher(name, surname, age)
+                                                        )
                                                     }
                                                     onBlur={() => {
                                                         switch (true) {
@@ -204,11 +218,11 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                                                     'Wprowadź poprawy wiek!'
                                                                 )
                                                                 break
-                                                            case age < 14 || age > 100:
+                                                            case age < 24 || age > 100:
                                                                 updateHeadTeachers(
                                                                     id,
                                                                     'ageError',
-                                                                    'Wiek musi mieścić się między 14 a 100!'
+                                                                    'Wiek musi mieścić się między 24 a 100!'
                                                                 )
                                                                 break
                                                             default:
@@ -231,23 +245,31 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                             label="Data utworzenia"
                                             value={new Date(createdAt).toLocaleString()}
                                         />
-                                        {!isActivated && (
-                                            <HeadTeacher.Button
-                                                onClick={() => removeHeadTeacher(id, email)}
-                                            >
-                                                Usuń
-                                            </HeadTeacher.Button>
-                                        )}
-                                        {shouldSaveButtonAppear && (
-                                            <HeadTeacher.Button
-                                                onClick={() =>
-                                                    updateHeadTeacher(id, email, name, surname, age)
-                                                }
-                                            >
-                                                Zapisz
-                                            </HeadTeacher.Button>
-                                        )}
-                                    </HeadTeacher.DetailsContainer>
+                                        <Dashboard.ButtonsContainer>
+                                            {!isActivated && (
+                                                <Dashboard.Button
+                                                    onClick={() => removeHeadTeacher(id, email)}
+                                                >
+                                                    Usuń
+                                                </Dashboard.Button>
+                                            )}
+                                            {shouldSaveButtonAppear && (
+                                                <Dashboard.Button
+                                                    onClick={() =>
+                                                        updateHeadTeacher(
+                                                            id,
+                                                            email,
+                                                            name,
+                                                            surname,
+                                                            age
+                                                        )
+                                                    }
+                                                >
+                                                    Zapisz
+                                                </Dashboard.Button>
+                                            )}
+                                        </Dashboard.ButtonsContainer>
+                                    </Dashboard.DetailsContainer>
                                 )
                             }
                         )
@@ -256,7 +278,7 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                             W systemie nie ma jeszcze żadnego dyrektora!
                         </Dashboard.Warning>
                     )}
-                </HeadTeacher.HeadTeachersContainer>
+                </Dashboard.HeadTeachersContainer>
             )}
         </AdminHeadTeachersListContainer>
     )

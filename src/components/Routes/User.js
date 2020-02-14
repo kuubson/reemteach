@@ -3,9 +3,9 @@ import styled, { css } from 'styled-components/macro'
 import io from 'socket.io-client'
 
 import { compose } from 'redux'
-import { withSocket, withFeedbackHandler } from '@hoc'
+import { withRouter, withSocket, withFeedbackHandler } from '@hoc'
 
-import { delayedApiAxios, redirectTo, setShouldMenuAppear } from '@utils'
+import { delayedApiAxios, delayedRedirectTo } from '@utils'
 
 const UserContainer = styled.div`
     ${({ blurred }) => {
@@ -20,6 +20,7 @@ const UserContainer = styled.div`
 const User = ({
     children,
     role: roleToConfirm,
+    location,
     socket,
     setSocket,
     shouldFeedbackHandlerAppear
@@ -30,12 +31,17 @@ const User = ({
             const url = '/api/confirmToken'
             const response = await delayedApiAxios.get(url)
             if (response) {
-                const { role } = response.data
+                const { isActivated, role } = response.data
                 if (role === 'guest' || role !== roleToConfirm) {
-                    setShouldMenuAppear(false)
+                    delayedRedirectTo('/')
+                }
+                if (
+                    role === 'headTeacher' &&
+                    !isActivated &&
+                    location.pathname !== '/dyrektor/profil'
+                ) {
                     setTimeout(() => {
-                        setShouldMenuAppear()
-                        redirectTo('/')
+                        delayedRedirectTo('/dyrektor/profil')
                     }, 800)
                 }
             }
@@ -57,4 +63,4 @@ const User = ({
     )
 }
 
-export default compose(withSocket, withFeedbackHandler)(User)
+export default compose(withRouter, withSocket, withFeedbackHandler)(User)

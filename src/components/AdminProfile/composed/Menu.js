@@ -8,7 +8,7 @@ import StyledMenu from '../styled/Menu'
 
 import HForm from '@components/Home/styled/Form'
 
-import { delayedApiAxios, redirectTo } from '@utils'
+import { delayedApiAxios, delayedRedirectTo } from '@utils'
 
 const MenuContainer = styled.div`
     width: 350px;
@@ -35,17 +35,6 @@ const MenuContainer = styled.div`
 `
 
 const Menu = ({ children, shouldMenuAppear, setShouldMenuAppear }) => {
-    const logout = async () => {
-        const url = '/api/logout'
-        const response = await delayedApiAxios.get(url)
-        if (response) {
-            setShouldMenuAppear(false)
-            setTimeout(() => {
-                setShouldMenuAppear()
-                redirectTo('/')
-            }, 800)
-        }
-    }
     useEffect(() => {
         setTimeout(() => {
             if (shouldMenuAppear === undefined) {
@@ -53,6 +42,13 @@ const Menu = ({ children, shouldMenuAppear, setShouldMenuAppear }) => {
             }
         }, 800)
     }, [])
+    const logout = async () => {
+        const url = '/api/logout'
+        const response = await delayedApiAxios.get(url)
+        if (response) {
+            delayedRedirectTo('/')
+        }
+    }
     return (
         <>
             <StyledMenu.Button onClick={() => setShouldMenuAppear(true)} shown={!shouldMenuAppear}>

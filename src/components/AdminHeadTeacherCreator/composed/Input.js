@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components/macro'
 
 import Form from '../styled/Form'
@@ -10,7 +10,13 @@ const InputContainer = styled.div`
     }
 `
 
-const Input = ({ id, label, value, placeholder, error, onChange, secure, trim }) => {
+const Input = ({ id, label, value, placeholder, error, onChange, textarea, secure, trim }) => {
+    const textareaRef = useRef()
+    useEffect(() => {
+        if (textarea && textareaRef.current) {
+            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+        }
+    }, [value])
     const handleOnChange = ({ target }) => {
         const value = trim ? target.value.trim() : target.value
         onChange(value)
@@ -18,14 +24,25 @@ const Input = ({ id, label, value, placeholder, error, onChange, secure, trim })
     return (
         <InputContainer className={error && 'error'}>
             <Form.Label htmlFor={id}>{label}</Form.Label>
-            <Form.Input
-                id={id}
-                name={id}
-                type={secure ? 'password' : 'text'}
-                value={value}
-                placeholder={placeholder}
-                onChange={handleOnChange}
-            />
+            {textarea ? (
+                <Form.Textarea
+                    ref={textareaRef}
+                    id={id}
+                    name={id}
+                    value={value}
+                    placeholder={placeholder}
+                    onChange={handleOnChange}
+                />
+            ) : (
+                <Form.Input
+                    id={id}
+                    name={id}
+                    type={secure ? 'password' : 'text'}
+                    value={value}
+                    placeholder={placeholder}
+                    onChange={handleOnChange}
+                />
+            )}
             {error && <Form.Error>{error}</Form.Error>}
         </InputContainer>
     )

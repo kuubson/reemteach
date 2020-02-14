@@ -16,7 +16,7 @@ const EditableDetail = ({ label, value, error, onChange, onBlur }) => {
             <StyledDetail.Label>{label}</StyledDetail.Label>
             <StyledDetail.EditableDetail
                 value={value}
-                onChange={e => onChange(e.target.value)}
+                onChange={({ target }) => onChange(target.value.trim())}
                 onBlur={onBlur}
             />
             {error && <StyledDetail.Error>{error}</StyledDetail.Error>}

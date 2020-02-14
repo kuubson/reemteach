@@ -27,6 +27,7 @@
         "leaflet-geosearch": "^2.7.0",
         "leaflet-routing-machine": "^3.2.12",
         "module-alias": "^2.2.2",
+        "moment": "^2.24.0",
         "mysql2": "^2.1.0",
         "node-sass": "^4.13.1",
         "nodemailer": "^6.4.2",

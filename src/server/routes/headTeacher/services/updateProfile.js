@@ -40,8 +40,8 @@ export const validation = () => [
         .notEmpty()
         .withMessage('Wprowadź wiek!')
         .bail()
-        .isInt({ min: 14, max: 100 })
-        .withMessage('Wiek musi mieścić się między 14 a 100!')
+        .isInt({ min: 24, max: 100 })
+        .withMessage('Wiek musi mieścić się między 24 a 100!')
         .bail()
         .custom(detectSanitization)
         .withMessage('Wiek zawiera niedozwolone znaki!'),
