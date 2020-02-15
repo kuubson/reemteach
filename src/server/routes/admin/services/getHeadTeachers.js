@@ -8,13 +8,13 @@ export default async (_, res, next) => {
         headTeachers = headTeachers.map(({ id, email, name, surname, age, createdAt }) => {
             const isActivated = !!(name && surname && age)
             return {
-                isActivated,
                 id,
                 email,
                 name,
                 surname,
                 age,
-                createdAt
+                createdAt,
+                isActivated
             }
         })
         res.send({

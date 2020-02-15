@@ -50,8 +50,8 @@ export default (req, res, next) => {
                                 const { name, surname, age } = headTeacher
                                 const isActivated = !!(name && surname && age)
                                 res.send({
-                                    isActivated,
-                                    role: 'headTeacher'
+                                    role: 'headTeacher',
+                                    isActivated
                                 })
                             }
                         } catch (error) {

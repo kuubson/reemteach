@@ -74,7 +74,7 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
             )
         )
     const validateHeadTeacher = (name, surname, age) =>
-        name && surname && age && !isNaN(age) && age > 13 && age < 101
+        name && surname && age && !isNaN(age) && age > 23 && age < 101
     const updateHeadTeacher = async (id, email, name, surname, age) => {
         const url = '/api/admin/updateHeadTeacher'
         const response = await apiAxios.post(url, {
@@ -107,7 +107,6 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     {headTeachers.length > 0 ? (
                         headTeachers.map(
                             ({
-                                isActivated,
                                 id,
                                 email,
                                 name,
@@ -117,6 +116,7 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                 surnameError,
                                 ageError,
                                 createdAt,
+                                isActivated,
                                 shouldSaveButtonAppear
                             }) => {
                                 return (
@@ -230,10 +230,11 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                                                     id,
                                                                     'ageError',
                                                                     '',
-                                                                    name &&
-                                                                        surname &&
-                                                                        age &&
-                                                                        !isNaN(age)
+                                                                    validateHeadTeacher(
+                                                                        name,
+                                                                        surname,
+                                                                        age
+                                                                    )
                                                                 )
                                                         }
                                                     }}

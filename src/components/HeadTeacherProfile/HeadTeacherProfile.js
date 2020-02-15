@@ -25,7 +25,6 @@ const HeadTeacherProfileContainer = styled(APDashboard.Container)`
 
 const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
-    const [isActivated, setIsActivated] = useState(false)
     const [shouldScrollToError, setShouldScrollToError] = useState(false)
     const [email, setEmail] = useState('')
     const [name, setName] = useState('')
@@ -33,6 +32,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
     const [password, setPassword] = useState('')
     const [repeatedPassword, setRepeatedPassword] = useState('')
     const [surname, setSurname] = useState('')
+    const [isActivated, setIsActivated] = useState(false)
     const [nameError, setNameError] = useState('')
     const [surnameError, setSurnameError] = useState('')
     const [ageError, setAgeError] = useState('')
@@ -44,12 +44,12 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
             const response = await delayedApiAxios.get(url)
             if (response) {
                 setIsLoading(false)
-                const { isActivated, email, name, surname, age } = response.data
-                setIsActivated(isActivated)
+                const { email, name, surname, age, isActivated } = response.data
                 setEmail(email)
                 setName(name)
                 setSurname(surname)
                 setAge(age)
+                setIsActivated(isActivated)
             }
         }
         getProfile()

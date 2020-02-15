@@ -1,5 +1,5 @@
 export default app => {
-    app.use((error, req, res, next) => {
+    app.use((error, _, res, __) => {
         console.log(error)
         if (error.code === 'EBADCSRFTOKEN') {
             const status = 403

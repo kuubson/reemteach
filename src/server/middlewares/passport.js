@@ -27,6 +27,9 @@ export default passport => {
                         const admin = await Admin.findOne({
                             where: {
                                 email
+                            },
+                            attributes: {
+                                exclude: ['password']
                             }
                         })
                         if (!admin) {
@@ -45,6 +48,9 @@ export default passport => {
                         const headTeacher = await HeadTeacher.findOne({
                             where: {
                                 email
+                            },
+                            attributes: {
+                                exclude: ['password']
                             }
                         })
                         if (!headTeacher) {
@@ -63,6 +69,9 @@ export default passport => {
                         const teacher = await Teacher.findOne({
                             where: {
                                 email
+                            },
+                            attributes: {
+                                exclude: ['password']
                             }
                         })
                         if (!teacher) {
@@ -81,6 +90,9 @@ export default passport => {
                         const student = await Student.findOne({
                             where: {
                                 email
+                            },
+                            attributes: {
+                                exclude: ['password']
                             }
                         })
                         if (!student) {

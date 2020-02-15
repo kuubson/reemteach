@@ -31,7 +31,7 @@ const User = ({
             const url = '/api/confirmToken'
             const response = await delayedApiAxios.get(url)
             if (response) {
-                const { isActivated, role } = response.data
+                const { role, isActivated } = response.data
                 if (role === 'guest' || role !== roleToConfirm) {
                     delayedRedirectTo('/')
                 }

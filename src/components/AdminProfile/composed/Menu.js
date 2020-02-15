@@ -4,9 +4,8 @@ import styled from 'styled-components/macro'
 import { compose } from 'redux'
 import { withMenu } from '@hoc'
 
-import StyledMenu from '../styled/Menu'
-
 import HForm from '@components/Home/styled/Form'
+import StyledMenu from '../styled/Menu'
 
 import { delayedApiAxios, delayedRedirectTo } from '@utils'
 
