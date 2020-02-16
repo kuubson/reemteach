@@ -32,6 +32,7 @@ export default styled.section`
                 }
                 @media (max-width: 500px) {
                     width: 100%;
+                    padding: 114.8px 50px 50px 50px;
                     margin-left: 0px;
                 }
             `
