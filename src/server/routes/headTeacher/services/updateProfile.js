@@ -61,6 +61,9 @@ export const validation = () => [
         .matches(/^(?=.*[0-9])/)
         .withMessage('Hasło musi zawierać cyfry!'),
     check('repeatedPassword')
+        .notEmpty()
+        .withMessage('Powtórz hasło!')
+        .bail()
         .custom((repeatedPassword, { req }) => {
             if (repeatedPassword !== req.body.password) {
                 throw new Error()

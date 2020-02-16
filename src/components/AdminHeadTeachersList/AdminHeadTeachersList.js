@@ -61,13 +61,14 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
             }
         )
     }
-    const updateHeadTeachers = (id, key, value, shouldSaveButtonAppear) =>
+    const updateHeadTeachers = (id, key, value, errorKey, errorValue, shouldSaveButtonAppear) =>
         setHeadTeachers(
             headTeachers.map(headTeacher =>
                 headTeacher.id === id
                     ? {
                           ...headTeacher,
                           [key]: value,
+                          [errorKey]: errorValue,
                           shouldSaveButtonAppear
                       }
                     : headTeacher
@@ -133,29 +134,11 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                                             id,
                                                             'name',
                                                             name,
+                                                            'nameError',
+                                                            !name ? 'Wprowadź imię!' : '',
                                                             validateHeadTeacher(name, surname, age)
                                                         )
                                                     }
-                                                    onBlur={() => {
-                                                        if (!name) {
-                                                            updateHeadTeachers(
-                                                                id,
-                                                                'nameError',
-                                                                'Wprowadź imię!'
-                                                            )
-                                                        } else {
-                                                            updateHeadTeachers(
-                                                                id,
-                                                                'nameError',
-                                                                '',
-                                                                validateHeadTeacher(
-                                                                    name,
-                                                                    surname,
-                                                                    age
-                                                                )
-                                                            )
-                                                        }
-                                                    }}
                                                 />
                                                 <HTPComposed.EditableDetail
                                                     label="Nazwisko"
@@ -166,29 +149,11 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                                             id,
                                                             'surname',
                                                             surname,
+                                                            'surnameError',
+                                                            !surname ? 'Wprowadź nazwisko!' : '',
                                                             validateHeadTeacher(name, surname, age)
                                                         )
                                                     }
-                                                    onBlur={() => {
-                                                        if (!surname) {
-                                                            updateHeadTeachers(
-                                                                id,
-                                                                'surnameError',
-                                                                'Wprowadź nazwisko!'
-                                                            )
-                                                        } else {
-                                                            updateHeadTeachers(
-                                                                id,
-                                                                'surnameError',
-                                                                '',
-                                                                validateHeadTeacher(
-                                                                    name,
-                                                                    surname,
-                                                                    age
-                                                                )
-                                                            )
-                                                        }
-                                                    }}
                                                 />
                                                 <HTPComposed.EditableDetail
                                                     label="Wiek"
@@ -199,45 +164,17 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                                             id,
                                                             'age',
                                                             age,
+                                                            'ageError',
+                                                            !age
+                                                                ? 'Wprowadź wiek!'
+                                                                : isNaN(age)
+                                                                ? 'Wprowadź poprawy wiek!'
+                                                                : age < 24 || age > 100
+                                                                ? 'Wiek musi mieścić się między 24 a 100!'
+                                                                : '',
                                                             validateHeadTeacher(name, surname, age)
                                                         )
                                                     }
-                                                    onBlur={() => {
-                                                        switch (true) {
-                                                            case !age:
-                                                                updateHeadTeachers(
-                                                                    id,
-                                                                    'ageError',
-                                                                    'Wprowadź wiek!'
-                                                                )
-                                                                break
-                                                            case isNaN(age):
-                                                                updateHeadTeachers(
-                                                                    id,
-                                                                    'ageError',
-                                                                    'Wprowadź poprawy wiek!'
-                                                                )
-                                                                break
-                                                            case age < 24 || age > 100:
-                                                                updateHeadTeachers(
-                                                                    id,
-                                                                    'ageError',
-                                                                    'Wiek musi mieścić się między 24 a 100!'
-                                                                )
-                                                                break
-                                                            default:
-                                                                updateHeadTeachers(
-                                                                    id,
-                                                                    'ageError',
-                                                                    '',
-                                                                    validateHeadTeacher(
-                                                                        name,
-                                                                        surname,
-                                                                        age
-                                                                    )
-                                                                )
-                                                        }
-                                                    }}
                                                 />
                                             </>
                                         )}

@@ -42,13 +42,11 @@ const Guest = ({ children, socket, setSocket, shouldFeedbackHandlerAppear }) => 
         setTimeout(() => {
             setShouldChildrenAppear(true)
         }, 0)
+        if (socket) {
+            socket.disconnect()
+            setSocket()
+        }
     }, [])
-    // useEffect(() => {
-    //     if (socket) {
-    //         socket.disconnect()
-    //         setSocket()
-    //     }
-    // }, [socket])
     return (
         shouldChildrenAppear && (
             <GuestContainer blurred={shouldFeedbackHandlerAppear}>{children}</GuestContainer>

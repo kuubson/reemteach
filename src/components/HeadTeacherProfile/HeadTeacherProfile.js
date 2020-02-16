@@ -13,7 +13,7 @@ import APComposed from '@components/AdminProfile/composed'
 import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 import Composed from './composed'
 
-import { apiAxios, delayedApiAxios, redirectTo, setFeedbackData } from '@utils'
+import { apiAxios, delayedApiAxios, redirectTo, setFeedbackData, usePrevious } from '@utils'
 
 const HeadTeacherProfileContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -38,6 +38,11 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
     const [ageError, setAgeError] = useState('')
     const [passwordError, setPasswordError] = useState('')
     const [repeatedPasswordError, setRepeatedPasswordError] = useState('')
+    const previousDetails = usePrevious({
+        name,
+        surname,
+        age
+    })
     useEffect(() => {
         const getProfile = async () => {
             const url = '/api/headTeacher/getProfile'
@@ -119,14 +124,24 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                 default:
                     setPasswordError('')
             }
-            if (password !== repeatedPassword) {
-                setRepeatedPasswordError('Hasła różnią się od siebie!')
-                isValidated = false
+            switch (true) {
+                case !repeatedPassword:
+                    setRepeatedPasswordError('Potwórz hasło!')
+                    isValidated = false
+                    break
+                case password !== repeatedPassword:
+                    setRepeatedPasswordError('Hasła różnią się od siebie!')
+                    isValidated = false
+                    break
+                default:
+                    setRepeatedPasswordError('')
             }
         }
-        setTimeout(() => {
-            setShouldScrollToError(!isValidated)
-        }, 0)
+        if (updatingProfile) {
+            setTimeout(() => {
+                setShouldScrollToError(!isValidated)
+            }, 0)
+        }
         return isValidated
     }
     const handleSubmit = async e => {
@@ -178,35 +193,42 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
     }
     const updateDetails = async () => {
         if (validate(false)) {
-            try {
-                const url = '/api/headTeacher/updateDetails'
-                const response = await delayedApiAxios.post(url, {
-                    name,
-                    surname,
-                    age
-                })
-                if (response) {
-                    setFeedbackData('Pomyślnie zaktualizowano profil!', 'Ok')
-                    setIsActivated(true)
-                }
-            } catch (error) {
-                if (error.response) {
-                    const { status, validationResults } = error.response.data
-                    if (status === 422) {
-                        setNameError('')
-                        setSurnameError('')
-                        setAgeError('')
-                        validationResults.forEach(({ parameter, error }) => {
-                            if (parameter === 'name') {
-                                setNameError(error)
-                            }
-                            if (parameter === 'surname') {
-                                setSurnameError(error)
-                            }
-                            if (parameter === 'age') {
-                                setAgeError(error)
-                            }
-                        })
+            const {
+                name: previousName,
+                surname: previousSurname,
+                age: previousAge
+            } = previousDetails
+            if (name !== previousName || surname !== previousSurname || age !== previousAge) {
+                try {
+                    const url = '/api/headTeacher/updateDetails'
+                    const response = await delayedApiAxios.post(url, {
+                        name,
+                        surname,
+                        age
+                    })
+                    if (response) {
+                        setFeedbackData('Pomyślnie zaktualizowano profil!', 'Ok')
+                        setIsActivated(true)
+                    }
+                } catch (error) {
+                    if (error.response) {
+                        const { status, validationResults } = error.response.data
+                        if (status === 422) {
+                            setNameError('')
+                            setSurnameError('')
+                            setAgeError('')
+                            validationResults.forEach(({ parameter, error }) => {
+                                if (parameter === 'name') {
+                                    setNameError(error)
+                                }
+                                if (parameter === 'surname') {
+                                    setSurnameError(error)
+                                }
+                                if (parameter === 'age') {
+                                    setAgeError(error)
+                                }
+                            })
+                        }
                     }
                 }
             }
