@@ -32,4 +32,12 @@ router.post(
     Services.updateDetails.default
 )
 
+router.post(
+    '/headTeacher/createSchool',
+    authWithJwt,
+    Services.createSchool.validation(),
+    checkValidationResult,
+    Services.createSchool.default
+)
+
 export default router

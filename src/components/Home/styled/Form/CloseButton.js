@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components/macro'
 
-const CloseButtonContainer = styled.span`
+const CloseButtonContainer = styled.button`
     color: white;
     font-size: 19px;
     cursor: pointer;

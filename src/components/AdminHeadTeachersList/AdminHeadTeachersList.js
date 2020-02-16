@@ -92,7 +92,7 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
         }
     }
     return (
-        <AdminHeadTeachersListContainer withMenu={shouldMenuAppear} morePadding>
+        <AdminHeadTeachersListContainer withMenu={shouldMenuAppear} withMorePadding>
             <APComposed.Menu>
                 <APMenu.Option onClick={() => closeMenuOnClick(() => redirectTo('/admin/profil'))}>
                     Strona główna
@@ -183,30 +183,35 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                             label="Data utworzenia"
                                             value={new Date(createdAt).toLocaleString()}
                                         />
-                                        <Dashboard.ButtonsContainer>
-                                            {!isActivated && (
-                                                <Dashboard.Button
-                                                    onClick={() => removeHeadTeacher(id, email)}
-                                                >
-                                                    Usuń
-                                                </Dashboard.Button>
-                                            )}
-                                            {shouldSaveButtonAppear && (
-                                                <Dashboard.Button
-                                                    onClick={() =>
-                                                        updateHeadTeacher(
-                                                            id,
-                                                            email,
-                                                            name,
-                                                            surname,
-                                                            age
-                                                        )
-                                                    }
-                                                >
-                                                    Zapisz
-                                                </Dashboard.Button>
-                                            )}
-                                        </Dashboard.ButtonsContainer>
+                                        {!isActivated ||
+                                            (shouldSaveButtonAppear && (
+                                                <Dashboard.ButtonsContainer>
+                                                    {!isActivated && (
+                                                        <Dashboard.Button
+                                                            onClick={() =>
+                                                                removeHeadTeacher(id, email)
+                                                            }
+                                                        >
+                                                            Usuń
+                                                        </Dashboard.Button>
+                                                    )}
+                                                    {shouldSaveButtonAppear && (
+                                                        <Dashboard.Button
+                                                            onClick={() =>
+                                                                updateHeadTeacher(
+                                                                    id,
+                                                                    email,
+                                                                    name,
+                                                                    surname,
+                                                                    age
+                                                                )
+                                                            }
+                                                        >
+                                                            Zapisz
+                                                        </Dashboard.Button>
+                                                    )}
+                                                </Dashboard.ButtonsContainer>
+                                            ))}
                                     </Dashboard.DetailsContainer>
                                 )
                             }

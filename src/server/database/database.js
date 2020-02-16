@@ -10,14 +10,17 @@ const connection = new Sequelize(DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASS
 const Authentication = connection.import('./models/Authentication')
 const Admin = connection.import('./models/Admin')
 const HeadTeacher = connection.import('./models/HeadTeacher')
+const School = connection.import('./models/School')
 const Teacher = connection.import('./models/Teacher')
 const Student = connection.import('./models/Student')
 
 Authentication.hasOne(Teacher)
 Authentication.hasOne(Student)
-
 Teacher.belongsTo(Authentication)
 Student.belongsTo(Authentication)
+
+HeadTeacher.hasOne(School)
+School.belongsTo(HeadTeacher)
 
 const initializeDatabaseConnection = async () => {
     try {
@@ -34,4 +37,4 @@ const initializeDatabaseConnection = async () => {
 }
 initializeDatabaseConnection()
 
-export { Admin, HeadTeacher, Teacher, Student }
+export { Admin, HeadTeacher, School, Teacher, Student }

@@ -235,7 +235,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
         }
     }
     return (
-        <HeadTeacherProfileContainer withMenu={shouldMenuAppear} morePadding>
+        <HeadTeacherProfileContainer withMenu={shouldMenuAppear}>
             <APComposed.Menu>
                 <APMenu.Option
                     onClick={() => closeMenuOnClick(() => redirectTo('/dyrektor/tworzenie-szkoły'))}

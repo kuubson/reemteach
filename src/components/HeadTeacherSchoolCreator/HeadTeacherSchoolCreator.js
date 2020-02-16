@@ -27,12 +27,12 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
     const [shouldScrollToError, setShouldScrollToError] = useState(false)
     const [name, setName] = useState('')
     const [type, setType] = useState('')
-    const [creationDate, setCreationDate] = useState('')
     const [description, setDescription] = useState('')
+    const [creationDate, setCreationDate] = useState('')
     const [nameError, setNameError] = useState('')
     const [typeError, setTypeError] = useState('')
-    const [creationDateError, setCreationDateError] = useState('')
     const [descriptionError, setDescriptionError] = useState('')
+    const [creationDateError, setCreationDateError] = useState('')
     useEffect(() => {
         if (shouldScrollToError) {
             document.querySelector('.error').scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -42,8 +42,8 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
         setShouldScrollToError()
         setNameError('')
         setTypeError('')
-        setCreationDateError('')
         setDescriptionError('')
+        setCreationDateError('')
         let isValidated = true
         if (!name) {
             setNameError('Wprowadź nazwę szkoły!')
@@ -51,6 +51,10 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
         }
         if (!type) {
             setTypeError('Zaznacz typ szkoły!')
+            isValidated = false
+        }
+        if (!description) {
+            setDescriptionError('Wprowadź opis szkoły!')
             isValidated = false
         }
         switch (true) {
@@ -71,10 +75,6 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
             default:
                 setCreationDateError('')
         }
-        if (!description) {
-            setDescriptionError('Wprowadź opis szkoły!')
-            isValidated = false
-        }
         setTimeout(() => {
             setShouldScrollToError(!isValidated)
         }, 0)
@@ -88,8 +88,8 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
                 const response = await apiAxios.post(url, {
                     name,
                     type,
-                    creationDate,
-                    description
+                    description,
+                    creationDate
                 })
                 if (response) {
                     const { successMessage } = response.data
@@ -101,8 +101,8 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     if (status === 422) {
                         setNameError('')
                         setTypeError('')
-                        setCreationDateError('')
                         setDescriptionError('')
+                        setCreationDateError('')
                         validationResults.forEach(({ parameter, error }) => {
                             if (parameter === 'name') {
                                 setNameError(error)
@@ -110,11 +110,11 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
                             if (parameter === 'type') {
                                 setTypeError(error)
                             }
-                            if (parameter === 'creationDate') {
-                                setCreationDateError(error)
-                            }
                             if (parameter === 'description') {
                                 setDescriptionError(error)
+                            }
+                            if (parameter === 'creationDate') {
+                                setCreationDateError(error)
                             }
                         })
                     }
@@ -123,7 +123,7 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
         }
     }
     return (
-        <HeadTeacherSchoolCreatorContainer withMenu={shouldMenuAppear} morePadding>
+        <HeadTeacherSchoolCreatorContainer withMenu={shouldMenuAppear}>
             <APComposed.Menu>
                 <APMenu.Option
                     onClick={() => closeMenuOnClick(() => redirectTo('/dyrektor/profil'))}
@@ -151,6 +151,15 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     onChange={setType}
                 />
                 <AHTCComposed.Input
+                    id="description"
+                    label="Opis szkoły"
+                    value={description}
+                    placeholder="Wprowadź opis szkoły..."
+                    error={descriptionError}
+                    onChange={setDescription}
+                    textarea
+                />
+                <AHTCComposed.Input
                     id="creationDate"
                     label="Data utworzenia szkoły"
                     value={creationDate}
@@ -160,15 +169,6 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     error={creationDateError}
                     onChange={setCreationDate}
                     trim
-                />
-                <AHTCComposed.Input
-                    id="description"
-                    label="Opis szkoły"
-                    value={description}
-                    placeholder="Wprowadź opis szkoły..."
-                    error={descriptionError}
-                    onChange={setDescription}
-                    textarea
                 />
                 <AHTCForm.Submit>Utwórz szkołę</AHTCForm.Submit>
             </AHTCForm.Form>
