@@ -8,6 +8,9 @@ import { ApiError, detectSanitization } from '@utils'
 export default async (req, res, next) => {
     try {
         const { name, type, description, creationDate } = req.body
+        if (await req.user.getSchool()) {
+            throw new ApiError(`Posiadasz już utworzoną szkołę!`, 409)
+        }
         const school = await School.findOne({
             where: {
                 name

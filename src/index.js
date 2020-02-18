@@ -11,6 +11,8 @@ import theme from '@styles/theme'
 import 'destyle.css'
 import '@styles/index.scss'
 
+import Loader from './components/Loader/Loader'
+
 import App from '@components/App'
 
 import { history } from '@utils'

@@ -40,4 +40,6 @@ router.post(
     Services.createSchool.default
 )
 
+router.get('/headTeacher/getSchool', authWithJwt, Services.getSchool.default)
+
 export default router

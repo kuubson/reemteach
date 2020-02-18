@@ -23,6 +23,7 @@ import AdminHeadTeachersList from './AdminHeadTeachersList/AdminHeadTeachersList
 
 import HeadTeacherProfile from './HeadTeacherProfile/HeadTeacherProfile'
 import HeadTeacherSchoolCreator from './HeadTeacherSchoolCreator/HeadTeacherSchoolCreator'
+import HeadTeacherSchoolManager from './HeadTeacherSchoolManager/HeadTeacherSchoolManager'
 
 import TeacherProfile from './TeacherProfile/TeacherProfile'
 
@@ -93,6 +94,15 @@ const App = ({
             render: () => (
                 <User role="headTeacher">
                     <HeadTeacherSchoolCreator />
+                </User>
+            )
+        },
+        {
+            path: '/dyrektor/zarządzanie-szkołą',
+            order: 4,
+            render: () => (
+                <User role="headTeacher">
+                    <HeadTeacherSchoolManager />
                 </User>
             )
         },

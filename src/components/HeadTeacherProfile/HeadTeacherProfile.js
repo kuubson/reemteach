@@ -38,6 +38,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
     const [ageError, setAgeError] = useState('')
     const [passwordError, setPasswordError] = useState('')
     const [repeatedPasswordError, setRepeatedPasswordError] = useState('')
+    const [hasSchool, setHasSchool] = useState(false)
     const previousDetails = usePrevious({
         name,
         surname,
@@ -49,12 +50,13 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
             const response = await delayedApiAxios.get(url)
             if (response) {
                 setIsLoading(false)
-                const { email, name, surname, age, isActivated } = response.data
+                const { email, name, surname, age, isActivated, hasSchool } = response.data
                 setEmail(email)
                 setName(name)
                 setSurname(surname)
                 setAge(age)
                 setIsActivated(isActivated)
+                setHasSchool(hasSchool)
             }
         }
         getProfile()
@@ -237,11 +239,24 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
     return (
         <HeadTeacherProfileContainer withMenu={shouldMenuAppear}>
             <APComposed.Menu>
-                <APMenu.Option
-                    onClick={() => closeMenuOnClick(() => redirectTo('/dyrektor/tworzenie-szkoły'))}
-                >
-                    Utwórz szkołę
-                </APMenu.Option>
+                {hasSchool === false && (
+                    <APMenu.Option
+                        onClick={() =>
+                            closeMenuOnClick(() => redirectTo('/dyrektor/tworzenie-szkoły'))
+                        }
+                    >
+                        Utwórz szkołę
+                    </APMenu.Option>
+                )}
+                {hasSchool && (
+                    <APMenu.Option
+                        onClick={() =>
+                            closeMenuOnClick(() => redirectTo('/dyrektor/zarządzanie-szkołą'))
+                        }
+                    >
+                        Twoja szkoła
+                    </APMenu.Option>
+                )}
             </APComposed.Menu>
             {!isLoading && (
                 <>

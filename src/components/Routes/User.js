@@ -35,14 +35,12 @@ const User = ({
                 if (role === 'guest' || role !== roleToConfirm) {
                     delayedRedirectTo('/')
                 }
-                if (
-                    role === 'headTeacher' &&
-                    !isActivated &&
-                    location.pathname !== '/dyrektor/profil'
-                ) {
-                    setTimeout(() => {
-                        delayedRedirectTo('/dyrektor/profil')
-                    }, 800)
+                if (role === 'headTeacher') {
+                    if (!isActivated && location.pathname !== '/dyrektor/profil') {
+                        setTimeout(() => {
+                            delayedRedirectTo('/dyrektor/profil')
+                        }, 800)
+                    }
                 }
             }
         }

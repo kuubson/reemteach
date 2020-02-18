@@ -13,7 +13,7 @@ import APComposed from '@components/AdminProfile/composed'
 import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 import Composed from './composed'
 
-import { apiAxios, redirectTo, setFeedbackData } from '@utils'
+import { apiAxios, delayedApiAxios, redirectTo, setFeedbackData } from '@utils'
 
 const HeadTeacherSchoolCreatorContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -33,6 +33,20 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
     const [typeError, setTypeError] = useState('')
     const [descriptionError, setDescriptionError] = useState('')
     const [creationDateError, setCreationDateError] = useState('')
+    useEffect(() => {
+        const getSchool = async () => {
+            const url = '/api/headTeacher/getSchool'
+            const response = await delayedApiAxios.get(url)
+            if (response) {
+                const { hasSchool } = response.data
+                if (hasSchool) {
+                    setFeedbackData('Utworzyłeś już szkołę w systemie!', 'Ok')
+                    redirectTo('/dyrektor/zarządzanie-szkołą')
+                }
+            }
+        }
+        getSchool()
+    }, [])
     useEffect(() => {
         if (shouldScrollToError) {
             document.querySelector('.error').scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -94,6 +108,7 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
                 if (response) {
                     const { successMessage } = response.data
                     setFeedbackData(successMessage, 'Ok')
+                    redirectTo('/dyrektor/zarządzanie-szkołą')
                 }
             } catch (error) {
                 if (error.response) {
@@ -123,7 +138,7 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
         }
     }
     return (
-        <HeadTeacherSchoolCreatorContainer withMenu={shouldMenuAppear}>
+        <HeadTeacherSchoolCreatorContainer withMenu={shouldMenuAppear} withMorePadding>
             <APComposed.Menu>
                 <APMenu.Option
                     onClick={() => closeMenuOnClick(() => redirectTo('/dyrektor/profil'))}

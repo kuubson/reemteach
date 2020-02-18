@@ -2,9 +2,9 @@ import { combineReducers } from 'redux'
 // import { persistReducer } from 'redux-persist'
 // import storage from 'redux-persist/lib/storage'
 
+import socket from './socket'
 import loader from './loader'
 import feedbackHandler from './feedbackHandler'
-import socket from './socket'
 import menu from './menu'
 import confirmationPopup from './confirmationPopup'
 
@@ -14,9 +14,9 @@ import confirmationPopup from './confirmationPopup'
 // }
 
 export default combineReducers({
+    socket,
     loader,
     feedbackHandler,
-    socket,
     menu,
     confirmationPopup
 })
