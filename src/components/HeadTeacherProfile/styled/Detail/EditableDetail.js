@@ -5,6 +5,8 @@ export default styled.input`
     margin-top: 20px;
     font-size: 15px;
     text-transform: initial;
+    resize: none;
+    transition: height 0.5s ease-in-out;
     @media (max-width: 900px) {
         font-size: 14px;
     }

@@ -201,7 +201,12 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                 surname: previousSurname,
                 age: previousAge
             } = previousDetails
-            if (name !== previousName || surname !== previousSurname || age !== previousAge) {
+            if (
+                previousName &&
+                previousSurname &&
+                previousAge &&
+                (name !== previousName || surname !== previousSurname || age !== previousAge)
+            ) {
                 try {
                     const url = '/api/headTeacher/updateDetails'
                     const response = await delayedApiAxios.post(url, {
@@ -327,6 +332,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                     error={nameError}
                                     onChange={setName}
                                     onBlur={updateDetails}
+                                    trim
                                 />
                                 <Composed.EditableDetail
                                     label="Nazwisko"
@@ -334,6 +340,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                     error={surnameError}
                                     onChange={setSurname}
                                     onBlur={updateDetails}
+                                    trim
                                 />
                                 <Composed.EditableDetail
                                     label="Wiek"
@@ -341,6 +348,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                     error={ageError}
                                     onChange={setAge}
                                     onBlur={updateDetails}
+                                    trim
                                 />
                                 <Composed.Detail label="E-mail" value={email} />
                             </Detail.DetailsContainer>

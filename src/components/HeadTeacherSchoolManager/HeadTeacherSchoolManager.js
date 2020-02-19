@@ -114,11 +114,16 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                 creationDate: previousCreationDate
             } = previousDetails
             if (
-                name !== previousName ||
-                type !== previousType ||
-                description !== previousDescription ||
-                address !== previousAddress ||
-                creationDate !== previousCreationDate
+                previousName &&
+                previousType &&
+                previousDetails &&
+                previousAddress &&
+                previousCreationDate &&
+                (name !== previousName ||
+                    type !== previousType ||
+                    description !== previousDescription ||
+                    address !== previousAddress ||
+                    creationDate !== previousCreationDate)
             ) {
                 try {
                     const url = '/api/headTeacher/updateSchoolDetails'
@@ -166,7 +171,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
         }
     }
     return (
-        <HeadTeacherProfileContainer withMenu={shouldMenuAppear}>
+        <HeadTeacherProfileContainer withMenu={shouldMenuAppear} withMorePadding>
             <APComposed.Menu>
                 <APMenu.Option
                     onClick={() => closeMenuOnClick(() => redirectTo('/dyrektor/profil'))}
@@ -198,6 +203,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                             error={descriptionError}
                             onChange={setDescription}
                             onBlur={updateDetails}
+                            textarea
                         />
                         <HTPComposed.EditableDetail
                             label="Adres szkoły"
@@ -213,6 +219,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                             error={creationDateError}
                             onChange={setCreationDate}
                             onBlur={updateDetails}
+                            trim
                         />
                     </HTPDetail.DetailsContainer>
                 </>

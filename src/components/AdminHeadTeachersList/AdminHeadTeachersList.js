@@ -139,6 +139,7 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                                             validateHeadTeacher(name, surname, age)
                                                         )
                                                     }
+                                                    trim
                                                 />
                                                 <HTPComposed.EditableDetail
                                                     label="Nazwisko"
@@ -154,6 +155,7 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                                             validateHeadTeacher(name, surname, age)
                                                         )
                                                     }
+                                                    trim
                                                 />
                                                 <HTPComposed.EditableDetail
                                                     label="Wiek"
@@ -175,6 +177,7 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                                             validateHeadTeacher(name, surname, age)
                                                         )
                                                     }
+                                                    trim
                                                 />
                                             </>
                                         )}

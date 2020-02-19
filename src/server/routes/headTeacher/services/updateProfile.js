@@ -13,7 +13,7 @@ export default async (req, res, next) => {
             password: bcrypt.hashSync(password, 11)
         })
         res.send({
-            successMessage: 'Pomyślnie zaktualizowano profil!'
+            successMessage: 'Pomyślnie zaktualizowano hasło i profil!'
         })
     } catch (error) {
         next(error)

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components/macro'
 
 import StyledDetail from '../styled/Detail'
@@ -10,14 +10,30 @@ const EditableDetailContainer = styled.div`
     }
 `
 
-const EditableDetail = ({ label, value, error, onChange, onBlur }) => {
+const EditableDetail = ({ label, value, error, onChange, onBlur, textarea, trim }) => {
+    const textareaRef = useRef()
+    useEffect(() => {
+        if (!value && textareaRef.current) {
+            textareaRef.current.style.height = '16px'
+        } else {
+            if (textarea && textareaRef.current) {
+                textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+            }
+        }
+    }, [value])
+    const handleOnChange = ({ target }) => {
+        const value = trim ? target.value.trim() : target.value
+        onChange(value)
+    }
     return (
         <EditableDetailContainer>
             <StyledDetail.Label>{label}</StyledDetail.Label>
             <StyledDetail.EditableDetail
+                ref={textarea && textareaRef}
                 value={value}
-                onChange={({ target }) => onChange(target.value.trim())}
+                onChange={handleOnChange}
                 onBlur={onBlur}
+                as={textarea && 'textarea'}
             />
             {error && <StyledDetail.Error>{error}</StyledDetail.Error>}
         </EditableDetailContainer>
