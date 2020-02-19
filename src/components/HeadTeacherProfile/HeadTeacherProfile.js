@@ -159,7 +159,8 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     repeatedPassword
                 })
                 if (response) {
-                    setFeedbackData('Pomyślnie zaktualizowano profil!', 'Ok')
+                    const { successMessage } = response.data
+                    setFeedbackData(successMessage, 'Ok')
                     setIsActivated(true)
                 }
             } catch (error) {
@@ -209,8 +210,8 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                         age
                     })
                     if (response) {
-                        setFeedbackData('Pomyślnie zaktualizowano profil!', 'Ok')
-                        setIsActivated(true)
+                        const { successMessage } = response.data
+                        setFeedbackData(successMessage, 'Ok')
                     }
                 } catch (error) {
                     if (error.response) {

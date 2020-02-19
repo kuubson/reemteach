@@ -42,4 +42,12 @@ router.post(
 
 router.get('/headTeacher/getSchool', authWithJwt, Services.getSchool.default)
 
+router.post(
+    '/headTeacher/updateSchoolDetails',
+    authWithJwt,
+    Services.updateSchoolDetails.validation(),
+    checkValidationResult,
+    Services.updateSchoolDetails.default
+)
+
 export default router

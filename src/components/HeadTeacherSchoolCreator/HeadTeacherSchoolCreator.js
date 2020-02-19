@@ -28,10 +28,12 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
     const [name, setName] = useState('')
     const [type, setType] = useState('')
     const [description, setDescription] = useState('')
+    const [address, setAddress] = useState('')
     const [creationDate, setCreationDate] = useState('')
     const [nameError, setNameError] = useState('')
     const [typeError, setTypeError] = useState('')
     const [descriptionError, setDescriptionError] = useState('')
+    const [addressError, setAddressError] = useState('')
     const [creationDateError, setCreationDateError] = useState('')
     useEffect(() => {
         const getSchool = async () => {
@@ -57,6 +59,7 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
         setNameError('')
         setTypeError('')
         setDescriptionError('')
+        setAddressError('')
         setCreationDateError('')
         let isValidated = true
         if (!name) {
@@ -69,6 +72,10 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
         }
         if (!description) {
             setDescriptionError('Wprowadź opis szkoły!')
+            isValidated = false
+        }
+        if (!address) {
+            setAddressError('Wprowadź adres szkoły!')
             isValidated = false
         }
         switch (true) {
@@ -103,6 +110,7 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     name,
                     type,
                     description,
+                    address,
                     creationDate
                 })
                 if (response) {
@@ -117,6 +125,7 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
                         setNameError('')
                         setTypeError('')
                         setDescriptionError('')
+                        setAddressError('')
                         setCreationDateError('')
                         validationResults.forEach(({ parameter, error }) => {
                             if (parameter === 'name') {
@@ -127,6 +136,9 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
                             }
                             if (parameter === 'description') {
                                 setDescriptionError(error)
+                            }
+                            if (parameter === 'address') {
+                                setAddressError(error)
                             }
                             if (parameter === 'creationDate') {
                                 setCreationDateError(error)
@@ -173,6 +185,14 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     error={descriptionError}
                     onChange={setDescription}
                     textarea
+                />
+                <AHTCComposed.Input
+                    id="address"
+                    label="Adres szkoły"
+                    value={address}
+                    placeholder="Wprowadź adres szkoły..."
+                    error={addressError}
+                    onChange={setAddress}
                 />
                 <AHTCComposed.Input
                     id="creationDate"

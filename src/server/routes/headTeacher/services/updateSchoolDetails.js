@@ -3,23 +3,16 @@ import moment from 'moment'
 
 import { School } from '@database'
 
-import { ApiError, detectSanitization } from '@utils'
+import { Op, ApiError, detectSanitization } from '@utils'
 
 export default async (req, res, next) => {
     try {
-        if (await req.user.getSchool()) {
-            throw new ApiError(`Posiadasz już utworzoną szkołę!`, 409)
+        const school = await req.user.getSchool()
+        if (!school) {
+            throw new ApiError(`Musisz utworzyć najpierw szkołę w systemie!`, 409)
         }
         const { name, type, description, address, creationDate } = req.body
-        const school = await School.findOne({
-            where: {
-                name
-            }
-        })
-        if (school) {
-            throw new ApiError(`Szkoła o nazwie ${name} istnieje już w systemie!`, 409)
-        }
-        await req.user.createSchool({
+        school.update({
             name,
             type,
             description,
@@ -27,7 +20,7 @@ export default async (req, res, next) => {
             creationDate
         })
         res.send({
-            successMessage: `Pomyślnie dodano szkołę ${name} do systemu!`
+            successMessage: 'Pomyślnie zaktualizowano informacje o szkole!'
         })
     } catch (error) {
         next(error)
@@ -41,7 +34,23 @@ export const validation = () => [
         .withMessage('Wprowadź nazwę szkoły!')
         .bail()
         .custom(detectSanitization)
-        .withMessage('Nazwa szkoły zawiera niedozwolone znaki!'),
+        .withMessage('Nazwa szkoły zawiera niedozwolone znaki!')
+        .custom(async (name, { req }) => {
+            const school = await School.findOne({
+                where: {
+                    name,
+                    headTeacherId: {
+                        [Op.ne]: req.user.id
+                    }
+                }
+            })
+            if (school) {
+                throw new Error()
+            } else {
+                return school
+            }
+        })
+        .withMessage(value => `Szkoła o nazwie ${value} istnieje już w systemie!`),
     check('type')
         .trim()
         .notEmpty()

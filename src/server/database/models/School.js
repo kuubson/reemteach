@@ -18,6 +18,10 @@ export default sequelize => {
                 type: TEXT,
                 allowNull: false
             },
+            address: {
+                type: STRING,
+                allowNull: false
+            },
             creationDate: {
                 type: STRING,
                 allowNull: false

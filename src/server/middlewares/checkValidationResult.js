@@ -6,8 +6,7 @@ export default (req, res, next) => {
         const status = 422
         res.status(status).send({
             status,
-            errorMessage:
-                'Serwer wykrył niepożądane działanie z Twojej strony! Sprawdź poprawność wprowadzanych danych!',
+            errorMessage: 'Sprawdź poprawność wprowadzanych danych!',
             validationResults: validationResults.errors.map(error => {
                 return {
                     parameter: error.param,

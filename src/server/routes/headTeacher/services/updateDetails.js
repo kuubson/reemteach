@@ -11,7 +11,7 @@ export default async (req, res, next) => {
             age
         })
         res.send({
-            success: true
+            successMessage: 'Pomyślnie zaktualizowano profil!'
         })
     } catch (error) {
         next(error)
