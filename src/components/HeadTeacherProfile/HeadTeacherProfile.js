@@ -13,7 +13,15 @@ import APComposed from '@components/AdminProfile/composed'
 import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 import Composed from './composed'
 
-import { apiAxios, delayedApiAxios, redirectTo, setFeedbackData, usePrevious } from '@utils'
+import {
+    apiAxios,
+    delayedApiAxios,
+    redirectTo,
+    setFeedbackData,
+    usePrevious,
+    detectWhiteSpaces,
+    detectSanitization
+} from '@utils'
 
 const HeadTeacherProfileContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -78,8 +86,24 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
             setNameError('Wprowadź imię!')
             isValidated = false
         }
+        if (detectWhiteSpaces(name)) {
+            setNameError('Wprowadź poprawne imię!')
+            isValidated = false
+        }
+        if (detectSanitization(name)) {
+            setNameError('Imię zawiera niedozwolone znaki!')
+            isValidated = false
+        }
         if (!surname) {
             setSurnameError('Wprowadź nazwisko!')
+            isValidated = false
+        }
+        if (detectWhiteSpaces(surname)) {
+            setSurnameError('Wprowadź poprawne nazwisko!')
+            isValidated = false
+        }
+        if (detectSanitization(surname)) {
+            setSurnameError('Nazwisko zawiera niedozwolone znaki!')
             isValidated = false
         }
         switch (true) {

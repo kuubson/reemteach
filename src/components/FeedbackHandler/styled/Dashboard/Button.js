@@ -4,6 +4,7 @@ export default styled.button`
     font-size: 11px;
     padding: 18px 30px;
     border: 1.5px solid white;
+    margin-top: 80px;
     border-radius: 10px;
     @media (max-width: 1050px) {
         font-size: 10.5px;

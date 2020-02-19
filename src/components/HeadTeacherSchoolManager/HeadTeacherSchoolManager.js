@@ -12,7 +12,13 @@ import HTPDetail from '@components/HeadTeacherProfile/styled/Detail'
 import APComposed from '@components/AdminProfile/composed'
 import HTPComposed from '@components/HeadTeacherProfile/composed'
 
-import { delayedApiAxios, redirectTo, setFeedbackData, usePrevious } from '@utils'
+import {
+    delayedApiAxios,
+    redirectTo,
+    setFeedbackData,
+    usePrevious,
+    detectSanitization
+} from '@utils'
 
 const HeadTeacherProfileContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -49,7 +55,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                 setIsLoading(false)
                 const { name, type, description, address, creationDate, hasSchool } = response.data
                 if (!hasSchool) {
-                    setFeedbackData('Musisz utworzyć najpierw szkołę w systemie!', 'Ok')
+                    setFeedbackData('Musisz najpierw utworzyć szkołę w systemie!', 'Ok')
                     redirectTo('/dyrektor/tworzenie-szkoły')
                 }
                 setName(name)
@@ -72,8 +78,16 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
             setNameError('Wprowadź nazwę szkoły!')
             isValidated = false
         }
+        if (detectSanitization(name)) {
+            setNameError('Nazwa szkoły zawiera niedozwolone znaki!')
+            isValidated = false
+        }
         if (!type) {
-            setTypeError('Zaznacz typ szkoły!')
+            setTypeError('Zaznacz rodzaj szkoły!')
+            isValidated = false
+        }
+        if (detectSanitization(type)) {
+            setTypeError('Rodzaj szkoły zawiera niedozwolone znaki!')
             isValidated = false
         }
         if (!description) {
@@ -82,6 +96,10 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
         }
         if (!address) {
             setAddressError('Wprowadź adres szkoły!')
+            isValidated = false
+        }
+        if (detectSanitization(address)) {
+            setAddressError('Adres szkoły zawiera niedozwolone znaki!')
             isValidated = false
         }
         switch (true) {

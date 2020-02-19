@@ -45,10 +45,10 @@ export const validation = () => [
     check('type')
         .trim()
         .notEmpty()
-        .withMessage('Zaznacz typ szkoły!')
+        .withMessage('Zaznacz rodzaj szkoły!')
         .bail()
         .custom(detectSanitization)
-        .withMessage('Typ szkoły zawiera niedozwolone znaki!'),
+        .withMessage('Rodzaj szkoły zawiera niedozwolone znaki!'),
     check('description')
         .trim()
         .notEmpty()
@@ -75,7 +75,4 @@ export const validation = () => [
         .withMessage(
             `Wprowadź poprawną date utworzenia szkoły (np. ${moment().format('DD.MM.YYYY')})!`
         )
-        .bail()
-        .custom(detectSanitization)
-        .withMessage('Data utworzenia zawiera niedozwolone znaki!')
 ]

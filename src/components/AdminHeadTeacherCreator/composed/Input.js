@@ -13,8 +13,12 @@ const InputContainer = styled.div`
 const Input = ({ id, label, value, placeholder, error, onChange, textarea, secure, trim }) => {
     const textareaRef = useRef()
     useEffect(() => {
-        if (textarea && textareaRef.current) {
-            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+        if (!value && textareaRef.current) {
+            textareaRef.current.style.height = '50px'
+        } else {
+            if (textarea && textareaRef.current) {
+                textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+            }
         }
     }, [value])
     const handleOnChange = ({ target }) => {

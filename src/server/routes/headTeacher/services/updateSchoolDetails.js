@@ -9,7 +9,7 @@ export default async (req, res, next) => {
     try {
         const school = await req.user.getSchool()
         if (!school) {
-            throw new ApiError(`Musisz utworzyć najpierw szkołę w systemie!`, 409)
+            throw new ApiError(`Musisz najpierw utworzyć szkołę w systemie!`, 409)
         }
         const { name, type, description, address, creationDate } = req.body
         school.update({
@@ -35,6 +35,7 @@ export const validation = () => [
         .bail()
         .custom(detectSanitization)
         .withMessage('Nazwa szkoły zawiera niedozwolone znaki!')
+        .bail()
         .custom(async (name, { req }) => {
             const school = await School.findOne({
                 where: {
@@ -54,10 +55,10 @@ export const validation = () => [
     check('type')
         .trim()
         .notEmpty()
-        .withMessage('Zaznacz typ szkoły!')
+        .withMessage('Zaznacz rodzaj szkoły!')
         .bail()
         .custom(detectSanitization)
-        .withMessage('Typ szkoły zawiera niedozwolone znaki!'),
+        .withMessage('Rodzaj szkoły zawiera niedozwolone znaki!'),
     check('description')
         .trim()
         .notEmpty()
@@ -84,7 +85,4 @@ export const validation = () => [
         .withMessage(
             `Wprowadź poprawną date utworzenia szkoły (np. ${moment().format('DD.MM.YYYY')})!`
         )
-        .bail()
-        .custom(detectSanitization)
-        .withMessage('Data utworzenia zawiera niedozwolone znaki!')
 ]

@@ -24,4 +24,5 @@ export const validation = () => [
         .notEmpty()
         .bail()
         .isInt()
+        .escape()
 ]

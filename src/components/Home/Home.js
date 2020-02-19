@@ -27,14 +27,42 @@ const Home = () => {
             <Dashboard.Header>Witaj w aplikacji Reemteach</Dashboard.Header>
             <Dashboard.Annotation>Wybierz swoją pozycję w szkole</Dashboard.Annotation>
             <Dashboard.ButtonsContainer>
-                <Dashboard.AdminButton onDoubleClick={() => setShouldAdminFormAppear(true)} />
-                <Dashboard.Button onClick={() => setShouldHeadTeacherFormAppear(true)}>
+                <Dashboard.AdminButton
+                    onDoubleClick={() => {
+                        setShouldAdminFormAppear(true)
+                        setShouldHeadTeacherFormAppear(false)
+                        setShouldTeacherFormAppear(false)
+                        setShouldStudentFormAppear(false)
+                    }}
+                />
+                <Dashboard.Button
+                    onClick={() => {
+                        setShouldAdminFormAppear(false)
+                        setShouldHeadTeacherFormAppear(true)
+                        setShouldTeacherFormAppear(false)
+                        setShouldStudentFormAppear(false)
+                    }}
+                >
                     Dyrektor
                 </Dashboard.Button>
-                <Dashboard.Button onClick={() => setShouldTeacherFormAppear(true)}>
+                <Dashboard.Button
+                    onClick={() => {
+                        setShouldAdminFormAppear(false)
+                        setShouldHeadTeacherFormAppear(false)
+                        setShouldTeacherFormAppear(true)
+                        setShouldStudentFormAppear(false)
+                    }}
+                >
                     Nauczyciel
                 </Dashboard.Button>
-                <Dashboard.Button onClick={() => setShouldStudentFormAppear(true)}>
+                <Dashboard.Button
+                    onClick={() => {
+                        setShouldAdminFormAppear(false)
+                        setShouldHeadTeacherFormAppear(false)
+                        setShouldTeacherFormAppear(false)
+                        setShouldStudentFormAppear(true)
+                    }}
+                >
                     Uczeń
                 </Dashboard.Button>
             </Dashboard.ButtonsContainer>

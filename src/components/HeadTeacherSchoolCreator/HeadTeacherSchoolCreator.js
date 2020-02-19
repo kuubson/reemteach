@@ -67,7 +67,7 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
             isValidated = false
         }
         if (!type) {
-            setTypeError('Zaznacz typ szkoły!')
+            setTypeError('Zaznacz rodzaj szkoły!')
             isValidated = false
         }
         if (!description) {
@@ -172,7 +172,7 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     id="type"
                     label="Rodzaj szkoły"
                     value={type}
-                    placeholder="Zaznacz typ szkoły..."
+                    placeholder="Zaznacz rodzaj szkoły..."
                     options={['Gimnazjum', 'Technikum', 'Liceum']}
                     error={typeError}
                     onChange={setType}

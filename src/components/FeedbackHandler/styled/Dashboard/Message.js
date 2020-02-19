@@ -3,7 +3,6 @@ import styled from 'styled-components/macro'
 export default styled.p`
     width: 600px;
     font-size: 14px;
-    margin-bottom: 80px;
     color: white;
     text-align: center;
     line-height: 1.7;

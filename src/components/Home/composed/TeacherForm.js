@@ -35,7 +35,7 @@ const TeacherForm = ({ onClick, shouldSlideIn }) => {
         setEmailError('')
         setPasswordError('')
         let isValidated = true
-        if (!validator.isEmail(email) || !email) {
+        if (!email || !validator.isEmail(email)) {
             setEmailError('Wprowadź poprawny adres e-mail!')
             isValidated = false
         }

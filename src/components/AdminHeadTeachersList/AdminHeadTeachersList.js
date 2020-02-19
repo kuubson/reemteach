@@ -16,7 +16,9 @@ import {
     delayedApiAxios,
     redirectTo,
     setFeedbackData,
-    setConfirmationPopupData
+    setConfirmationPopupData,
+    detectWhiteSpaces,
+    detectSanitization
 } from '@utils'
 
 const AdminHeadTeachersListContainer = styled(APDashboard.Container)`
@@ -75,7 +77,16 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
             )
         )
     const validateHeadTeacher = (name, surname, age) =>
-        name && surname && age && !isNaN(age) && age > 23 && age < 101
+        name &&
+        !detectWhiteSpaces(name) &&
+        !detectSanitization(name) &&
+        surname &&
+        !detectWhiteSpaces(surname) &&
+        !detectSanitization(surname) &&
+        age &&
+        !isNaN(age) &&
+        age > 23 &&
+        age < 101
     const updateHeadTeacher = async (id, email, name, surname, age) => {
         const url = '/api/admin/updateHeadTeacher'
         const response = await apiAxios.post(url, {
@@ -135,7 +146,13 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                                             'name',
                                                             name,
                                                             'nameError',
-                                                            !name ? 'Wprowadź imię!' : '',
+                                                            !name
+                                                                ? 'Wprowadź imię!'
+                                                                : detectWhiteSpaces(name)
+                                                                ? 'Wprowadź poprawne imię!'
+                                                                : detectSanitization(name)
+                                                                ? 'Imię zawiera niedozwolone znaki!'
+                                                                : '',
                                                             validateHeadTeacher(name, surname, age)
                                                         )
                                                     }
@@ -151,7 +168,13 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                                             'surname',
                                                             surname,
                                                             'surnameError',
-                                                            !surname ? 'Wprowadź nazwisko!' : '',
+                                                            !surname
+                                                                ? 'Wprowadź nazwisko!'
+                                                                : detectWhiteSpaces(surname)
+                                                                ? 'Wprowadź poprawne nazwisko!'
+                                                                : detectSanitization(surname)
+                                                                ? 'Nazwisko zawiera niedozwolone znaki!'
+                                                                : '',
                                                             validateHeadTeacher(name, surname, age)
                                                         )
                                                     }
@@ -186,35 +209,32 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                             label="Data utworzenia"
                                             value={new Date(createdAt).toLocaleString()}
                                         />
-                                        {!isActivated ||
-                                            (shouldSaveButtonAppear && (
-                                                <Dashboard.ButtonsContainer>
-                                                    {!isActivated && (
-                                                        <Dashboard.Button
-                                                            onClick={() =>
-                                                                removeHeadTeacher(id, email)
-                                                            }
-                                                        >
-                                                            Usuń
-                                                        </Dashboard.Button>
-                                                    )}
-                                                    {shouldSaveButtonAppear && (
-                                                        <Dashboard.Button
-                                                            onClick={() =>
-                                                                updateHeadTeacher(
-                                                                    id,
-                                                                    email,
-                                                                    name,
-                                                                    surname,
-                                                                    age
-                                                                )
-                                                            }
-                                                        >
-                                                            Zapisz
-                                                        </Dashboard.Button>
-                                                    )}
-                                                </Dashboard.ButtonsContainer>
-                                            ))}
+                                        {(!isActivated || shouldSaveButtonAppear) && (
+                                            <Dashboard.ButtonsContainer>
+                                                {!isActivated && (
+                                                    <Dashboard.Button
+                                                        onClick={() => removeHeadTeacher(id, email)}
+                                                    >
+                                                        Usuń
+                                                    </Dashboard.Button>
+                                                )}
+                                                {shouldSaveButtonAppear && (
+                                                    <Dashboard.Button
+                                                        onClick={() =>
+                                                            updateHeadTeacher(
+                                                                id,
+                                                                email,
+                                                                name,
+                                                                surname,
+                                                                age
+                                                            )
+                                                        }
+                                                    >
+                                                        Zapisz
+                                                    </Dashboard.Button>
+                                                )}
+                                            </Dashboard.ButtonsContainer>
+                                        )}
                                     </Dashboard.DetailsContainer>
                                 )
                             }
