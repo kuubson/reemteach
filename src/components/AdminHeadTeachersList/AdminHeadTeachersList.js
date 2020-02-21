@@ -44,13 +44,13 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
         }
         getHeadTeachers()
     }, [])
-    const removeHeadTeacher = (id, email) => {
+    const destroyHeadTeacher = (id, email) => {
         setConfirmationPopupData(
             `Czy napewno chcesz usunąć dyrektora ${email} z systemu?`,
             'Tak',
             'Nie',
             async () => {
-                const url = '/api/admin/removeHeadTeacher'
+                const url = '/api/admin/destroyHeadTeacher'
                 const response = await apiAxios.post(url, {
                     id,
                     email
@@ -127,8 +127,8 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                 nameError,
                                 surnameError,
                                 ageError,
-                                createdAt,
                                 isActivated,
+                                createdAt,
                                 shouldSaveButtonAppear
                             }) => {
                                 return (
@@ -213,7 +213,9 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
                                             <Dashboard.ButtonsContainer>
                                                 {!isActivated && (
                                                     <Dashboard.Button
-                                                        onClick={() => removeHeadTeacher(id, email)}
+                                                        onClick={() =>
+                                                            destroyHeadTeacher(id, email)
+                                                        }
                                                     >
                                                         Usuń
                                                     </Dashboard.Button>

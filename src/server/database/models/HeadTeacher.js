@@ -1,7 +1,7 @@
 import { Model, DataTypes } from 'sequelize'
 import bcrypt from 'bcryptjs'
 
-const { STRING, TEXT, INTEGER } = DataTypes
+const { STRING, TEXT, INTEGER, BOOLEAN } = DataTypes
 
 export default sequelize => {
     class HeadTeacher extends Model {}
@@ -23,6 +23,10 @@ export default sequelize => {
             },
             age: {
                 type: INTEGER
+            },
+            isActivated: {
+                type: BOOLEAN,
+                defaultValue: false
             }
         },
         {

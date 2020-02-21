@@ -13,4 +13,7 @@ export default styled.input`
     @media (max-width: 600px) {
         font-size: 11px;
     }
+    @media (max-width: 500px) {
+        letter-spacing: 1.5px;
+    }
 `

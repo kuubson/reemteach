@@ -41,11 +41,11 @@ const Guest = ({ children, socket, setSocket, shouldFeedbackHandlerAppear }) => 
         confirmToken()
         setTimeout(() => {
             setShouldChildrenAppear(true)
+            if (socket) {
+                socket.disconnect()
+                setSocket()
+            }
         }, 0)
-        if (socket) {
-            socket.disconnect()
-            setSocket()
-        }
     }, [])
     return (
         shouldChildrenAppear && (

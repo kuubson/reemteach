@@ -50,4 +50,14 @@ router.post(
     Services.updateSchoolDetails.default
 )
 
+router.get('/headTeacher/getSchoolBells', authWithJwt, Services.getSchoolBells.default)
+
+router.post(
+    '/headTeacher/updateSchoolBells',
+    authWithJwt,
+    Services.updateSchoolBells.validation(),
+    checkValidationResult,
+    Services.updateSchoolBells.default
+)
+
 export default router

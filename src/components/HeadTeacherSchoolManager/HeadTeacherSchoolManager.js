@@ -15,12 +15,13 @@ import HTPComposed from '@components/HeadTeacherProfile/composed'
 import {
     delayedApiAxios,
     redirectTo,
+    delayedRedirectTo,
     setFeedbackData,
     usePrevious,
     detectSanitization
 } from '@utils'
 
-const HeadTeacherProfileContainer = styled(APDashboard.Container)`
+const HeadTeacherSchoolManagerContainer = styled(APDashboard.Container)`
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -28,7 +29,7 @@ const HeadTeacherProfileContainer = styled(APDashboard.Container)`
     flex-direction: column;
 `
 
-const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
+const HeadTeacherSchoolManager = ({ closeMenuOnClick, shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [name, setName] = useState('')
     const [type, setType] = useState('')
@@ -56,13 +57,14 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                 const { name, type, description, address, creationDate, hasSchool } = response.data
                 if (!hasSchool) {
                     setFeedbackData('Musisz najpierw utworzyć szkołę w systemie!', 'Ok')
-                    redirectTo('/dyrektor/tworzenie-szkoły')
+                    delayedRedirectTo('/dyrektor/tworzenie-szkoły')
+                } else {
+                    setName(name)
+                    setType(type)
+                    setDescription(description)
+                    setAddress(address)
+                    setCreationDate(creationDate)
                 }
-                setName(name)
-                setType(type)
-                setDescription(description)
-                setAddress(address)
-                setCreationDate(creationDate)
             }
         }
         getSchool()
@@ -74,33 +76,45 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
         setAddressError('')
         setCreationDateError('')
         let isValidated = true
-        if (!name) {
-            setNameError('Wprowadź nazwę szkoły!')
-            isValidated = false
+        switch (true) {
+            case !name:
+                setNameError('Wprowadź nazwę szkoły!')
+                isValidated = false
+                break
+            case detectSanitization(name):
+                setNameError('Nazwa szkoły zawiera niedozwolone znaki!')
+                isValidated = false
+                break
+            default:
+                setNameError('')
         }
-        if (detectSanitization(name)) {
-            setNameError('Nazwa szkoły zawiera niedozwolone znaki!')
-            isValidated = false
-        }
-        if (!type) {
-            setTypeError('Zaznacz rodzaj szkoły!')
-            isValidated = false
-        }
-        if (detectSanitization(type)) {
-            setTypeError('Rodzaj szkoły zawiera niedozwolone znaki!')
-            isValidated = false
+        switch (true) {
+            case !type:
+                setTypeError('Zaznacz rodzaj szkoły!')
+                isValidated = false
+                break
+            case detectSanitization(type):
+                setTypeError('Rodzaj szkoły zawiera niedozwolone znaki!')
+                isValidated = false
+                break
+            default:
+                setTypeError('')
         }
         if (!description) {
             setDescriptionError('Wprowadź opis szkoły!')
             isValidated = false
         }
-        if (!address) {
-            setAddressError('Wprowadź adres szkoły!')
-            isValidated = false
-        }
-        if (detectSanitization(address)) {
-            setAddressError('Adres szkoły zawiera niedozwolone znaki!')
-            isValidated = false
+        switch (true) {
+            case !address:
+                setAddressError('Wprowadź adres szkoły!')
+                isValidated = false
+                break
+            case detectSanitization(address):
+                setAddressError('Adres szkoły zawiera niedozwolone znaki!')
+                isValidated = false
+                break
+            default:
+                setAddressError('')
         }
         switch (true) {
             case !creationDate:
@@ -189,12 +203,21 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
         }
     }
     return (
-        <HeadTeacherProfileContainer withMenu={shouldMenuAppear} withMorePadding>
+        <HeadTeacherSchoolManagerContainer withMenu={shouldMenuAppear} withMorePadding>
             <APComposed.Menu>
                 <APMenu.Option
                     onClick={() => closeMenuOnClick(() => redirectTo('/dyrektor/profil'))}
                 >
                     Strona główna
+                </APMenu.Option>
+                <APMenu.Option
+                    onClick={() =>
+                        closeMenuOnClick(() =>
+                            redirectTo('/dyrektor/zarządzanie-dzwonkami-w-szkole')
+                        )
+                    }
+                >
+                    Zarządzaj dzwonkami
                 </APMenu.Option>
             </APComposed.Menu>
             {!isLoading && (
@@ -242,8 +265,8 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     </HTPDetail.DetailsContainer>
                 </>
             )}
-        </HeadTeacherProfileContainer>
+        </HeadTeacherSchoolManagerContainer>
     )
 }
 
-export default compose(withMenu)(HeadTeacherProfile)
+export default compose(withMenu)(HeadTeacherSchoolManager)

@@ -2,24 +2,28 @@ import { check } from 'express-validator'
 
 import { HeadTeacher } from '@database'
 
-import { detectSanitization, detectWhiteSpaces } from '@utils'
+import { ApiError, detectSanitization, detectWhiteSpaces } from '@utils'
 
 export default async (req, res, next) => {
     try {
         const { id, email, name, surname, age } = req.body
-        await HeadTeacher.update(
-            {
-                name,
-                surname,
-                age
-            },
-            {
-                where: {
-                    id,
-                    email
-                }
+        const headTeacher = await HeadTeacher.findOne({
+            where: {
+                id,
+                email
             }
-        )
+        })
+        if (!headTeacher) {
+            throw new ApiError(
+                `Wystąpił niespodziewany błąd przy aktualizowaniu profilu dyrektora ${name} ${surname}`,
+                409
+            )
+        }
+        await headTeacher.update({
+            name,
+            surname,
+            age
+        })
         res.send({
             successMessage: `Pomyślnie zaktualizowano profil dyrektora ${name} ${surname}!`
         })

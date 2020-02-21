@@ -27,11 +27,11 @@ router.post(
 router.get('/admin/getHeadTeachers', authWithJwt, Services.getHeadTeachers.default)
 
 router.post(
-    '/admin/removeHeadTeacher',
+    '/admin/destroyHeadTeacher',
     authWithJwt,
-    Services.removeHeadTeacher.validation(),
+    Services.destroyHeadTeacher.validation(),
     checkValidationResult,
-    Services.removeHeadTeacher.default
+    Services.destroyHeadTeacher.default
 )
 
 router.post(

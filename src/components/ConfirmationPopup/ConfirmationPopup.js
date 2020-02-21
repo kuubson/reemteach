@@ -25,18 +25,17 @@ const ConfirmationPopup = ({
     confirmationPopupData: { message, confirmationButtonText, rejectionButtonText, callback },
     setShouldConfirmationPopupAppear
 }) => {
+    const closeConfirmationPopup = () => {
+        if (typeof callback === 'function') {
+            callback()
+        }
+        setShouldConfirmationPopupAppear(false)
+    }
     return (
         <ConfirmationPopupContainer>
             <Dashboard.Message>{message}</Dashboard.Message>
             <Dashboard.ButtonsContainer>
-                <Dashboard.Button
-                    onClick={() => {
-                        if (typeof callback === 'function') {
-                            callback()
-                        }
-                        setShouldConfirmationPopupAppear(false)
-                    }}
-                >
+                <Dashboard.Button onClick={closeConfirmationPopup}>
                     {confirmationButtonText}
                 </Dashboard.Button>
                 <Dashboard.Button onClick={() => setShouldConfirmationPopupAppear(false)}>

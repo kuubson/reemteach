@@ -1,7 +1,8 @@
 import styled from 'styled-components/macro'
 
 export default styled.button`
-    margin: 40px auto 0px auto;
+    margin: ${({ withLessMargin }) =>
+        withLessMargin ? '20px auto 0px auto' : '40px auto 0px auto'};
     font-weight: 600;
     border: 1px solid black;
     text-align: center;

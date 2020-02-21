@@ -14,7 +14,7 @@ const MenuContainer = styled.div`
     height: 100vh;
     overflow-y: auto;
     background: #f24b4b;
-    transform: ${({ shown }) => (shown ? 'translate(-0%, 0%)' : 'translate(-100%, 0%)')};
+    transform: ${({ visible }) => (visible ? 'translate(-0%, 0%)' : 'translate(-100%, 0%)')};
     transition: transform 0.8s ease-in-out, width 0.8s ease-in-out;
     position: fixed;
     top: 0px;
@@ -50,11 +50,14 @@ const Menu = ({ children, shouldMenuAppear, setShouldMenuAppear }) => {
     }
     return (
         <>
-            <StyledMenu.Button onClick={() => setShouldMenuAppear(true)} shown={!shouldMenuAppear}>
+            <StyledMenu.Button
+                onClick={() => setShouldMenuAppear(true)}
+                visible={!shouldMenuAppear}
+            >
                 Menu
             </StyledMenu.Button>
             {(shouldMenuAppear === true || shouldMenuAppear === false) && (
-                <MenuContainer shown={shouldMenuAppear}>
+                <MenuContainer visible={shouldMenuAppear}>
                     <HForm.CloseButton onClick={() => setShouldMenuAppear(false)} />
                     <StyledMenu.OptionsContainer>
                         {children}

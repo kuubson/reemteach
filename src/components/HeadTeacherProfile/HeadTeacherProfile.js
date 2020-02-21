@@ -82,29 +82,37 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
         setPasswordError('')
         setRepeatedPasswordError('')
         let isValidated = true
-        if (!name) {
-            setNameError('Wprowadź imię!')
-            isValidated = false
+        switch (true) {
+            case !name:
+                setNameError('Wprowadź imię!')
+                isValidated = false
+                break
+            case detectWhiteSpaces(name):
+                setNameError('Wprowadź poprawne imię!')
+                isValidated = false
+                break
+            case detectSanitization(name):
+                setNameError('Imię zawiera niedozwolone znaki!')
+                isValidated = false
+                break
+            default:
+                setNameError('')
         }
-        if (detectWhiteSpaces(name)) {
-            setNameError('Wprowadź poprawne imię!')
-            isValidated = false
-        }
-        if (detectSanitization(name)) {
-            setNameError('Imię zawiera niedozwolone znaki!')
-            isValidated = false
-        }
-        if (!surname) {
-            setSurnameError('Wprowadź nazwisko!')
-            isValidated = false
-        }
-        if (detectWhiteSpaces(surname)) {
-            setSurnameError('Wprowadź poprawne nazwisko!')
-            isValidated = false
-        }
-        if (detectSanitization(surname)) {
-            setSurnameError('Nazwisko zawiera niedozwolone znaki!')
-            isValidated = false
+        switch (true) {
+            case !surname:
+                setSurnameError('Wprowadź nazwisko!')
+                isValidated = false
+                break
+            case detectWhiteSpaces(surname):
+                setSurnameError('Wprowadź poprawne nazwisko!')
+                isValidated = false
+                break
+            case detectSanitization(surname):
+                setSurnameError('Nazwisko zawiera niedozwolone znaki!')
+                isValidated = false
+                break
+            default:
+                setSurnameError('')
         }
         switch (true) {
             case !age:
@@ -267,7 +275,7 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
         }
     }
     return (
-        <HeadTeacherProfileContainer withMenu={shouldMenuAppear}>
+        <HeadTeacherProfileContainer withMenu={shouldMenuAppear} withMorePadding>
             <APComposed.Menu>
                 {hasSchool === false && (
                     <APMenu.Option
@@ -279,13 +287,24 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
                     </APMenu.Option>
                 )}
                 {hasSchool && (
-                    <APMenu.Option
-                        onClick={() =>
-                            closeMenuOnClick(() => redirectTo('/dyrektor/zarządzanie-szkołą'))
-                        }
-                    >
-                        Twoja szkoła
-                    </APMenu.Option>
+                    <>
+                        <APMenu.Option
+                            onClick={() =>
+                                closeMenuOnClick(() => redirectTo('/dyrektor/zarządzanie-szkołą'))
+                            }
+                        >
+                            Twoja szkoła
+                        </APMenu.Option>
+                        <APMenu.Option
+                            onClick={() =>
+                                closeMenuOnClick(() =>
+                                    redirectTo('/dyrektor/zarządzanie-dzwonkami-w-szkole')
+                                )
+                            }
+                        >
+                            Zarządzaj dzwonkami
+                        </APMenu.Option>
+                    </>
                 )}
             </APComposed.Menu>
             {!isLoading && (

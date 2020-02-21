@@ -76,7 +76,7 @@ const AdminHeadTeacherCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
             <APDashboard.Header>Utwórz nowego dyrektora w systemie</APDashboard.Header>
             <Form.Form onSubmit={handleSubmit}>
                 <Composed.Input
-                    id="headTeacherEmail"
+                    id="email"
                     label="E-mail"
                     value={email}
                     placeholder="Wprowadź adres e-mail..."

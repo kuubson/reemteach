@@ -11,6 +11,7 @@ const Authentication = connection.import('./models/Authentication')
 const Admin = connection.import('./models/Admin')
 const HeadTeacher = connection.import('./models/HeadTeacher')
 const School = connection.import('./models/School')
+const SchoolBell = connection.import('./models/SchoolBell')
 const Teacher = connection.import('./models/Teacher')
 const Student = connection.import('./models/Student')
 
@@ -21,6 +22,9 @@ Student.belongsTo(Authentication)
 
 HeadTeacher.hasOne(School)
 School.belongsTo(HeadTeacher)
+
+School.hasMany(SchoolBell)
+SchoolBell.belongsTo(School)
 
 const initializeDatabaseConnection = async () => {
     try {
@@ -37,4 +41,4 @@ const initializeDatabaseConnection = async () => {
 }
 initializeDatabaseConnection()
 
-export { Admin, HeadTeacher, School, Teacher, Student }
+export { Admin, HeadTeacher, School, SchoolBell, Teacher, Student }

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components/macro'
-import io from 'socket.io-client'
 
 import { compose } from 'redux'
-import { withRouter, withSocket, withFeedbackHandler } from '@hoc'
+import { withRouter, withFeedbackHandler } from '@hoc'
 
 import { delayedApiAxios, delayedRedirectTo } from '@utils'
 
-const UserContainer = styled.div`
+const HeadTeacherContainer = styled.div`
     ${({ blurred }) => {
         if (blurred)
             return css`
@@ -17,30 +16,22 @@ const UserContainer = styled.div`
     }}
 `
 
-const User = ({
-    children,
-    role: roleToConfirm,
-    location,
-    socket,
-    setSocket,
-    shouldFeedbackHandlerAppear
-}) => {
+const HeadTeacher = ({ children, shouldFeedbackHandlerAppear }) => {
     const [shouldChildrenAppear, setShouldChildrenAppear] = useState(false)
     useEffect(() => {
         const confirmToken = async () => {
             const url = '/api/confirmToken'
             const response = await delayedApiAxios.get(url)
             if (response) {
+                const profilePathname = '/dyrektor/profil'
                 const { role, isActivated } = response.data
-                if (role === 'guest' || role !== roleToConfirm) {
+                if (role === 'guest' || role !== 'headTeacher') {
                     delayedRedirectTo('/')
                 }
-                if (role === 'headTeacher') {
-                    if (!isActivated && location.pathname !== '/dyrektor/profil') {
-                        setTimeout(() => {
-                            delayedRedirectTo('/dyrektor/profil')
-                        }, 800)
-                    }
+                if (!isActivated && location.pathname !== profilePathname) {
+                    setTimeout(() => {
+                        delayedRedirectTo(profilePathname)
+                    }, 800)
                 }
             }
         }
@@ -49,16 +40,13 @@ const User = ({
             setShouldChildrenAppear(true)
         }, 0)
     }, [])
-    useEffect(() => {
-        if (!socket) {
-            setSocket(io())
-        }
-    }, [socket])
     return (
         shouldChildrenAppear && (
-            <UserContainer blurred={shouldFeedbackHandlerAppear}>{children}</UserContainer>
+            <HeadTeacherContainer blurred={shouldFeedbackHandlerAppear}>
+                {children}
+            </HeadTeacherContainer>
         )
     )
 }
 
-export default compose(withRouter, withSocket, withFeedbackHandler)(User)
+export default compose(withRouter, withFeedbackHandler)(HeadTeacher)

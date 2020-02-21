@@ -13,7 +13,7 @@ import APComposed from '@components/AdminProfile/composed'
 import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 import Composed from './composed'
 
-import { apiAxios, delayedApiAxios, redirectTo, setFeedbackData } from '@utils'
+import { apiAxios, delayedApiAxios, redirectTo, delayedRedirectTo, setFeedbackData } from '@utils'
 
 const HeadTeacherSchoolCreatorContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -43,7 +43,7 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
                 const { hasSchool } = response.data
                 if (hasSchool) {
                     setFeedbackData('Utworzyłeś już szkołę w systemie!', 'Ok')
-                    redirectTo('/dyrektor/zarządzanie-szkołą')
+                    delayedRedirectTo('/dyrektor/zarządzanie-szkołą')
                 }
             }
         }

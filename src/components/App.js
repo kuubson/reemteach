@@ -8,8 +8,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { compose } from 'redux'
 import { withRouter, withLoader, withFeedbackHandler, withConfirmationPopup } from '@hoc'
 
-import Guest from './Routes/Guest'
-import User from './Routes/User'
+import Roles from './Roles'
 
 import FeedbackHandler from './FeedbackHandler/FeedbackHandler'
 import ConfirmationPopup from './ConfirmationPopup/ConfirmationPopup'
@@ -24,6 +23,7 @@ import AdminHeadTeachersList from './AdminHeadTeachersList/AdminHeadTeachersList
 import HeadTeacherProfile from './HeadTeacherProfile/HeadTeacherProfile'
 import HeadTeacherSchoolCreator from './HeadTeacherSchoolCreator/HeadTeacherSchoolCreator'
 import HeadTeacherSchoolManager from './HeadTeacherSchoolManager/HeadTeacherSchoolManager'
+import HeadTeacherSchoolBellsManager from './HeadTeacherSchoolBellsManager/HeadTeacherSchoolBellsManager'
 
 import TeacherProfile from './TeacherProfile/TeacherProfile'
 
@@ -43,96 +43,104 @@ const App = ({
 }) => {
     const routes = [
         {
-            path: '/',
+            pathname: '/',
             order: 1,
-            shouldBeExactPath: true,
             render: () => (
-                <Guest>
+                <Roles.Guest>
                     <Home />
-                </Guest>
+                </Roles.Guest>
             )
         },
         {
-            path: '/admin/profil',
+            pathname: '/admin/profil',
             order: 2,
             render: () => (
-                <User role="admin">
+                <Roles.Admin>
                     <AdminProfile />
-                </User>
+                </Roles.Admin>
             )
         },
         {
-            path: '/admin/tworzenie-dyrektora',
+            pathname: '/admin/tworzenie-dyrektora',
             order: 3,
             render: () => (
-                <User role="admin">
+                <Roles.Admin>
                     <AdminHeadTeacherCreator />
-                </User>
+                </Roles.Admin>
             )
         },
         {
-            path: '/admin/lista-dyrektorów',
+            pathname: '/admin/lista-dyrektorów',
             order: 4,
             render: () => (
-                <User role="admin">
+                <Roles.Admin>
                     <AdminHeadTeachersList />
-                </User>
+                </Roles.Admin>
             )
         },
         {
-            path: '/dyrektor/profil',
+            pathname: '/dyrektor/profil',
             order: 2,
             render: () => (
-                <User role="headTeacher">
+                <Roles.HeadTeacher>
                     <HeadTeacherProfile />
-                </User>
+                </Roles.HeadTeacher>
             )
         },
         {
-            path: '/dyrektor/tworzenie-szkoły',
+            pathname: '/dyrektor/tworzenie-szkoły',
             order: 3,
             render: () => (
-                <User role="headTeacher">
+                <Roles.HeadTeacher>
                     <HeadTeacherSchoolCreator />
-                </User>
+                </Roles.HeadTeacher>
             )
         },
         {
-            path: '/dyrektor/zarządzanie-szkołą',
+            pathname: '/dyrektor/zarządzanie-szkołą',
             order: 4,
             render: () => (
-                <User role="headTeacher">
+                <Roles.HeadTeacher>
                     <HeadTeacherSchoolManager />
-                </User>
+                </Roles.HeadTeacher>
             )
         },
         {
-            path: '/nauczyciel/profil',
+            pathname: '/dyrektor/zarządzanie-dzwonkami-w-szkole',
+            order: 5,
+            render: () => (
+                <Roles.HeadTeacher>
+                    <HeadTeacherSchoolBellsManager />
+                </Roles.HeadTeacher>
+            )
+        },
+        {
+            pathname: '/nauczyciel/profil',
             order: 2,
             render: () => (
-                <User role="teacher">
+                <Roles.Teacher>
                     <TeacherProfile />
-                </User>
+                </Roles.Teacher>
             )
         },
         {
-            path: '/uczeń/profil',
+            pathname: '/uczeń/profil',
             order: 2,
             render: () => (
-                <User role="student">
+                <Roles.Student>
                     <StudentProfile />
-                </User>
+                </Roles.Student>
             )
         },
         {
-            path: '*',
+            pathname: '*',
             order: 1,
             render: () => <Redirect to="/" />
         }
     ]
-    const getExactRoute = value => routes.filter(({ path }) => path === value)[0]
+    const getExactRoute = value => routes.filter(({ pathname }) => pathname === value)[0]
     const getSimilarRoute = value =>
-        routes.filter(({ path }) => path.startsWith(value.substring(0, 6)))[0]
+        routes.filter(({ pathname }) => pathname.startsWith(value.substring(0, 6)))[0]
     const currentKey = location.pathname
     const [pageDirection, setPageDirection] = useState()
     const [currentPath, setCurrentPath] = useState(location.pathname)
@@ -166,11 +174,11 @@ const App = ({
                 <CSSTransition key={currentKey} timeout={800} classNames="route">
                     <div className="route__container">
                         <Switch location={location}>
-                            {routes.map(({ path, shouldBeExactPath, render }) => (
+                            {routes.map(({ pathname, render }) => (
                                 <Route
-                                    key={path}
-                                    exact={shouldBeExactPath}
-                                    path={path}
+                                    key={pathname}
+                                    path={pathname}
+                                    exact={true}
                                     render={render}
                                 />
                             ))}

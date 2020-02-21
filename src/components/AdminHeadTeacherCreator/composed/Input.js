@@ -4,13 +4,25 @@ import styled from 'styled-components/macro'
 import Form from '../styled/Form'
 
 const InputContainer = styled.div`
-    margin-bottom: 25px;
+    width: 100%;
+    margin: ${({ double }) => (double ? '0px 15px 0px 0px' : '0px 0px 25px 0px')};
     :last-of-type {
-        margin-bottom: 0px;
+        margin: 0px;
     }
 `
 
-const Input = ({ id, label, value, placeholder, error, onChange, textarea, secure, trim }) => {
+const Input = ({
+    id,
+    label,
+    value,
+    placeholder,
+    error,
+    onChange,
+    textarea,
+    secure,
+    trim,
+    double
+}) => {
     const textareaRef = useRef()
     useEffect(() => {
         if (!value && textareaRef.current) {
@@ -26,7 +38,7 @@ const Input = ({ id, label, value, placeholder, error, onChange, textarea, secur
         onChange(value)
     }
     return (
-        <InputContainer className={error && 'error'}>
+        <InputContainer className={error && 'error'} double={double}>
             <Form.Label htmlFor={id}>{label}</Form.Label>
             {textarea ? (
                 <Form.Textarea

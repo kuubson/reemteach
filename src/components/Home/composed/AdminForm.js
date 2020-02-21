@@ -6,7 +6,7 @@ import Form from '../styled/Form'
 
 import Composed from '../composed'
 
-import { apiAxios, redirectTo, detectWhiteSpaces } from '@utils'
+import { apiAxios, redirectTo } from '@utils'
 
 const AdminFormContainer = styled(Form.FormsContainer)`
     top: 100%;

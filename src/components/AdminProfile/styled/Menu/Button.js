@@ -9,7 +9,7 @@ export default styled.button`
     color: white;
     font-weight: 600;
     font-size: 10px;
-    opacity: ${({ shown }) => (shown ? 1 : 0)};
+    opacity: ${({ visible }) => (visible ? 1 : 0)};
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
     position: fixed;
     top: 30px;
