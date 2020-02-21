@@ -5,11 +5,8 @@ import { compose } from 'redux'
 import { withMenu } from '@hoc'
 
 import Dashboard from './styled/Dashboard'
-import Menu from './styled/Menu'
 
-import Composed from './composed'
-
-import { delayedApiAxios, redirectTo } from '@utils'
+import { delayedApiAxios } from '@utils'
 
 const AdminProfileContainer = styled(Dashboard.Container)`
     height: 100vh;
@@ -18,7 +15,7 @@ const AdminProfileContainer = styled(Dashboard.Container)`
     align-items: center;
 `
 
-const AdminProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
+const AdminProfile = ({ shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [email, setEmail] = useState('')
     useEffect(() => {
@@ -35,18 +32,6 @@ const AdminProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
     }, [])
     return (
         <AdminProfileContainer withMenu={shouldMenuAppear}>
-            <Composed.Menu>
-                <Menu.Option
-                    onClick={() => closeMenuOnClick(() => redirectTo('/admin/lista-dyrektorów'))}
-                >
-                    Lista dyrektorów
-                </Menu.Option>
-                <Menu.Option
-                    onClick={() => closeMenuOnClick(() => redirectTo('/admin/tworzenie-dyrektora'))}
-                >
-                    Utwórz dyrektora
-                </Menu.Option>
-            </Composed.Menu>
             {!isLoading && (
                 <Dashboard.Header>
                     Zalogowany jako <span>{email}</span>

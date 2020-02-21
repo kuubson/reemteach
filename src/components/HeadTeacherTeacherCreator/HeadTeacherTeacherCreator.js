@@ -6,13 +6,13 @@ import { compose } from 'redux'
 import { withMenu } from '@hoc'
 
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import Form from './styled/Form'
+import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
 
-import Composed from './composed'
+import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 
 import { apiAxios, setFeedbackData } from '@utils'
 
-const AdminHeadTeacherCreatorContainer = styled(APDashboard.Container)`
+const HeadTeacherTeacherCreatorContainer = styled(APDashboard.Container)`
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -20,7 +20,7 @@ const AdminHeadTeacherCreatorContainer = styled(APDashboard.Container)`
     flex-direction: column;
 `
 
-const AdminHeadTeacherCreator = ({ shouldMenuAppear }) => {
+const HeadTeacherTeacherCreator = ({ shouldMenuAppear }) => {
     const [email, setEmail] = useState('')
     const [emailError, setEmailError] = useState('')
     const validate = () => {
@@ -36,7 +36,7 @@ const AdminHeadTeacherCreator = ({ shouldMenuAppear }) => {
         e.preventDefault()
         if (validate()) {
             try {
-                const url = '/api/admin/createHeadTeacher'
+                const url = '/api/headTeacher/createTeacher'
                 const response = await apiAxios.post(url, {
                     email
                 })
@@ -60,10 +60,10 @@ const AdminHeadTeacherCreator = ({ shouldMenuAppear }) => {
         }
     }
     return (
-        <AdminHeadTeacherCreatorContainer withMenu={shouldMenuAppear}>
-            <APDashboard.Header>Utwórz nowego dyrektora w systemie</APDashboard.Header>
-            <Form.Form onSubmit={handleSubmit}>
-                <Composed.Input
+        <HeadTeacherTeacherCreatorContainer withMenu={shouldMenuAppear}>
+            <APDashboard.Header>Utwórz nowego nauczyciela w systemie</APDashboard.Header>
+            <AHTCForm.Form onSubmit={handleSubmit}>
+                <AHTCComposed.Input
                     id="email"
                     label="E-mail"
                     value={email}
@@ -72,10 +72,10 @@ const AdminHeadTeacherCreator = ({ shouldMenuAppear }) => {
                     onChange={setEmail}
                     trim
                 />
-                <Form.Submit>Utwórz dyrektora</Form.Submit>
-            </Form.Form>
-        </AdminHeadTeacherCreatorContainer>
+                <AHTCForm.Submit>Utwórz nauczyciela</AHTCForm.Submit>
+            </AHTCForm.Form>
+        </HeadTeacherTeacherCreatorContainer>
     )
 }
 
-export default compose(withMenu)(AdminHeadTeacherCreator)
+export default compose(withMenu)(HeadTeacherTeacherCreator)

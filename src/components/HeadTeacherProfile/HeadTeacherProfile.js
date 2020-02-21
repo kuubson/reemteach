@@ -5,18 +5,15 @@ import { compose } from 'redux'
 import { withMenu } from '@hoc'
 
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import APMenu from '@components/AdminProfile/styled/Menu'
 import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
 import Detail from './styled/Detail'
 
-import APComposed from '@components/AdminProfile/composed'
 import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 import Composed from './composed'
 
 import {
     apiAxios,
     delayedApiAxios,
-    redirectTo,
     setFeedbackData,
     usePrevious,
     detectWhiteSpaces,
@@ -31,7 +28,7 @@ const HeadTeacherProfileContainer = styled(APDashboard.Container)`
     flex-direction: column;
 `
 
-const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
+const HeadTeacherProfile = ({ shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [shouldScrollToError, setShouldScrollToError] = useState(false)
     const [email, setEmail] = useState('')
@@ -46,7 +43,6 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
     const [ageError, setAgeError] = useState('')
     const [passwordError, setPasswordError] = useState('')
     const [repeatedPasswordError, setRepeatedPasswordError] = useState('')
-    const [hasSchool, setHasSchool] = useState(false)
     const previousDetails = usePrevious({
         name,
         surname,
@@ -58,13 +54,12 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
             const response = await delayedApiAxios.get(url)
             if (response) {
                 setIsLoading(false)
-                const { email, name, surname, age, isActivated, hasSchool } = response.data
+                const { email, name, surname, age, isActivated } = response.data
                 setEmail(email)
                 setName(name)
                 setSurname(surname)
                 setAge(age)
                 setIsActivated(isActivated)
-                setHasSchool(hasSchool)
             }
         }
         getProfile()
@@ -276,37 +271,6 @@ const HeadTeacherProfile = ({ closeMenuOnClick, shouldMenuAppear }) => {
     }
     return (
         <HeadTeacherProfileContainer withMenu={shouldMenuAppear} withMorePadding>
-            <APComposed.Menu>
-                {hasSchool === false && (
-                    <APMenu.Option
-                        onClick={() =>
-                            closeMenuOnClick(() => redirectTo('/dyrektor/tworzenie-szkoły'))
-                        }
-                    >
-                        Utwórz szkołę
-                    </APMenu.Option>
-                )}
-                {hasSchool && (
-                    <>
-                        <APMenu.Option
-                            onClick={() =>
-                                closeMenuOnClick(() => redirectTo('/dyrektor/zarządzanie-szkołą'))
-                            }
-                        >
-                            Twoja szkoła
-                        </APMenu.Option>
-                        <APMenu.Option
-                            onClick={() =>
-                                closeMenuOnClick(() =>
-                                    redirectTo('/dyrektor/zarządzanie-dzwonkami-w-szkole')
-                                )
-                            }
-                        >
-                            Zarządzaj dzwonkami
-                        </APMenu.Option>
-                    </>
-                )}
-            </APComposed.Menu>
             {!isLoading && (
                 <>
                     {!isActivated && (

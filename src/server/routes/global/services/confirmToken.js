@@ -48,9 +48,11 @@ export default (req, res, next) => {
                                 clearCookie()
                             } else {
                                 const { isActivated } = headTeacher
+                                const hasSchool = !!headTeacher.getSchool()
                                 res.send({
                                     role: 'headTeacher',
-                                    isActivated
+                                    isActivated,
+                                    hasSchool
                                 })
                             }
                         } catch (error) {

@@ -5,16 +5,13 @@ import { compose } from 'redux'
 import { withMenu } from '@hoc'
 
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import APMenu from '@components/AdminProfile/styled/Menu'
 import Dashboard from './styled/Dashboard'
 
-import APComposed from '@components/AdminProfile/composed'
 import HTPComposed from '@components/HeadTeacherProfile/composed'
 
 import {
     apiAxios,
     delayedApiAxios,
-    redirectTo,
     setFeedbackData,
     setConfirmationPopupData,
     detectWhiteSpaces,
@@ -29,7 +26,7 @@ const AdminHeadTeachersListContainer = styled(APDashboard.Container)`
     flex-direction: column;
 `
 
-const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
+const AdminHeadTeachersList = ({ shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [headTeachers, setHeadTeachers] = useState([])
     useEffect(() => {
@@ -104,16 +101,6 @@ const AdminHeadTeachersList = ({ closeMenuOnClick, shouldMenuAppear }) => {
     }
     return (
         <AdminHeadTeachersListContainer withMenu={shouldMenuAppear} withMorePadding>
-            <APComposed.Menu>
-                <APMenu.Option onClick={() => closeMenuOnClick(() => redirectTo('/admin/profil'))}>
-                    Strona główna
-                </APMenu.Option>
-                <APMenu.Option
-                    onClick={() => closeMenuOnClick(() => redirectTo('/admin/tworzenie-dyrektora'))}
-                >
-                    Utwórz dyrektora
-                </APMenu.Option>
-            </APComposed.Menu>
             {!isLoading && (
                 <Dashboard.HeadTeachersContainer>
                     {headTeachers.length > 0 ? (

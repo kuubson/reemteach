@@ -6,15 +6,12 @@ import { compose } from 'redux'
 import { withMenu } from '@hoc'
 
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import APMenu from '@components/AdminProfile/styled/Menu'
 import HTPDetail from '@components/HeadTeacherProfile/styled/Detail'
 
-import APComposed from '@components/AdminProfile/composed'
 import HTPComposed from '@components/HeadTeacherProfile/composed'
 
 import {
     delayedApiAxios,
-    redirectTo,
     delayedRedirectTo,
     setFeedbackData,
     usePrevious,
@@ -29,7 +26,7 @@ const HeadTeacherSchoolManagerContainer = styled(APDashboard.Container)`
     flex-direction: column;
 `
 
-const HeadTeacherSchoolManager = ({ closeMenuOnClick, shouldMenuAppear }) => {
+const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [name, setName] = useState('')
     const [type, setType] = useState('')
@@ -204,22 +201,6 @@ const HeadTeacherSchoolManager = ({ closeMenuOnClick, shouldMenuAppear }) => {
     }
     return (
         <HeadTeacherSchoolManagerContainer withMenu={shouldMenuAppear} withMorePadding>
-            <APComposed.Menu>
-                <APMenu.Option
-                    onClick={() => closeMenuOnClick(() => redirectTo('/dyrektor/profil'))}
-                >
-                    Strona główna
-                </APMenu.Option>
-                <APMenu.Option
-                    onClick={() =>
-                        closeMenuOnClick(() =>
-                            redirectTo('/dyrektor/zarządzanie-dzwonkami-w-szkole')
-                        )
-                    }
-                >
-                    Zarządzaj dzwonkami
-                </APMenu.Option>
-            </APComposed.Menu>
             {!isLoading && (
                 <>
                     <APDashboard.Header>Dane twojej szkoły:</APDashboard.Header>

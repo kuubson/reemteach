@@ -6,10 +6,8 @@ import { compose } from 'redux'
 import { withMenu } from '@hoc'
 
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import APMenu from '@components/AdminProfile/styled/Menu'
 import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
 
-import APComposed from '@components/AdminProfile/composed'
 import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 import Composed from './composed'
 
@@ -23,7 +21,7 @@ const HeadTeacherSchoolCreatorContainer = styled(APDashboard.Container)`
     flex-direction: column;
 `
 
-const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
+const HeadTeacherSchoolCreator = ({ shouldMenuAppear }) => {
     const [shouldScrollToError, setShouldScrollToError] = useState(false)
     const [name, setName] = useState('')
     const [type, setType] = useState('')
@@ -151,13 +149,6 @@ const HeadTeacherSchoolCreator = ({ closeMenuOnClick, shouldMenuAppear }) => {
     }
     return (
         <HeadTeacherSchoolCreatorContainer withMenu={shouldMenuAppear} withMorePadding>
-            <APComposed.Menu>
-                <APMenu.Option
-                    onClick={() => closeMenuOnClick(() => redirectTo('/dyrektor/profil'))}
-                >
-                    Strona główna
-                </APMenu.Option>
-            </APComposed.Menu>
             <APDashboard.Header>Utwórz nową szkołę w systemie</APDashboard.Header>
             <AHTCForm.Form onSubmit={handleSubmit}>
                 <AHTCComposed.Input

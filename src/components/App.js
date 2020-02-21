@@ -24,6 +24,7 @@ import HeadTeacherProfile from './HeadTeacherProfile/HeadTeacherProfile'
 import HeadTeacherSchoolCreator from './HeadTeacherSchoolCreator/HeadTeacherSchoolCreator'
 import HeadTeacherSchoolManager from './HeadTeacherSchoolManager/HeadTeacherSchoolManager'
 import HeadTeacherSchoolBellsManager from './HeadTeacherSchoolBellsManager/HeadTeacherSchoolBellsManager'
+import HeadTeacherTeacherCreator from './HeadTeacherTeacherCreator/HeadTeacherTeacherCreator'
 
 import TeacherProfile from './TeacherProfile/TeacherProfile'
 
@@ -111,6 +112,15 @@ const App = ({
             render: () => (
                 <Roles.HeadTeacher>
                     <HeadTeacherSchoolBellsManager />
+                </Roles.HeadTeacher>
+            )
+        },
+        {
+            pathname: '/dyrektor/tworzenie-nauczyciela',
+            order: 6,
+            render: () => (
+                <Roles.HeadTeacher>
+                    <HeadTeacherTeacherCreator />
                 </Roles.HeadTeacher>
             )
         },

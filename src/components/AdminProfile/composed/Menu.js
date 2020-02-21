@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
@@ -15,8 +15,8 @@ const MenuContainer = styled.div`
     overflow-y: auto;
     background: #f24b4b;
     transform: ${({ visible }) => (visible ? 'translate(-0%, 0%)' : 'translate(-100%, 0%)')};
-    transition: transform 0.8s ease-in-out, width 0.8s ease-in-out;
-    position: fixed;
+    transition: transform 0.8s ease-in-out, width 0.8s ease-in-out, top 0.5s ease-out;
+    position: absolute;
     top: 0px;
     left: 0px;
     @media (max-width: 1050px) {
@@ -30,16 +30,27 @@ const MenuContainer = styled.div`
     }
     @media (max-width: 500px) {
         width: 100%;
+        position: fixed;
     }
 `
 
 const Menu = ({ children, shouldMenuAppear, setShouldMenuAppear }) => {
+    const menuRef = useRef()
+    const handleOnScroll = () => {
+        if (menuRef.current && window.innerWidth > 500) {
+            menuRef.current.style.top = `${window.scrollY}px`
+        }
+    }
     useEffect(() => {
+        window.addEventListener('scroll', handleOnScroll)
         setTimeout(() => {
             if (shouldMenuAppear === undefined) {
                 setShouldMenuAppear(false)
             }
         }, 800)
+        return () => {
+            window.removeEventListener('scroll', handleOnScroll)
+        }
     }, [])
     const logout = async () => {
         const url = '/api/logout'
@@ -57,7 +68,7 @@ const Menu = ({ children, shouldMenuAppear, setShouldMenuAppear }) => {
                 Menu
             </StyledMenu.Button>
             {(shouldMenuAppear === true || shouldMenuAppear === false) && (
-                <MenuContainer visible={shouldMenuAppear}>
+                <MenuContainer ref={menuRef} visible={shouldMenuAppear}>
                     <HForm.CloseButton onClick={() => setShouldMenuAppear(false)} />
                     <StyledMenu.OptionsContainer>
                         {children}
