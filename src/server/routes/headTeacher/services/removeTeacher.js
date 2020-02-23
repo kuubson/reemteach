@@ -6,6 +6,7 @@ import { ApiError } from '@utils'
 
 export default async (req, res, next) => {
     try {
+        const { school } = req
         const { id, email } = req.body
         const teacher = await Teacher.findOne({
             where: {
@@ -25,7 +26,7 @@ export default async (req, res, next) => {
                 409
             )
         }
-        await teacher.destroy()
+        await school.removeTeacher(teacher)
         res.send({
             successMessage: `Pomyślnie usunięto nauczyciela ${email} ze szkoły!`
         })
