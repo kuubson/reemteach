@@ -6,7 +6,7 @@ import { ApiError } from '@utils'
 
 export default async (req, res, next) => {
     try {
-        const { school } = req
+        const { school } = req.user
         const { id, email } = req.body
         const teacher = await Teacher.findOne({
             where: {

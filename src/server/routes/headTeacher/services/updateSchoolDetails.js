@@ -7,7 +7,7 @@ import { Op, detectSanitization } from '@utils'
 
 export default async (req, res, next) => {
     try {
-        const { school } = req
+        const { school } = req.user
         const { name, type, description, address, creationDate } = req.body
         school.update({
             name,

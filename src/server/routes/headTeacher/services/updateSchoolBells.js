@@ -3,8 +3,8 @@ import moment from 'moment'
 
 export default async (req, res, next) => {
     try {
+        const { school } = req.user
         const { schoolBells: updatedSchoolBells } = req.body
-        const { school } = req
         const schoolBells = await school.getSchoolBells()
         await Promise.all(schoolBells.map(async schoolBell => await schoolBell.destroy()))
         await Promise.all(

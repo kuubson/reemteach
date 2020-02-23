@@ -7,7 +7,7 @@ import { ApiError, detectSanitization } from '@utils'
 
 export default async (req, res, next) => {
     try {
-        if (req.school) {
+        if (req.user.school) {
             throw new ApiError(`Posiadasz już utworzoną szkołę!`, 409)
         }
         const { name, type, description, address, creationDate } = req.body

@@ -16,8 +16,7 @@ const transporter = nodemailer.createTransport({
 
 export default async (req, res, next) => {
     try {
-        const { name, surname } = req.user
-        const { school } = req
+        const { name, surname, school } = req.user
         const { email } = req.body
         const teacher = await Teacher.findOne({
             where: {
