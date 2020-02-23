@@ -14,7 +14,7 @@ export default async (req, res, next) => {
             isActivated: true
         })
         res.send({
-            successMessage: 'Pomyślnie zaktualizowano hasło i profil!'
+            successMessage: 'Pomyślnie zaktualizowano hasło oraz profil!'
         })
     } catch (error) {
         next(error)

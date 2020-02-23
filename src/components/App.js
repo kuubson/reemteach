@@ -28,6 +28,7 @@ import HeadTeacherTeacherCreator from './HeadTeacherTeacherCreator/HeadTeacherTe
 import HeadTeacherTeachersList from './HeadTeacherTeachersList/HeadTeacherTeachersList'
 
 import TeacherProfile from './TeacherProfile/TeacherProfile'
+import TeacherStudentCreator from './TeacherStudentCreator/TeacherStudentCreator'
 
 import StudentProfile from './StudentProfile/StudentProfile'
 
@@ -140,6 +141,15 @@ const App = ({
             render: () => (
                 <Roles.Teacher>
                     <TeacherProfile />
+                </Roles.Teacher>
+            )
+        },
+        {
+            pathname: '/nauczyciel/tworzenie-ucznia',
+            order: 3,
+            render: () => (
+                <Roles.Teacher>
+                    <TeacherStudentCreator />
                 </Roles.Teacher>
             )
         },

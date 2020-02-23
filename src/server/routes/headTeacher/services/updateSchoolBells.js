@@ -30,6 +30,7 @@ export const validation = () => [
             }
         }),
     check('schoolBells.*.from')
+        .trim()
         .notEmpty()
         .custom(from => {
             if (!moment(from, 'HH:mm', true).isValid()) {
@@ -39,6 +40,7 @@ export const validation = () => [
             }
         }),
     check('schoolBells.*.to')
+        .trim()
         .notEmpty()
         .custom(to => {
             if (!moment(to, 'HH:mm', true).isValid()) {

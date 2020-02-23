@@ -161,6 +161,7 @@ const HeadTeacherSchoolCreator = ({ shouldMenuAppear }) => {
                 />
                 <Composed.Select
                     id="type"
+                    className="type"
                     label="Rodzaj szkoły"
                     value={type}
                     placeholder="Zaznacz rodzaj szkoły..."

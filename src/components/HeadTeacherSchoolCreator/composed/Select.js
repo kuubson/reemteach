@@ -11,13 +11,13 @@ const SelectContainer = styled.div`
     }
 `
 
-const Select = ({ id, label, value, placeholder, options, error, onChange }) => {
+const Select = ({ id, className, label, value, placeholder, options, error, onChange }) => {
     const selectOptionsRef = useRef()
     const [shouldOptionsExpand, setShouldOptionsExpand] = useState(false)
     useEffect(() => {
         if (shouldOptionsExpand && selectOptionsRef.current) {
-            const optionsAmount = document.querySelectorAll('.option').length
-            const optionHeight = document.querySelector('.option').clientHeight
+            const optionsAmount = document.querySelectorAll(`.${className}`).length
+            const optionHeight = document.querySelector(`.${className}`).clientHeight
             selectOptionsRef.current.style.height = `${optionHeight * optionsAmount}px`
         } else {
             selectOptionsRef.current.style.height = '0px'
@@ -40,7 +40,7 @@ const Select = ({ id, label, value, placeholder, options, error, onChange }) => 
                 {options.map(option => (
                     <StyledSelect.Option
                         key={option}
-                        className="option"
+                        className={className}
                         onClick={() => {
                             onChange(option)
                             setShouldOptionsExpand(false)

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components/macro'
+import io from 'socket.io-client'
 
 import { compose } from 'redux'
-import { withRouter, withFeedbackHandler, withMenu } from '@hoc'
+import { withRouter, withSocket, withFeedbackHandler, withMenu } from '@hoc'
 
 import APMenu from '@components/AdminProfile/styled/Menu'
 
@@ -20,12 +21,23 @@ const HeadTeacherContainer = styled.div`
     }}
 `
 
-const HeadTeacher = ({ children, location, shouldFeedbackHandlerAppear, closeMenuOnClick }) => {
+const HeadTeacher = ({
+    children,
+    socket,
+    setSocket,
+    location,
+    shouldFeedbackHandlerAppear,
+    closeMenuOnClick
+}) => {
     const [shouldChildrenAppear, setShouldChildrenAppear] = useState(false)
     const [menuOptions] = useState([
         {
             option: 'Strona główna',
             pathname: '/nauczyciel/profil'
+        },
+        {
+            option: 'Utwórz ucznia',
+            pathname: '/nauczyciel/tworzenie-ucznia'
         }
     ])
     useEffect(() => {
@@ -48,6 +60,9 @@ const HeadTeacher = ({ children, location, shouldFeedbackHandlerAppear, closeMen
         confirmToken()
         setTimeout(() => {
             setShouldChildrenAppear(true)
+            if (!socket) {
+                setSocket(io())
+            }
         }, 0)
     }, [])
     return (
@@ -71,4 +86,4 @@ const HeadTeacher = ({ children, location, shouldFeedbackHandlerAppear, closeMen
     )
 }
 
-export default compose(withRouter, withFeedbackHandler, withMenu)(HeadTeacher)
+export default compose(withRouter, withSocket, withFeedbackHandler, withMenu)(HeadTeacher)

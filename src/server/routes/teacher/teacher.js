@@ -14,4 +14,14 @@ router.post(
     Services.login.default
 )
 
+router.get('/teacher/getSchools', authWithJwt, Services.getSchools.default)
+
+router.post(
+    '/teacher/createStudent',
+    authWithJwt,
+    Services.createStudent.validation(),
+    checkValidationResult,
+    Services.createStudent.default
+)
+
 export default router
