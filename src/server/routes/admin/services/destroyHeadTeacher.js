@@ -9,12 +9,19 @@ export default async (req, res, next) => {
         const { id, email } = req.body
         const headTeacher = await HeadTeacher.findOne({
             where: {
-                id
+                id,
+                email
             }
         })
+        if (!headTeacher) {
+            throw new ApiError(
+                `Wystąpił niespodziewany problem przy usuwaniu profilu dyrektora ${email}`,
+                409
+            )
+        }
         if (headTeacher.isActivated) {
             throw new ApiError(
-                `Dyrektor ${email} aktywował już swoje konto i nie powinieneś go usuwać!`,
+                `Dyrektor ${email} aktywował już swoje konto i nie możesz go usuwać!`,
                 409
             )
         }
@@ -33,5 +40,13 @@ export const validation = () => [
         .notEmpty()
         .bail()
         .isInt()
-        .escape()
+        .escape(),
+    check('email')
+        .trim()
+        .notEmpty()
+        .withMessage('Wprowadź adres e-mail!')
+        .bail()
+        .isEmail()
+        .withMessage('Wprowadź poprawny adres e-mail!')
+        .normalizeEmail()
 ]

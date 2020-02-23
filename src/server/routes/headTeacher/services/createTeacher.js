@@ -17,44 +17,70 @@ const transporter = nodemailer.createTransport({
 export default async (req, res, next) => {
     try {
         const { name, surname } = req.user
+        const { school } = req
         const { email } = req.body
-        const school = await req.user.getSchool()
-        const teacher = Teacher.findOne({
+        const teacher = await Teacher.findOne({
             where: {
-                email,
-                schoolId: school.id
+                email
             }
         })
-        if (teacher) {
-            throw new ApiError(`Nauczyciel z adresem ${email} ma już konto w Twojej szkole!`, 409)
-        }
-        const password = crypto.randomBytes(20).toString('hex')
-        await school.createTeacher({
-            email,
-            password
-        })
-        const mailOptions = {
-            from: process.env.NODEMAILER_USERNAME,
-            to: email,
-            subject: `Konto nauczycielskie w aplikacji Reemteach`,
-            html: `
+        if (!teacher) {
+            const password = crypto.randomBytes(20).toString('hex')
+            await school.createTeacher({
+                email,
+                password
+            })
+            const mailOptions = {
+                from: process.env.NODEMAILER_USERNAME,
+                to: email,
+                subject: `Konto nauczycielskie w aplikacji Reemteach`,
+                html: `
                     <h2>Dyrektor ${name} ${surname} utworzył Twoje konto nauczycielskie!</h2>
                     <h3>Zaloguj się, uzupełnij dane personalne i ustaw nowe hasło!</h3>
                     <p>E-mail: ${email}</p>
                     <p>Hasło: ${password}</p>
         		`
-        }
-        transporter.sendMail(mailOptions, async (error, info) => {
-            if (error || !info) {
-                throw new ApiError(
-                    'Wystąpił niespodziewany problem przy wysyłaniu e-maila z danymi do zalogowania się na konto nauczycielskie!',
-                    500
-                )
             }
-            res.send({
-                successMessage: `Na adres ${email} został wysłany e-mail z danymi do zalogowania się na konto nauczycielskie!`
+            transporter.sendMail(mailOptions, async (error, info) => {
+                if (error || !info) {
+                    throw new ApiError(
+                        'Wystąpił niespodziewany problem przy wysyłaniu e-maila z danymi do zalogowania się na konto nauczycielskie!',
+                        500
+                    )
+                }
+                res.send({
+                    successMessage: `Na adres ${email} został wysłany e-mail z danymi do zalogowania się na konto nauczycielskie!`
+                })
             })
-        })
+        } else {
+            if (await school.hasTeacher(teacher)) {
+                throw new ApiError(
+                    `Nauczyciel z adresem ${email} ma już konto w Twojej szkole!`,
+                    409
+                )
+            } else {
+                await teacher.addSchool(school)
+                const mailOptions = {
+                    from: process.env.NODEMAILER_USERNAME,
+                    to: email,
+                    subject: `Konto nauczycielskie w aplikacji Reemteach`,
+                    html: `
+                    <h2>Dyrektor ${name} ${surname} dodał Cię do szkoły ${school.name}!</h2>
+        		`
+                }
+                transporter.sendMail(mailOptions, async (error, info) => {
+                    if (error || !info) {
+                        throw new ApiError(
+                            'Wystąpił niespodziewany problem przy wysyłaniu e-maila z informacją o dodaniu do szkoły!',
+                            500
+                        )
+                    }
+                    res.send({
+                        successMessage: `Na adres ${email} został wysłany e-mail z informacją o dodaniu do szkoły!`
+                    })
+                })
+            }
+        }
     } catch (error) {
         next(error)
     }

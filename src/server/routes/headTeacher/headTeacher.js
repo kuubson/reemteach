@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { rateLimiter, authWithJwt, checkValidationResult } from '@middlewares'
+import { rateLimiter, authWithJwt, checkValidationResult, checkForSchool } from '@middlewares'
 
 import Services from './services'
 
@@ -45,16 +45,23 @@ router.get('/headTeacher/getSchool', authWithJwt, Services.getSchool.default)
 router.post(
     '/headTeacher/updateSchoolDetails',
     authWithJwt,
+    checkForSchool,
     Services.updateSchoolDetails.validation(),
     checkValidationResult,
     Services.updateSchoolDetails.default
 )
 
-router.get('/headTeacher/getSchoolBells', authWithJwt, Services.getSchoolBells.default)
+router.get(
+    '/headTeacher/getSchoolBells',
+    authWithJwt,
+    checkForSchool,
+    Services.getSchoolBells.default
+)
 
 router.post(
     '/headTeacher/updateSchoolBells',
     authWithJwt,
+    checkForSchool,
     Services.updateSchoolBells.validation(),
     checkValidationResult,
     Services.updateSchoolBells.default
@@ -63,19 +70,21 @@ router.post(
 router.post(
     '/headTeacher/createTeacher',
     authWithJwt,
+    checkForSchool,
     Services.createTeacher.validation(),
     checkValidationResult,
     Services.createTeacher.default
 )
 
-router.get('/headTeacher/getTeachers', authWithJwt, Services.getTeachers.default)
+router.get('/headTeacher/getTeachers', authWithJwt, checkForSchool, Services.getTeachers.default)
 
 router.post(
-    '/headTeacher/destroyTeacher',
+    '/headTeacher/removeTeacher',
     authWithJwt,
-    Services.destroyTeacher.validation(),
+    checkForSchool,
+    Services.removeTeacher.validation(),
     checkValidationResult,
-    Services.destroyTeacher.default
+    Services.removeTeacher.default
 )
 
 export default router

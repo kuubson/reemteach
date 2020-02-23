@@ -7,18 +7,10 @@ import { ApiError, detectSanitization } from '@utils'
 
 export default async (req, res, next) => {
     try {
-        if (await req.user.getSchool()) {
+        if (req.school) {
             throw new ApiError(`Posiadasz już utworzoną szkołę!`, 409)
         }
         const { name, type, description, address, creationDate } = req.body
-        const school = await School.findOne({
-            where: {
-                name
-            }
-        })
-        if (school) {
-            throw new ApiError(`Szkoła o nazwie ${name} istnieje już w systemie!`, 409)
-        }
         await req.user.createSchool(
             {
                 name,
@@ -148,7 +140,21 @@ export const validation = () => [
         .withMessage('Wprowadź nazwę szkoły!')
         .bail()
         .custom(detectSanitization)
-        .withMessage('Nazwa szkoły zawiera niedozwolone znaki!'),
+        .withMessage('Nazwa szkoły zawiera niedozwolone znaki!')
+        .bail()
+        .custom(async name => {
+            const school = await School.findOne({
+                where: {
+                    name
+                }
+            })
+            if (school) {
+                throw new Error()
+            } else {
+                return school
+            }
+        })
+        .withMessage(name => `Szkoła o nazwie ${name} istnieje już w systemie!`),
     check('type')
         .trim()
         .notEmpty()

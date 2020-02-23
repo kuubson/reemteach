@@ -4,10 +4,7 @@ import moment from 'moment'
 export default async (req, res, next) => {
     try {
         const { schoolBells: updatedSchoolBells } = req.body
-        const school = await req.user.getSchool()
-        if (!school) {
-            throw new ApiError(`Musisz najpierw utworzyć szkołę w systemie!`, 409)
-        }
+        const { school } = req
         const schoolBells = await school.getSchoolBells()
         await Promise.all(schoolBells.map(async schoolBell => await schoolBell.destroy()))
         await Promise.all(

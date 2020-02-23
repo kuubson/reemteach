@@ -14,7 +14,6 @@ import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 import {
     apiAxios,
     delayedApiAxios,
-    delayedRedirectTo,
     setFeedbackData,
     setConfirmationPopupData,
     usePrevious
@@ -42,13 +41,8 @@ const HeadTeacherSchoolBellsManager = ({ shouldMenuAppear }) => {
             const response = await delayedApiAxios.get(url)
             if (response) {
                 setIsLoading(false)
-                const { schoolBells, hasSchool } = response.data
-                if (!hasSchool) {
-                    setFeedbackData('Musisz najpierw utworzyć szkołę w systemie!', 'Ok')
-                    delayedRedirectTo('/dyrektor/tworzenie-szkoły')
-                } else {
-                    setSchoolBells(schoolBells)
-                }
+                const { schoolBells } = response.data
+                setSchoolBells(schoolBells)
             }
         }
         getSchoolBells()

@@ -1,7 +1,6 @@
-export default async (_, res, next) => {
+export default async (req, res, next) => {
     try {
-        const school = await req.user.getSchool()
-        const teachers = await school.getTeachers({
+        const teachers = await req.school.getTeachers({
             attributes: ['id', 'email', 'name', 'surname', 'age', 'isActivated', 'createdAt']
         })
         res.send({

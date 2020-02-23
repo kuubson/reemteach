@@ -3,14 +3,11 @@ import moment from 'moment'
 
 import { School } from '@database'
 
-import { Op, ApiError, detectSanitization } from '@utils'
+import { Op, detectSanitization } from '@utils'
 
 export default async (req, res, next) => {
     try {
-        const school = await req.user.getSchool()
-        if (!school) {
-            throw new ApiError(`Musisz najpierw utworzyć szkołę w systemie!`, 409)
-        }
+        const { school } = req
         const { name, type, description, address, creationDate } = req.body
         school.update({
             name,
@@ -51,7 +48,7 @@ export const validation = () => [
                 return school
             }
         })
-        .withMessage(value => `Szkoła o nazwie ${value} istnieje już w systemie!`),
+        .withMessage(name => `Szkoła o nazwie ${name} istnieje już w systemie!`),
     check('type')
         .trim()
         .notEmpty()

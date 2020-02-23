@@ -20,8 +20,8 @@ School.belongsTo(HeadTeacher)
 School.hasMany(SchoolBell)
 SchoolBell.belongsTo(School)
 
-School.hasMany(Teacher)
-Teacher.belongsTo(School)
+School.belongsToMany(Teacher, { through: 'composedSchools' })
+Teacher.belongsToMany(School, { through: 'composedSchools' })
 
 const initializeDatabaseConnection = async () => {
     try {

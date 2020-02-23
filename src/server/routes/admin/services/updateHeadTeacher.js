@@ -15,7 +15,7 @@ export default async (req, res, next) => {
         })
         if (!headTeacher) {
             throw new ApiError(
-                `Wystąpił niespodziewany błąd przy aktualizowaniu profilu dyrektora ${name} ${surname}`,
+                `Wystąpił niespodziewany problem przy aktualizowaniu profilu dyrektora ${name} ${surname}`,
                 409
             )
         }

@@ -25,6 +25,7 @@ import HeadTeacherSchoolCreator from './HeadTeacherSchoolCreator/HeadTeacherScho
 import HeadTeacherSchoolManager from './HeadTeacherSchoolManager/HeadTeacherSchoolManager'
 import HeadTeacherSchoolBellsManager from './HeadTeacherSchoolBellsManager/HeadTeacherSchoolBellsManager'
 import HeadTeacherTeacherCreator from './HeadTeacherTeacherCreator/HeadTeacherTeacherCreator'
+import HeadTeacherTeachersList from './HeadTeacherTeachersList/HeadTeacherTeachersList'
 
 import TeacherProfile from './TeacherProfile/TeacherProfile'
 
@@ -121,6 +122,15 @@ const App = ({
             render: () => (
                 <Roles.HeadTeacher>
                     <HeadTeacherTeacherCreator />
+                </Roles.HeadTeacher>
+            )
+        },
+        {
+            pathname: '/dyrektor/lista-nauczycieli',
+            order: 7,
+            render: () => (
+                <Roles.HeadTeacher>
+                    <HeadTeacherTeachersList />
                 </Roles.HeadTeacher>
             )
         },

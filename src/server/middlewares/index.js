@@ -9,6 +9,7 @@ import errorHandler from './errorHandler'
 import checkValidationResult from './checkValidationResult'
 import rateLimiter from './rateLimiter'
 import authWithJwt from './authWithJwt'
+import checkForSchool from './checkForSchool'
 
 import initializePassport from './passport'
 import initializeSocketio from '../socketio/socketio'
@@ -41,4 +42,11 @@ const initializeMiddlewares = (app, server) => {
     app.set('trust proxy', 1)
 }
 
-export { initializeMiddlewares, errorHandler, checkValidationResult, rateLimiter, authWithJwt }
+export {
+    initializeMiddlewares,
+    errorHandler,
+    checkValidationResult,
+    rateLimiter,
+    authWithJwt,
+    checkForSchool
+}
