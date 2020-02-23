@@ -7,7 +7,6 @@ const connection = new Sequelize(DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASS
     dialect: 'mysql'
 })
 
-const Authentication = connection.import('./models/Authentication')
 const Admin = connection.import('./models/Admin')
 const HeadTeacher = connection.import('./models/HeadTeacher')
 const School = connection.import('./models/School')
@@ -15,16 +14,14 @@ const SchoolBell = connection.import('./models/SchoolBell')
 const Teacher = connection.import('./models/Teacher')
 const Student = connection.import('./models/Student')
 
-Authentication.hasOne(Teacher)
-Authentication.hasOne(Student)
-Teacher.belongsTo(Authentication)
-Student.belongsTo(Authentication)
-
 HeadTeacher.hasOne(School)
 School.belongsTo(HeadTeacher)
 
 School.hasMany(SchoolBell)
 SchoolBell.belongsTo(School)
+
+School.hasMany(Teacher)
+Teacher.belongsTo(School)
 
 const initializeDatabaseConnection = async () => {
     try {

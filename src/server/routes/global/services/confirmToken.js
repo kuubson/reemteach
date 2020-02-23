@@ -48,7 +48,7 @@ export default (req, res, next) => {
                                 clearCookie()
                             } else {
                                 const { isActivated } = headTeacher
-                                const hasSchool = !!headTeacher.getSchool()
+                                const hasSchool = !!(await headTeacher.getSchool())
                                 res.send({
                                     role: 'headTeacher',
                                     isActivated,

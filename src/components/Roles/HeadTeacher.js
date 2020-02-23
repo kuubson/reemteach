@@ -26,14 +26,6 @@ const HeadTeacher = ({ children, location, shouldFeedbackHandlerAppear, closeMen
         {
             option: 'Strona główna',
             pathname: '/dyrektor/profil'
-        },
-        {
-            option: 'Lista nauczycieli',
-            pathname: '/dyrektor/lista-nauczycieli'
-        },
-        {
-            option: 'Utwórz nauczyciela',
-            pathname: '/dyrektor/tworzenie-nauczyciela'
         }
     ])
     useEffect(() => {
@@ -56,7 +48,7 @@ const HeadTeacher = ({ children, location, shouldFeedbackHandlerAppear, closeMen
                         ...menuOptions,
                         {
                             option: 'Utwórz szkołę',
-                            pathname: '/dyrektor/zarządzanie-szkołą'
+                            pathname: '/dyrektor/tworzenie-szkoły'
                         }
                     ])
                 }
@@ -66,6 +58,14 @@ const HeadTeacher = ({ children, location, shouldFeedbackHandlerAppear, closeMen
                         {
                             option: 'Twoja szkoła',
                             pathname: '/dyrektor/zarządzanie-szkołą'
+                        },
+                        {
+                            option: 'Lista nauczycieli',
+                            pathname: '/dyrektor/lista-nauczycieli'
+                        },
+                        {
+                            option: 'Utwórz nauczyciela',
+                            pathname: '/dyrektor/tworzenie-nauczyciela'
                         },
                         {
                             option: 'Zarządzaj dzwonkami',

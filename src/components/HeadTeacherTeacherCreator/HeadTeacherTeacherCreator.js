@@ -13,7 +13,7 @@ import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 import { apiAxios, setFeedbackData } from '@utils'
 
 const HeadTeacherTeacherCreatorContainer = styled(APDashboard.Container)`
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -60,8 +60,8 @@ const HeadTeacherTeacherCreator = ({ shouldMenuAppear }) => {
         }
     }
     return (
-        <HeadTeacherTeacherCreatorContainer withMenu={shouldMenuAppear}>
-            <APDashboard.Header>Utwórz nowego nauczyciela w systemie</APDashboard.Header>
+        <HeadTeacherTeacherCreatorContainer withMenu={shouldMenuAppear} withMorePadding>
+            <APDashboard.Header>Utwórz nowego nauczyciela w szkole</APDashboard.Header>
             <AHTCForm.Form onSubmit={handleSubmit}>
                 <AHTCComposed.Input
                     id="email"

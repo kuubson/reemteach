@@ -1,12 +1,11 @@
-import { HeadTeacher } from '@database'
-
 export default async (_, res, next) => {
     try {
-        const headTeachers = await HeadTeacher.findAll({
+        const school = await req.user.getSchool()
+        const teachers = await school.getTeachers({
             attributes: ['id', 'email', 'name', 'surname', 'age', 'isActivated', 'createdAt']
         })
         res.send({
-            headTeachers
+            teachers
         })
     } catch (error) {
         next(error)

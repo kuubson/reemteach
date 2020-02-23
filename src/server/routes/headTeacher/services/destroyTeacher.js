@@ -1,26 +1,26 @@
 import { check } from 'express-validator'
 
-import { HeadTeacher } from '@database'
+import { Teacher } from '@database'
 
 import { ApiError } from '@utils'
 
 export default async (req, res, next) => {
     try {
         const { id, email } = req.body
-        const headTeacher = await HeadTeacher.findOne({
+        const teacher = await Teacher.findOne({
             where: {
                 id
             }
         })
-        if (headTeacher.isActivated) {
+        if (teacher.isActivated) {
             throw new ApiError(
-                `Dyrektor ${email} aktywował już swoje konto i nie powinieneś go usuwać!`,
+                `Nauczyciel ${email} aktywował już swoje konto i nie możesz go usunąć!`,
                 409
             )
         }
-        await headTeacher.destroy()
+        await teacher.destroy()
         res.send({
-            successMessage: `Pomyślnie usunięto dyrektora ${email} z systemu!`
+            successMessage: `Pomyślnie usunięto nauczyciela ${email} ze szkoły!`
         })
     } catch (error) {
         next(error)

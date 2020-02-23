@@ -60,4 +60,22 @@ router.post(
     Services.updateSchoolBells.default
 )
 
+router.post(
+    '/headTeacher/createTeacher',
+    authWithJwt,
+    Services.createTeacher.validation(),
+    checkValidationResult,
+    Services.createTeacher.default
+)
+
+router.get('/headTeacher/getTeachers', authWithJwt, Services.getTeachers.default)
+
+router.post(
+    '/headTeacher/destroyTeacher',
+    authWithJwt,
+    Services.destroyTeacher.validation(),
+    checkValidationResult,
+    Services.destroyTeacher.default
+)
+
 export default router

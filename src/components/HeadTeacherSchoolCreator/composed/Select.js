@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components/macro'
 
 import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
@@ -12,7 +12,17 @@ const SelectContainer = styled.div`
 `
 
 const Select = ({ id, label, value, placeholder, options, error, onChange }) => {
+    const selectOptionsRef = useRef()
     const [shouldOptionsExpand, setShouldOptionsExpand] = useState(false)
+    useEffect(() => {
+        if (shouldOptionsExpand && selectOptionsRef.current) {
+            const optionsAmount = document.querySelectorAll('.option').length
+            const optionHeight = document.querySelector('.option').clientHeight
+            selectOptionsRef.current.style.height = `${optionHeight * optionsAmount}px`
+        } else {
+            selectOptionsRef.current.style.height = '0px'
+        }
+    }, [shouldOptionsExpand])
     return (
         <SelectContainer className={error && 'error'}>
             <AHTCForm.Label
@@ -26,10 +36,11 @@ const Select = ({ id, label, value, placeholder, options, error, onChange }) => 
             >
                 {value || placeholder}
             </StyledSelect.Select>
-            <StyledSelect.OptionsContainer expanded={shouldOptionsExpand}>
+            <StyledSelect.OptionsContainer ref={selectOptionsRef} expanded={shouldOptionsExpand}>
                 {options.map(option => (
                     <StyledSelect.Option
                         key={option}
+                        className="option"
                         onClick={() => {
                             onChange(option)
                             setShouldOptionsExpand(false)
