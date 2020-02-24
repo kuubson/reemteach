@@ -9,7 +9,7 @@ export default styled.div`
     justify-content: center;
     align-items: center;
     text-align: center;
-    @media (max-width: 500px) {
+    @media (max-width: 700px) {
         grid-template-columns: 1fr;
     }
 `

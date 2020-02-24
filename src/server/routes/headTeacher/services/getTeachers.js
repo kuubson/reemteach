@@ -11,7 +11,8 @@ export default async (req, res, next) => {
                 'subject',
                 'isActivated',
                 'createdAt'
-            ]
+            ],
+            joinTableAttributes: []
         })
         res.send({
             teachers

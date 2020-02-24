@@ -39,10 +39,20 @@ const TeacherSchoolsList = ({ shouldMenuAppear }) => {
             {!isLoading && (
                 <AHTLDashboard.DetailsContainer>
                     {schools.map(
-                        ({ id, name, type, description, address, creationDate, headTeacher }) => {
+                        ({
+                            headTeacher,
+                            email,
+                            id,
+                            name,
+                            type,
+                            description,
+                            address,
+                            creationDate
+                        }) => {
                             return (
                                 <div key={id}>
-                                    <HTPComposed.Detail label="Id" value={id} />
+                                    <HTPComposed.Detail label="Dyrektor" value={headTeacher} />
+                                    <HTPComposed.Detail label="E-mail" value={email} />
                                     <HTPComposed.Detail label="Nazwa szkoły" value={name} />
                                     <HTPComposed.Detail label="Rodzaj szkoły" value={type} />
                                     <HTPComposed.Detail label="Opis szkoły" value={description} />
