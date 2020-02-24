@@ -3,9 +3,13 @@ import styled, { css } from 'styled-components/macro'
 import io from 'socket.io-client'
 
 import { compose } from 'redux'
-import { withRouter, withSocket, withFeedbackHandler } from '@hoc'
+import { withRouter, withSocket, withFeedbackHandler, withMenu } from '@hoc'
 
-import { delayedApiAxios, delayedRedirectTo } from '@utils'
+import APMenu from '@components/AdminProfile/styled/Menu'
+
+import APComposed from '@components/AdminProfile/composed'
+
+import { delayedApiAxios, redirectTo, delayedRedirectTo } from '@utils'
 
 const StudentContainer = styled.div`
     ${({ blurred }) => {
@@ -17,16 +21,35 @@ const StudentContainer = styled.div`
     }}
 `
 
-const Student = ({ children, socket, setSocket, shouldFeedbackHandlerAppear }) => {
+const Student = ({
+    children,
+    socket,
+    setSocket,
+    location,
+    shouldFeedbackHandlerAppear,
+    closeMenuOnClick
+}) => {
     const [shouldChildrenAppear, setShouldChildrenAppear] = useState(false)
+    const [menuOptions] = useState([
+        {
+            option: 'Strona główna',
+            pathname: '/uczeń/profil'
+        }
+    ])
     useEffect(() => {
         const confirmToken = async () => {
             const url = '/api/confirmToken'
             const response = await delayedApiAxios.get(url)
             if (response) {
-                const { role } = response.data
+                const profilePathname = '/uczeń/profil'
+                const { role, isActivated } = response.data
                 if (role === 'guest' || role !== 'student') {
                     delayedRedirectTo('/')
+                }
+                if (!isActivated && location.pathname !== profilePathname) {
+                    setTimeout(() => {
+                        delayedRedirectTo(profilePathname)
+                    }, 800)
                 }
             }
         }
@@ -40,9 +63,24 @@ const Student = ({ children, socket, setSocket, shouldFeedbackHandlerAppear }) =
     }, [])
     return (
         shouldChildrenAppear && (
-            <StudentContainer blurred={shouldFeedbackHandlerAppear}>{children}</StudentContainer>
+            <StudentContainer blurred={shouldFeedbackHandlerAppear}>
+                <APComposed.Menu>
+                    {menuOptions.map(
+                        ({ pathname, option }) =>
+                            location.pathname !== pathname && (
+                                <APMenu.Option
+                                    key={option}
+                                    onClick={() => closeMenuOnClick(() => redirectTo(pathname))}
+                                >
+                                    {option}
+                                </APMenu.Option>
+                            )
+                    )}
+                </APComposed.Menu>
+                {children}
+            </StudentContainer>
         )
     )
 }
 
-export default compose(withRouter, withSocket, withFeedbackHandler)(Student)
+export default compose(withRouter, withSocket, withFeedbackHandler, withMenu)(Student)

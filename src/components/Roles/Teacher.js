@@ -11,7 +11,7 @@ import APComposed from '@components/AdminProfile/composed'
 
 import { delayedApiAxios, redirectTo, delayedRedirectTo } from '@utils'
 
-const HeadTeacherContainer = styled.div`
+const TeacherContainer = styled.div`
     ${({ blurred }) => {
         if (blurred)
             return css`
@@ -21,7 +21,7 @@ const HeadTeacherContainer = styled.div`
     }}
 `
 
-const HeadTeacher = ({
+const Teacher = ({
     children,
     socket,
     setSocket,
@@ -71,7 +71,7 @@ const HeadTeacher = ({
     }, [])
     return (
         shouldChildrenAppear && (
-            <HeadTeacherContainer blurred={shouldFeedbackHandlerAppear}>
+            <TeacherContainer blurred={shouldFeedbackHandlerAppear}>
                 <APComposed.Menu>
                     {menuOptions.map(
                         ({ pathname, option }) =>
@@ -86,9 +86,9 @@ const HeadTeacher = ({
                     )}
                 </APComposed.Menu>
                 {children}
-            </HeadTeacherContainer>
+            </TeacherContainer>
         )
     )
 }
 
-export default compose(withRouter, withSocket, withFeedbackHandler, withMenu)(HeadTeacher)
+export default compose(withRouter, withSocket, withFeedbackHandler, withMenu)(Teacher)

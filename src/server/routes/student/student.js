@@ -14,4 +14,22 @@ router.post(
     Services.login.default
 )
 
+router.get('/student/getProfile', authWithJwt, Services.getProfile.default)
+
+router.post(
+    '/student/updateProfile',
+    authWithJwt,
+    Services.updateProfile.validation(),
+    checkValidationResult,
+    Services.updateProfile.default
+)
+
+router.post(
+    '/student/updateDetails',
+    authWithJwt,
+    Services.updateDetails.validation(),
+    checkValidationResult,
+    Services.updateDetails.default
+)
+
 export default router

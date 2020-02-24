@@ -37,12 +37,12 @@ const HeadTeacherProfile = ({ shouldMenuAppear }) => {
     const [password, setPassword] = useState('')
     const [repeatedPassword, setRepeatedPassword] = useState('')
     const [surname, setSurname] = useState('')
-    const [isActivated, setIsActivated] = useState(false)
     const [nameError, setNameError] = useState('')
     const [surnameError, setSurnameError] = useState('')
     const [ageError, setAgeError] = useState('')
     const [passwordError, setPasswordError] = useState('')
     const [repeatedPasswordError, setRepeatedPasswordError] = useState('')
+    const [isActivated, setIsActivated] = useState(false)
     const previousDetails = usePrevious({
         name,
         surname,
