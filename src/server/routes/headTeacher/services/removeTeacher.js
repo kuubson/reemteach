@@ -45,9 +45,7 @@ export const validation = () => [
     check('email')
         .trim()
         .notEmpty()
-        .withMessage('Wprowadź adres e-mail!')
         .bail()
         .isEmail()
-        .withMessage('Wprowadź poprawny adres e-mail!')
         .normalizeEmail()
 ]

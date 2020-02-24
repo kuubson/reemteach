@@ -24,6 +24,12 @@ export default sequelize => {
             age: {
                 type: INTEGER
             },
+            description: {
+                type: STRING
+            },
+            subject: {
+                type: STRING
+            },
             isActivated: {
                 type: BOOLEAN,
                 defaultValue: false

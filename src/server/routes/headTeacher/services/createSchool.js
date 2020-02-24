@@ -165,7 +165,10 @@ export const validation = () => [
     check('description')
         .trim()
         .notEmpty()
-        .withMessage('Wprowadź opis szkoły!'),
+        .withMessage('Wprowadź opis szkoły!')
+        .bail()
+        .custom(detectSanitization)
+        .withMessage('Opis szkoły zawiera niedozwolone znaki!'),
     check('address')
         .trim()
         .notEmpty()

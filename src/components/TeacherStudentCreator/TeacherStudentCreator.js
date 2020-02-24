@@ -51,13 +51,29 @@ const TeacherStudentCreator = ({ shouldMenuAppear }) => {
             setEmailError('Wprowadź poprawny adres e-mail!')
             isValidated = false
         }
-        if (!school) {
-            setSchoolError('Zaznacz szkołę!')
-            isValidated = false
+        switch (true) {
+            case !school:
+                setSchoolError('Zaznacz szkołę!')
+                isValidated = false
+                break
+            case detectSanitization(school):
+                setSchoolError('Zaznaczona szkoła zawiera niedozwolone znaki!')
+                isValidated = false
+                break
+            default:
+                setSchoolError('')
         }
-        if (!grade) {
-            setGradeError('Zaznacz klasę!')
-            isValidated = false
+        switch (true) {
+            case !grade:
+                setGradeError('Zaznacz klasę!')
+                isValidated = false
+                break
+            case detectSanitization(grade):
+                setGradeError('Zaznaczona klasa zawiera niedozwolone znaki!')
+                isValidated = false
+                break
+            default:
+                setGradeError('')
         }
         return isValidated
     }

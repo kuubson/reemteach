@@ -73,7 +73,7 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
                     : teacher
             )
         )
-    const validateTeacher = (name, surname, age) =>
+    const validateTeacher = (name, surname, age, description, subject) =>
         name &&
         !detectWhiteSpaces(name) &&
         !detectSanitization(name) &&
@@ -83,15 +83,21 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
         age &&
         !isNaN(age) &&
         age > 23 &&
-        age < 101
-    const updateTeacher = async (id, email, name, surname, age) => {
+        age < 101 &&
+        description &&
+        !detectSanitization(description) &&
+        subject &&
+        !detectSanitization(subject)
+    const updateTeacher = async (id, email, name, surname, age, description, subject) => {
         const url = '/api/headTeacher/updateTeacher'
         const response = await apiAxios.post(url, {
             id,
             email,
             name,
             surname,
-            age
+            age,
+            description,
+            subject
         })
         if (response) {
             const { successMessage } = response.data
@@ -111,9 +117,13 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
                                 name,
                                 surname,
                                 age,
+                                description,
+                                subject,
                                 nameError,
                                 surnameError,
                                 ageError,
+                                descriptionError,
+                                subjectError,
                                 isActivated,
                                 createdAt,
                                 shouldSaveButtonAppear
@@ -140,7 +150,13 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
                                                                 : detectSanitization(name)
                                                                 ? 'Imię zawiera niedozwolone znaki!'
                                                                 : '',
-                                                            validateTeacher(name, surname, age)
+                                                            validateTeacher(
+                                                                name,
+                                                                surname,
+                                                                age,
+                                                                description,
+                                                                subject
+                                                            )
                                                         )
                                                     }
                                                     trim
@@ -162,7 +178,13 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
                                                                 : detectSanitization(surname)
                                                                 ? 'Nazwisko zawiera niedozwolone znaki!'
                                                                 : '',
-                                                            validateTeacher(name, surname, age)
+                                                            validateTeacher(
+                                                                name,
+                                                                surname,
+                                                                age,
+                                                                description,
+                                                                subject
+                                                            )
                                                         )
                                                     }
                                                     trim
@@ -184,10 +206,66 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
                                                                 : age < 24 || age > 100
                                                                 ? 'Wiek musi mieścić się między 24 a 100!'
                                                                 : '',
-                                                            validateTeacher(name, surname, age)
+                                                            validateTeacher(
+                                                                name,
+                                                                surname,
+                                                                age,
+                                                                description,
+                                                                subject
+                                                            )
                                                         )
                                                     }
                                                     trim
+                                                />
+                                                <HTPComposed.EditableDetail
+                                                    label="Opis"
+                                                    value={description}
+                                                    error={descriptionError}
+                                                    onChange={description =>
+                                                        updateTeachers(
+                                                            id,
+                                                            'description',
+                                                            description,
+                                                            'descriptionError',
+                                                            !description
+                                                                ? 'Wprowadź opis!'
+                                                                : detectSanitization(description)
+                                                                ? 'Opis zawiera niedozwolone znaki!'
+                                                                : '',
+                                                            validateTeacher(
+                                                                name,
+                                                                surname,
+                                                                age,
+                                                                description,
+                                                                subject
+                                                            )
+                                                        )
+                                                    }
+                                                />
+                                                <HTPComposed.EditableDetail
+                                                    label="Przedmiot przewodni"
+                                                    value={subject}
+                                                    error={subjectError}
+                                                    onChange={subject =>
+                                                        updateTeachers(
+                                                            id,
+                                                            'subject',
+                                                            subject,
+                                                            'subjectError',
+                                                            !subject
+                                                                ? 'Wprowadź przedmiot przewodni!'
+                                                                : detectSanitization(subject)
+                                                                ? 'Przedmiot przewodni zawiera niedozwolone znaki!'
+                                                                : '',
+                                                            validateTeacher(
+                                                                name,
+                                                                surname,
+                                                                age,
+                                                                description,
+                                                                subject
+                                                            )
+                                                        )
+                                                    }
                                                 />
                                             </>
                                         )}
@@ -213,7 +291,9 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
                                                                 email,
                                                                 name,
                                                                 surname,
-                                                                age
+                                                                age,
+                                                                description,
+                                                                subject
                                                             )
                                                         }
                                                     >

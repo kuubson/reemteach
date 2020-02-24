@@ -52,14 +52,17 @@ export const validation = () => [
     check('type')
         .trim()
         .notEmpty()
-        .withMessage('Zaznacz rodzaj szkoły!')
+        .withMessage('Wprowadź rodzaj szkoły!')
         .bail()
         .custom(detectSanitization)
         .withMessage('Rodzaj szkoły zawiera niedozwolone znaki!'),
     check('description')
         .trim()
         .notEmpty()
-        .withMessage('Wprowadź opis szkoły!'),
+        .withMessage('Wprowadź opis szkoły!')
+        .bail()
+        .custom(detectSanitization)
+        .withMessage('Opis szkoły zawiera niedozwolone znaki!'),
     check('address')
         .trim()
         .notEmpty()

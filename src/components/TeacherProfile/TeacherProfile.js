@@ -10,6 +10,7 @@ import HTPDetail from '@components/HeadTeacherProfile/styled/Detail'
 
 import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 import HTPComposed from '@components/HeadTeacherProfile/composed'
+import HTSCComposed from '@components/HeadTeacherSchoolCreator/composed'
 
 import {
     apiAxios,
@@ -33,20 +34,26 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
     const [shouldScrollToError, setShouldScrollToError] = useState(false)
     const [email, setEmail] = useState('')
     const [name, setName] = useState('')
+    const [surname, setSurname] = useState('')
     const [age, setAge] = useState('')
+    const [description, setDescription] = useState('')
+    const [subject, setSubject] = useState('')
     const [password, setPassword] = useState('')
     const [repeatedPassword, setRepeatedPassword] = useState('')
-    const [surname, setSurname] = useState('')
     const [isActivated, setIsActivated] = useState(false)
     const [nameError, setNameError] = useState('')
     const [surnameError, setSurnameError] = useState('')
     const [ageError, setAgeError] = useState('')
+    const [descriptionError, setDescriptionError] = useState('')
+    const [subjectError, setSubjectError] = useState('')
     const [passwordError, setPasswordError] = useState('')
     const [repeatedPasswordError, setRepeatedPasswordError] = useState('')
     const previousDetails = usePrevious({
         name,
         surname,
-        age
+        age,
+        description,
+        subject
     })
     useEffect(() => {
         const getProfile = async () => {
@@ -54,11 +61,21 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
             const response = await delayedApiAxios.get(url)
             if (response) {
                 setIsLoading(false)
-                const { email, name, surname, age, isActivated } = response.data
+                const {
+                    email,
+                    name,
+                    surname,
+                    age,
+                    description,
+                    subject,
+                    isActivated
+                } = response.data
                 setEmail(email)
                 setName(name)
                 setSurname(surname)
                 setAge(age)
+                setDescription(description)
+                setSubject(subject)
                 setIsActivated(isActivated)
             }
         }
@@ -74,6 +91,8 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
         setNameError('')
         setSurnameError('')
         setAgeError('')
+        setDescriptionError('')
+        setSubjectError('')
         setPasswordError('')
         setRepeatedPasswordError('')
         let isValidated = true
@@ -124,6 +143,32 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                 break
             default:
                 setAgeError('')
+        }
+        switch (true) {
+            case !description:
+                setDescriptionError('Wprowadź opis siebie!')
+                isValidated = false
+                break
+            case detectSanitization(description):
+                setDescriptionError('Opis siebie zawiera niedozwolone znaki!')
+                isValidated = false
+                break
+            default:
+                setDescriptionError('')
+        }
+        switch (true) {
+            case !subject:
+                updatingProfile
+                    ? setSubjectError('Zaznacz przedmiot przewodni!')
+                    : setSubjectError('Wprowadź przedmiot przewodni!')
+                isValidated = false
+                break
+            case detectSanitization(subject):
+                setSubjectError('Przedmiot przewodni zawiera niedozwolone znaki!')
+                isValidated = false
+                break
+            default:
+                setSubjectError('')
         }
         if (updatingProfile) {
             const hasLowerCaseLetters = /^(?=.*[a-z])/
@@ -182,6 +227,8 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                     name,
                     surname,
                     age,
+                    description,
+                    subject,
                     password,
                     repeatedPassword
                 })
@@ -197,6 +244,8 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                         setNameError('')
                         setSurnameError('')
                         setAgeError('')
+                        setDescriptionError('')
+                        setSubjectError('')
                         setPasswordError('')
                         setRepeatedPasswordError('')
                         validationResults.forEach(({ parameter, error }) => {
@@ -208,6 +257,12 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                             }
                             if (parameter === 'age') {
                                 setAgeError(error)
+                            }
+                            if (parameter === 'description') {
+                                setDescriptionError(error)
+                            }
+                            if (parameter === 'subject') {
+                                setSubjectError(error)
                             }
                             if (parameter === 'password') {
                                 setPasswordError(error)
@@ -226,20 +281,30 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
             const {
                 name: previousName,
                 surname: previousSurname,
-                age: previousAge
+                age: previousAge,
+                description: previousDescription,
+                subject: previousSubject
             } = previousDetails
             if (
                 previousName &&
                 previousSurname &&
                 previousAge &&
-                (name !== previousName || surname !== previousSurname || age !== previousAge)
+                previousDescription &&
+                previousSubject &&
+                (name !== previousName ||
+                    surname !== previousSurname ||
+                    age !== previousAge ||
+                    description !== previousDescription ||
+                    subject !== previousSubject)
             ) {
                 try {
                     const url = '/api/teacher/updateDetails'
                     const response = await delayedApiAxios.post(url, {
                         name,
                         surname,
-                        age
+                        age,
+                        description,
+                        subject
                     })
                     if (response) {
                         const { successMessage } = response.data
@@ -252,6 +317,8 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                             setNameError('')
                             setSurnameError('')
                             setAgeError('')
+                            setDescriptionError('')
+                            setSubjectError('')
                             validationResults.forEach(({ parameter, error }) => {
                                 if (parameter === 'name') {
                                     setNameError(error)
@@ -261,6 +328,12 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                                 }
                                 if (parameter === 'age') {
                                     setAgeError(error)
+                                }
+                                if (parameter === 'description') {
+                                    setDescriptionError(error)
+                                }
+                                if (parameter === 'subject') {
+                                    setSubjectError(error)
                                 }
                             })
                         }
@@ -303,6 +376,40 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                                     error={ageError}
                                     onChange={setAge}
                                     trim
+                                />
+                                <AHTCComposed.Input
+                                    id="description"
+                                    label="Opis siebie"
+                                    value={description}
+                                    placeholder="Wprowadź opis siebie..."
+                                    error={descriptionError}
+                                    onChange={setDescription}
+                                    textarea
+                                />
+                                <HTSCComposed.Select
+                                    id="subject"
+                                    className="subject"
+                                    label="Przedmiot przewodni"
+                                    value={subject}
+                                    placeholder="Zaznacz przedmiot przewodni..."
+                                    options={[
+                                        'Religia',
+                                        'Język polski',
+                                        'Język angielski',
+                                        'Język niemiecki',
+                                        'Język rosyjski',
+                                        'Język francuski',
+                                        'Matematyka',
+                                        'Fizyka',
+                                        'Biologia',
+                                        'Chemia',
+                                        'Geografia',
+                                        'Wiedza o społeczeństwie',
+                                        'Historia',
+                                        'Informatyka'
+                                    ]}
+                                    error={subjectError}
+                                    onChange={setSubject}
                                 />
                                 <AHTCComposed.Input
                                     id="password"
@@ -356,6 +463,21 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                                     onChange={setAge}
                                     onBlur={updateDetails}
                                     trim
+                                />
+                                <HTPComposed.EditableDetail
+                                    label="Opis siebie"
+                                    value={description}
+                                    error={descriptionError}
+                                    onChange={setDescription}
+                                    onBlur={updateDetails}
+                                    textarea
+                                />
+                                <HTPComposed.EditableDetail
+                                    label="Przedmiot przewodni"
+                                    value={subject}
+                                    error={subjectError}
+                                    onChange={setSubject}
+                                    onBlur={updateDetails}
                                 />
                                 <HTPComposed.Detail label="E-mail" value={email} />
                             </HTPDetail.DetailsContainer>

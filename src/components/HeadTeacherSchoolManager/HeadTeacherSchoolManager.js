@@ -87,7 +87,7 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
         }
         switch (true) {
             case !type:
-                setTypeError('Zaznacz rodzaj szkoły!')
+                setTypeError('Wprowadź rodzaj szkoły!')
                 isValidated = false
                 break
             case detectSanitization(type):
@@ -97,9 +97,17 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
             default:
                 setTypeError('')
         }
-        if (!description) {
-            setDescriptionError('Wprowadź opis szkoły!')
-            isValidated = false
+        switch (true) {
+            case !description:
+                setDescriptionError('Wprowadź opis szkoły!')
+                isValidated = false
+                break
+            case detectSanitization(description):
+                setDescriptionError('Opis szkoły zawiera niedozwolone znaki!')
+                isValidated = false
+                break
+            default:
+                setDescriptionError('')
         }
         switch (true) {
             case !address:

@@ -87,4 +87,12 @@ router.post(
     Services.removeTeacher.default
 )
 
+router.post(
+    '/headTeacher/updateTeacher',
+    authWithJwt,
+    Services.updateTeacher.validation(),
+    checkValidationResult,
+    Services.updateTeacher.default
+)
+
 export default router

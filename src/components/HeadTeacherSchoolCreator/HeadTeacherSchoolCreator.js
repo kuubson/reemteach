@@ -11,7 +11,14 @@ import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
 import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 import Composed from './composed'
 
-import { apiAxios, delayedApiAxios, redirectTo, delayedRedirectTo, setFeedbackData } from '@utils'
+import {
+    apiAxios,
+    delayedApiAxios,
+    redirectTo,
+    delayedRedirectTo,
+    setFeedbackData,
+    detectSanitization
+} from '@utils'
 
 const HeadTeacherSchoolCreatorContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -60,21 +67,53 @@ const HeadTeacherSchoolCreator = ({ shouldMenuAppear }) => {
         setAddressError('')
         setCreationDateError('')
         let isValidated = true
-        if (!name) {
-            setNameError('Wprowadź nazwę szkoły!')
-            isValidated = false
+        switch (true) {
+            case !name:
+                setNameError('Wprowadź nazwę szkoły!')
+                isValidated = false
+                break
+            case detectSanitization(name):
+                setNameError('Nazwa szkoły zawiera niedozwolone znaki!')
+                isValidated = false
+                break
+            default:
+                setNameError('')
         }
-        if (!type) {
-            setTypeError('Zaznacz rodzaj szkoły!')
-            isValidated = false
+        switch (true) {
+            case !type:
+                setTypeError('Zaznacz rodzaj szkoły!')
+                isValidated = false
+                break
+            case detectSanitization(type):
+                setTypeError('Rodzaj szkoły zawiera niedozwolone znaki!')
+                isValidated = false
+                break
+            default:
+                setTypeError('')
         }
-        if (!description) {
-            setDescriptionError('Wprowadź opis szkoły!')
-            isValidated = false
+        switch (true) {
+            case !description:
+                setDescriptionError('Wprowadź opis szkoły!')
+                isValidated = false
+                break
+            case detectSanitization(description):
+                setDescriptionError('Opis szkoły zawiera niedozwolone znaki!')
+                isValidated = false
+                break
+            default:
+                setDescriptionError('')
         }
-        if (!address) {
-            setAddressError('Wprowadź adres szkoły!')
-            isValidated = false
+        switch (true) {
+            case !address:
+                setAddressError('Wprowadź adres szkoły!')
+                isValidated = false
+                break
+            case detectSanitization(address):
+                setAddressError('Adres szkoły zawiera niedozwolone znaki!')
+                isValidated = false
+                break
+            default:
+                setAddressError('')
         }
         switch (true) {
             case !creationDate:

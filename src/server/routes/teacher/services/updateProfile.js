@@ -5,11 +5,13 @@ import { detectSanitization, detectWhiteSpaces } from '@utils'
 
 export default async (req, res, next) => {
     try {
-        const { name, surname, age, password } = req.body
+        const { name, surname, age, description, subject, password } = req.body
         await req.user.update({
             name,
             surname,
             age,
+            description,
+            subject,
             password: bcrypt.hashSync(password, 11),
             isActivated: true
         })
@@ -52,6 +54,20 @@ export const validation = () => [
         .bail()
         .isInt({ min: 24, max: 100 })
         .withMessage('Wiek musi mieścić się między 24 a 100!'),
+    check('description')
+        .trim()
+        .notEmpty()
+        .withMessage('Wprowadź opis siebie!')
+        .bail()
+        .custom(detectSanitization)
+        .withMessage('Opis siebie zawiera niedozwolone znaki!'),
+    check('subject')
+        .trim()
+        .notEmpty()
+        .withMessage('Zaznacz przedmiot przewodni!')
+        .bail()
+        .custom(detectSanitization)
+        .withMessage('Przedmiot przewodni zawiera niedozwolone znaki!'),
     check('password')
         .notEmpty()
         .withMessage('Wprowadź hasło!')
