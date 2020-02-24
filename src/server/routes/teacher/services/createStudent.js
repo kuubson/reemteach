@@ -1,10 +1,101 @@
 import { check } from 'express-validator'
+import nodemailer from 'nodemailer'
+import crypto from 'crypto'
 
-import { detectSanitization } from '@utils'
+import { Student } from '@database'
+
+import { ApiError, detectSanitization } from '@utils'
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.NODEMAILER_USERNAME,
+        pass: process.env.NODEMAILER_PASSWORD
+    }
+})
 
 export default async (req, res, next) => {
     try {
+        const { name, surname } = req.user
         const { email, school, grade } = req.body
+        const [foundSchool] = await req.user.getSchools({
+            where: {
+                name: school
+            }
+        })
+        const [foundGrade] = await foundSchool.getGrades({
+            where: {
+                grade
+            }
+        })
+        const schoolGrade =
+            foundGrade ||
+            (await foundSchool.createGrade({
+                grade
+            }))
+        const student = await Student.findOne({
+            where: {
+                email
+            }
+        })
+        if (!student) {
+            const password = crypto.randomBytes(20).toString('hex')
+            await schoolGrade.createStudent({
+                email,
+                password
+            })
+            const mailOptions = {
+                from: process.env.NODEMAILER_USERNAME,
+                to: email,
+                subject: `Konto uczniowskie w aplikacji Reemteach`,
+                html: `
+                    <h2>Nauczyciel ${name} ${surname} utworzył Twoje konto uczniowskie!</h2>
+                    <h3>Zostałeś dodany do klasy ${grade} w szkole ${foundSchool.name}!</h3>
+                    <h3>Zaloguj się, uzupełnij dane personalne i ustaw nowe hasło!</h3>
+                    <p>E-mail: ${email}</p>
+                    <p>Hasło: ${password}</p>
+        		`
+            }
+            transporter.sendMail(mailOptions, async (error, info) => {
+                if (error || !info) {
+                    throw new ApiError(
+                        `Wystąpił niespodziewany problem przy wysyłaniu e-maila z danymi do zalogowania się na konto uczniowskie oraz z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`,
+                        500
+                    )
+                }
+                res.send({
+                    successMessage: `Na adres ${email} został wysłany e-mail z danymi do zalogowania się na konto uczniowskie oraz z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`
+                })
+            })
+        } else {
+            if (await schoolGrade.hasStudent(student)) {
+                throw new ApiError(
+                    `Student z adresem ${email} znajduje się już w klasie ${grade} w szkole ${foundSchool.name}!`,
+                    409
+                )
+            } else {
+                await schoolGrade.addStudent(student)
+                const mailOptions = {
+                    from: process.env.NODEMAILER_USERNAME,
+                    to: email,
+                    subject: `Konto uczniowskie w aplikacji Reemteach`,
+                    html: `
+                    <h2>Nauczyciel ${name} ${surname} dodał Cię do klasy ${grade} w szkole ${foundSchool.name}!</h2>
+        		`
+                }
+                transporter.sendMail(mailOptions, async (error, info) => {
+                    if (error || !info) {
+                        throw new ApiError(
+                            `Wystąpił niespodziewany problem przy wysyłaniu e-maila z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`,
+                            500
+                        )
+                    }
+                    res.send({
+                        successMessage: `Na adres ${email} został wysłany e-mail z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`
+                    })
+                })
+            }
+        }
     } catch (error) {
         next(error)
     }
