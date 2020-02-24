@@ -70,7 +70,7 @@ export default async (req, res, next) => {
         } else {
             if (await schoolGrade.hasStudent(student)) {
                 throw new ApiError(
-                    `Student z adresem ${email} znajduje się już w klasie ${grade} w szkole ${foundSchool.name}!`,
+                    `Uczeń z adresem ${email} znajduje się już w klasie ${grade} w szkole ${foundSchool.name}!`,
                     409
                 )
             } else {

@@ -108,7 +108,7 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
     return (
         <HeadTeacherTeachersListContainer withMenu={shouldMenuAppear} withMorePadding>
             {!isLoading && (
-                <AHTLDashboard.HeadTeachersContainer>
+                <AHTLDashboard.DetailsContainer>
                     {teachers.length > 0 ? (
                         teachers.map(
                             ({
@@ -129,7 +129,7 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
                                 shouldSaveButtonAppear
                             }) => {
                                 return (
-                                    <AHTLDashboard.DetailsContainer key={id}>
+                                    <div key={id}>
                                         <HTPComposed.Detail label="Id" value={id} />
                                         {isActivated && (
                                             <>
@@ -241,6 +241,7 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
                                                             )
                                                         )
                                                     }
+                                                    textarea
                                                 />
                                                 <HTPComposed.EditableDetail
                                                     label="Przedmiot przewodni"
@@ -302,7 +303,7 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
                                                 )}
                                             </AHTLDashboard.ButtonsContainer>
                                         )}
-                                    </AHTLDashboard.DetailsContainer>
+                                    </div>
                                 )
                             }
                         )
@@ -311,7 +312,7 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
                             W szkole nie ma jeszcze żadnego nauczyciela!
                         </AHTLDashboard.Warning>
                     )}
-                </AHTLDashboard.HeadTeachersContainer>
+                </AHTLDashboard.DetailsContainer>
             )}
         </HeadTeacherTeachersListContainer>
     )

@@ -17,6 +17,7 @@ const EditableDetail = ({ label, value, error, onChange, onBlur, textarea, trim 
             textareaRef.current.style.height = '16px'
         } else {
             if (textarea && textareaRef.current) {
+                textareaRef.current.style.height = '16px'
                 textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
             }
         }
@@ -28,12 +29,12 @@ const EditableDetail = ({ label, value, error, onChange, onBlur, textarea, trim 
     return (
         <EditableDetailContainer>
             <StyledDetail.Label>{label}</StyledDetail.Label>
-            <StyledDetail.EditableDetail
+            <StyledDetail.Detail
                 ref={textarea && textareaRef}
                 value={value}
                 onChange={handleOnChange}
                 onBlur={onBlur}
-                as={textarea && 'textarea'}
+                as={textarea ? 'textarea' : 'input'}
             />
             {error && <StyledDetail.Error>{error}</StyledDetail.Error>}
         </EditableDetailContainer>

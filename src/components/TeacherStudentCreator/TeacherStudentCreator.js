@@ -31,8 +31,8 @@ const TeacherStudentCreator = ({ shouldMenuAppear }) => {
     const [schoolError, setSchoolError] = useState()
     const [gradeError, setGradeError] = useState('')
     useEffect(() => {
-        const getSchools = async () => {
-            const url = '/api/teacher/getSchools'
+        const getSchoolNames = async () => {
+            const url = '/api/teacher/getSchoolNames'
             const response = await delayedApiAxios.get(url)
             if (response) {
                 setIsLoading(false)
@@ -40,7 +40,7 @@ const TeacherStudentCreator = ({ shouldMenuAppear }) => {
                 setSchools(schools)
             }
         }
-        getSchools()
+        getSchoolNames()
     }, [])
     const validate = () => {
         setEmailError('')

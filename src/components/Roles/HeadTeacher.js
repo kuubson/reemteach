@@ -88,6 +88,7 @@ const HeadTeacher = ({ children, location, shouldFeedbackHandlerAppear, closeMen
                         ({ pathname, option }) =>
                             location.pathname !== pathname && (
                                 <APMenu.Option
+                                    key={option}
                                     onClick={() => closeMenuOnClick(() => redirectTo(pathname))}
                                 >
                                     {option}

@@ -1,9 +1,10 @@
 export default async (req, res, next) => {
     try {
-        const schools = await req.user.getSchools({
-            attributes: ['id', 'name', 'type', 'description', 'address', 'creationDate'],
+        let schools = await req.user.getSchools({
+            attributes: ['name'],
             joinTableAttributes: []
         })
+        schools = schools.map(({ name }) => name)
         res.send({
             schools
         })

@@ -102,7 +102,7 @@ const AdminHeadTeachersList = ({ shouldMenuAppear }) => {
     return (
         <AdminHeadTeachersListContainer withMenu={shouldMenuAppear} withMorePadding>
             {!isLoading && (
-                <Dashboard.HeadTeachersContainer>
+                <Dashboard.DetailsContainer>
                     {headTeachers.length > 0 ? (
                         headTeachers.map(
                             ({
@@ -119,7 +119,7 @@ const AdminHeadTeachersList = ({ shouldMenuAppear }) => {
                                 shouldSaveButtonAppear
                             }) => {
                                 return (
-                                    <Dashboard.DetailsContainer key={id}>
+                                    <div key={id}>
                                         <HTPComposed.Detail label="Id" value={id} />
                                         {isActivated && (
                                             <>
@@ -224,7 +224,7 @@ const AdminHeadTeachersList = ({ shouldMenuAppear }) => {
                                                 )}
                                             </Dashboard.ButtonsContainer>
                                         )}
-                                    </Dashboard.DetailsContainer>
+                                    </div>
                                 )
                             }
                         )
@@ -233,7 +233,7 @@ const AdminHeadTeachersList = ({ shouldMenuAppear }) => {
                             W systemie nie ma jeszcze żadnego dyrektora!
                         </Dashboard.Warning>
                     )}
-                </Dashboard.HeadTeachersContainer>
+                </Dashboard.DetailsContainer>
             )}
         </AdminHeadTeachersListContainer>
     )

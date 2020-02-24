@@ -32,6 +32,8 @@ router.post(
     Services.updateDetails.default
 )
 
+router.get('/teacher/getSchoolNames', authWithJwt, Services.getSchoolNames.default)
+
 router.get('/teacher/getSchools', authWithJwt, Services.getSchools.default)
 
 router.post(

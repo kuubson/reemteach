@@ -25,7 +25,7 @@ export default sequelize => {
                 type: INTEGER
             },
             description: {
-                type: STRING
+                type: TEXT
             },
             subject: {
                 type: STRING

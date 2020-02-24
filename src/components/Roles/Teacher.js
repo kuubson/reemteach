@@ -36,6 +36,10 @@ const HeadTeacher = ({
             pathname: '/nauczyciel/profil'
         },
         {
+            option: 'Lista szkół',
+            pathname: '/nauczyciel/lista-szkół'
+        },
+        {
             option: 'Utwórz ucznia',
             pathname: '/nauczyciel/tworzenie-ucznia'
         }
@@ -73,6 +77,7 @@ const HeadTeacher = ({
                         ({ pathname, option }) =>
                             location.pathname !== pathname && (
                                 <APMenu.Option
+                                    key={option}
                                     onClick={() => closeMenuOnClick(() => redirectTo(pathname))}
                                 >
                                     {option}

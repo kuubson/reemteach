@@ -60,6 +60,7 @@ const Admin = ({ children, location, shouldFeedbackHandlerAppear, closeMenuOnCli
                         ({ pathname, option }) =>
                             location.pathname !== pathname && (
                                 <APMenu.Option
+                                    key={option}
                                     onClick={() => closeMenuOnClick(() => redirectTo(pathname))}
                                 >
                                     {option}
