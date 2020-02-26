@@ -14,6 +14,14 @@ router.post(
     Services.login.default
 )
 
+router.post(
+    '/student/subscribeSchoolBells',
+    authWithJwt,
+    Services.subscribeSchoolBells.validation(),
+    checkValidationResult,
+    Services.subscribeSchoolBells.default
+)
+
 router.get('/student/getProfile', authWithJwt, Services.getProfile.default)
 
 router.post(

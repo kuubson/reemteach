@@ -9,7 +9,7 @@ import APMenu from '@components/AdminProfile/styled/Menu'
 
 import APComposed from '@components/AdminProfile/composed'
 
-import { delayedApiAxios, redirectTo, delayedRedirectTo } from '@utils'
+import { delayedApiAxios, redirectTo, delayedRedirectTo, subscribePushNotifications } from '@utils'
 
 const StudentContainer = styled.div`
     ${({ blurred }) => {
@@ -41,6 +41,7 @@ const Student = ({
             const url = '/api/confirmToken'
             const response = await delayedApiAxios.get(url)
             if (response) {
+                subscribePushNotifications('/api/student/subscribeSchoolBells')
                 const profilePathname = '/uczeń/profil'
                 const { role, isActivated } = response.data
                 if (role === 'guest' || role !== 'student') {

@@ -46,15 +46,19 @@ export default async (req, res, next) => {
         		`
         }
         transporter.sendMail(mailOptions, async (error, info) => {
-            if (error || !info) {
-                throw new ApiError(
-                    'Wystąpił niespodziewany problem przy wysyłaniu e-maila z danymi do zalogowania się na konto dyrektorskie!',
-                    500
-                )
+            try {
+                if (error || !info) {
+                    throw new ApiError(
+                        'Wystąpił niespodziewany problem przy wysyłaniu e-maila z danymi do zalogowania się na konto dyrektorskie!',
+                        500
+                    )
+                }
+                res.send({
+                    successMessage: `Na adres ${email} został wysłany e-mail z danymi do zalogowania się na konto dyrektorskie!`
+                })
+            } catch (error) {
+                next(error)
             }
-            res.send({
-                successMessage: `Na adres ${email} został wysłany e-mail z danymi do zalogowania się na konto dyrektorskie!`
-            })
         })
     } catch (error) {
         next(error)

@@ -57,15 +57,19 @@ export default async (req, res, next) => {
         		`
             }
             transporter.sendMail(mailOptions, async (error, info) => {
-                if (error || !info) {
-                    throw new ApiError(
-                        `Wystąpił niespodziewany problem przy wysyłaniu e-maila z danymi do zalogowania się na konto uczniowskie oraz z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`,
-                        500
-                    )
+                try {
+                    if (error || !info) {
+                        throw new ApiError(
+                            `Wystąpił niespodziewany problem przy wysyłaniu e-maila z danymi do zalogowania się na konto uczniowskie oraz z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`,
+                            500
+                        )
+                    }
+                    res.send({
+                        successMessage: `Na adres ${email} został wysłany e-mail z danymi do zalogowania się na konto uczniowskie oraz z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`
+                    })
+                } catch (error) {
+                    next(error)
                 }
-                res.send({
-                    successMessage: `Na adres ${email} został wysłany e-mail z danymi do zalogowania się na konto uczniowskie oraz z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`
-                })
             })
         } else {
             if (await schoolGrade.hasStudent(student)) {
@@ -84,15 +88,19 @@ export default async (req, res, next) => {
         		`
                 }
                 transporter.sendMail(mailOptions, async (error, info) => {
-                    if (error || !info) {
-                        throw new ApiError(
-                            `Wystąpił niespodziewany problem przy wysyłaniu e-maila z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`,
-                            500
-                        )
+                    try {
+                        if (error || !info) {
+                            throw new ApiError(
+                                `Wystąpił niespodziewany problem przy wysyłaniu e-maila z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`,
+                                500
+                            )
+                        }
+                        res.send({
+                            successMessage: `Na adres ${email} został wysłany e-mail z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`
+                        })
+                    } catch (error) {
+                        next(error)
                     }
-                    res.send({
-                        successMessage: `Na adres ${email} został wysłany e-mail z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`
-                    })
                 })
             }
         }
