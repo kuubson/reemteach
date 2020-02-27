@@ -24,16 +24,8 @@ export default async (req, res, next) => {
             endpoint,
             keys: { p256dh, auth }
         } = req.body
-        await req.user.getSubscription().then(async subscription => {
-            if (subscription) {
-                if (subscription.endpoint !== endpoint) {
-                    await Subscription.destroy({
-                        where: {
-                            studentId: req.user.id
-                        }
-                    })
-                }
-            } else {
+        await req.user.getSubscriptions().then(async subscriptions => {
+            if (!subscriptions.some(subscription => subscription.endpoint === endpoint)) {
                 await req.user.createSubscription({
                     endpoint,
                     p256dh,
@@ -63,16 +55,22 @@ export default async (req, res, next) => {
             const [hours, minutes] = from.split(':')
             schoolBellsNotificationsTasks.push(
                 cron.schedule(`${minutes} ${hours} * * *`, () => {
-                    subscriptions.map(async subscription => {
+                    subscriptions.map(async ({ studentId, endpoint, p256dh, auth }) => {
                         if (
                             students.some(
                                 student =>
-                                    student.id === subscription.studentId &&
+                                    student.id === studentId &&
                                     student.grades.some(grade => grade.school.name === school.name)
                             )
                         ) {
                             webpush.sendNotification(
-                                req.body,
+                                {
+                                    endpoint,
+                                    keys: {
+                                        p256dh,
+                                        auth
+                                    }
+                                },
                                 JSON.stringify({
                                     title: 'Reemteach',
                                     body: `Rozpoczyna się właśnie kolejna ${

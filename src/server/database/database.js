@@ -31,7 +31,7 @@ Grade.belongsTo(School)
 Grade.belongsToMany(Student, { through: 'composedGrades' })
 Student.belongsToMany(Grade, { through: 'composedGrades' })
 
-Student.hasOne(Subscription)
+Student.hasMany(Subscription)
 Subscription.belongsTo(Student)
 
 const initializeDatabaseConnection = async () => {
