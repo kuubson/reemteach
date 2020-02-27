@@ -127,8 +127,9 @@ export const validation = () => [
         .withMessage('Zaznaczona szkoła zawiera niedozwolone znaki!')
         .bail()
         .custom(async (school, { req }) => {
-            let schools = await req.user.getSchools()
-            schools = schools.map(({ name }) => name)
+            const schools = await req.user
+                .getSchools()
+                .then(schools => schools.map(({ name }) => name))
             if (!schools.includes(school)) {
                 throw new Error()
             } else {

@@ -51,7 +51,7 @@ export default async (req, res, next) => {
                 }
             }
         })
-        schoolBells.map(({ school, from, to, isRecess }) => {
+        schoolBells.map(({ from, to, isRecess, school }) => {
             const [hours, minutes] = from.split(':')
             schoolBellsNotificationsTasks.push(
                 cron.schedule(`${minutes} ${hours} * * *`, () => {

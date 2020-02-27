@@ -1,14 +1,19 @@
 import { check } from 'express-validator'
 import moment from 'moment'
 
+import { SchoolBell } from '@database'
+
 export default async (req, res, next) => {
     try {
         const { school } = req.user
-        const { schoolBells: updatedSchoolBells } = req.body
-        const schoolBells = await school.getSchoolBells()
-        await Promise.all(schoolBells.map(async schoolBell => await schoolBell.destroy()))
+        const { schoolBells } = req.body
+        await SchoolBell.destroy({
+            where: {
+                schoolId: school.id
+            }
+        })
         await Promise.all(
-            updatedSchoolBells.map(async schoolBell => await school.createSchoolBell(schoolBell))
+            schoolBells.map(async schoolBell => await school.createSchoolBell(schoolBell))
         )
         res.send({
             successMessage: 'Pomyślnie zaktualizowano dzwonki w szkole!'

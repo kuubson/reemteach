@@ -119,8 +119,7 @@ export default async (req, res, next) => {
             {
                 include: [
                     {
-                        model: SchoolBell,
-                        as: 'schoolBells'
+                        model: SchoolBell
                     }
                 ]
             }

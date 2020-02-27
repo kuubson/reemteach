@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { check } from 'express-validator'
 
-import { Admin, HeadTeacher, Teacher, Student } from '@database'
+import { Admin, HeadTeacher, School, Teacher, Student } from '@database'
 
 export default (req, res, next) => {
     try {
@@ -42,17 +42,19 @@ export default (req, res, next) => {
                             const headTeacher = await HeadTeacher.findOne({
                                 where: {
                                     email
+                                },
+                                include: {
+                                    model: School
                                 }
                             })
                             if (!headTeacher) {
                                 clearCookie()
                             } else {
-                                const { isActivated } = headTeacher
-                                const hasSchool = !!(await headTeacher.getSchool())
+                                const { isActivated, school } = headTeacher
                                 res.send({
                                     role: 'headTeacher',
                                     isActivated,
-                                    hasSchool
+                                    hasSchool: !!school
                                 })
                             }
                         } catch (error) {
