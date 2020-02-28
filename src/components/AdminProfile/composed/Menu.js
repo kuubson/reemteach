@@ -19,6 +19,7 @@ const MenuContainer = styled.div`
     position: absolute;
     top: 0px;
     left: 0px;
+    z-index: 1;
     @media (max-width: 1050px) {
         width: 300px;
     }

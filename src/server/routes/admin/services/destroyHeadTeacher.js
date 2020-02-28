@@ -15,7 +15,7 @@ export default async (req, res, next) => {
         })
         if (!headTeacher) {
             throw new ApiError(
-                `Wystąpił niespodziewany problem przy usuwaniu profilu dyrektora ${email}`,
+                `Wystąpił niespodziewany problem przy usuwaniu dyrektora ${email}`,
                 409
             )
         }

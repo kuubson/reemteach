@@ -30,6 +30,7 @@ import HeadTeacherTeachersList from './HeadTeacherTeachersList/HeadTeacherTeache
 import TeacherProfile from './TeacherProfile/TeacherProfile'
 import TeacherStudentCreator from './TeacherStudentCreator/TeacherStudentCreator'
 import TeacherSchoolsList from './TeacherSchoolsList/TeacherSchoolsList'
+import TeacherStudentsList from './TeacherStudentsList/TeacherStudentsList'
 
 import StudentProfile from './StudentProfile/StudentProfile'
 
@@ -155,8 +156,17 @@ const App = ({
             )
         },
         {
-            pathname: '/nauczyciel/lista-szkół',
+            pathname: '/nauczyciel/lista-uczniów',
             order: 4,
+            render: () => (
+                <Roles.Teacher>
+                    <TeacherStudentsList />
+                </Roles.Teacher>
+            )
+        },
+        {
+            pathname: '/nauczyciel/lista-szkół',
+            order: 5,
             render: () => (
                 <Roles.Teacher>
                     <TeacherSchoolsList />

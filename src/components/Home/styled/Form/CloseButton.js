@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components/macro'
 
 const CloseButtonContainer = styled.button`
-    color: white;
+    color: ${({ black }) => (black ? 'black' : 'white')};
     font-size: 19px;
     cursor: pointer;
     position: absolute;
@@ -13,8 +13,12 @@ const CloseButtonContainer = styled.button`
     }
 `
 
-const CloseButton = ({ onClick }) => {
-    return <CloseButtonContainer onClick={onClick}>✕</CloseButtonContainer>
+const CloseButton = ({ onClick, black }) => {
+    return (
+        <CloseButtonContainer onClick={onClick} black={black}>
+            ✕
+        </CloseButtonContainer>
+    )
 }
 
 export default CloseButton

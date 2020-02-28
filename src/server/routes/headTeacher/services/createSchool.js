@@ -117,11 +117,9 @@ export default async (req, res, next) => {
                 ]
             },
             {
-                include: [
-                    {
-                        model: SchoolBell
-                    }
-                ]
+                include: {
+                    model: SchoolBell
+                }
             }
         )
         res.send({

@@ -41,13 +41,13 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
         }
         getTeachers()
     }, [])
-    const removeTeacher = (id, email) => {
+    const destroyTeacher = (id, email) => {
         setConfirmationPopupData(
             `Czy napewno chcesz usunąć nauczyciela ${email} ze szkoły?`,
             'Tak',
             'Nie',
             async () => {
-                const url = '/api/headTeacher/removeTeacher'
+                const url = '/api/headTeacher/destroyTeacher'
                 const response = await apiAxios.post(url, {
                     id,
                     email
@@ -279,7 +279,7 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
                                             <AHTLDashboard.ButtonsContainer>
                                                 {!isActivated && (
                                                     <AHTLDashboard.Button
-                                                        onClick={() => removeTeacher(id, email)}
+                                                        onClick={() => destroyTeacher(id, email)}
                                                     >
                                                         Usuń
                                                     </AHTLDashboard.Button>

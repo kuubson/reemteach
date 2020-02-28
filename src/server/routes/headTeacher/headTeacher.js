@@ -79,12 +79,12 @@ router.post(
 router.get('/headTeacher/getTeachers', authWithJwt, checkForSchool, Services.getTeachers.default)
 
 router.post(
-    '/headTeacher/removeTeacher',
+    '/headTeacher/destroyTeacher',
     authWithJwt,
     checkForSchool,
-    Services.removeTeacher.validation(),
+    Services.destroyTeacher.validation(),
     checkValidationResult,
-    Services.removeTeacher.default
+    Services.destroyTeacher.default
 )
 
 router.post(

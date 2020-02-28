@@ -7,13 +7,13 @@ export default styled.button`
     padding: 19px 40px;
     font-size: 9.5px;
     transition: transform 0.5s ease-in-out;
+    :hover {
+        transform: scale(1.03);
+    }
     @media (max-width: 700px) {
         font-size: 8.5px;
     }
     @media (max-width: 500px) {
         font-size: 7.5px;
-    }
-    :hover {
-        transform: scale(1.03);
     }
 `

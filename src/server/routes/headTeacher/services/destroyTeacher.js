@@ -6,7 +6,6 @@ import { ApiError } from '@utils'
 
 export default async (req, res, next) => {
     try {
-        const { school } = req.user
         const { id, email } = req.body
         const teacher = await Teacher.findOne({
             where: {
@@ -16,7 +15,7 @@ export default async (req, res, next) => {
         })
         if (!teacher) {
             throw new ApiError(
-                `Wystąpił niespodziewany problem przy usuwaniu profilu nauczyciela ${email}`,
+                `Wystąpił niespodziewany problem przy usuwaniu nauczyciela ${email}`,
                 409
             )
         }
@@ -26,9 +25,9 @@ export default async (req, res, next) => {
                 409
             )
         }
-        await school.removeTeacher(teacher)
+        await teacher.destroy()
         res.send({
-            successMessage: `Pomyślnie usunięto nauczyciela ${email} ze szkoły!`
+            successMessage: `Pomyślnie usunięto nauczyciela ${email} z systemu!`
         })
     } catch (error) {
         next(error)

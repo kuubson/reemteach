@@ -65,15 +65,19 @@ export default (req, res, next) => {
                             const teacher = await Teacher.findOne({
                                 where: {
                                     email
+                                },
+                                include: {
+                                    model: School
                                 }
                             })
                             if (!teacher) {
                                 clearCookie()
                             } else {
-                                const { isActivated } = teacher
+                                const { isActivated, schools } = teacher
                                 res.send({
                                     role: 'teacher',
-                                    isActivated
+                                    isActivated,
+                                    hasSchools: schools.length > 0
                                 })
                             }
                         } catch (error) {

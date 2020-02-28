@@ -38,34 +38,46 @@ const TeacherSchoolsList = ({ shouldMenuAppear }) => {
         <TeacherSchoolsListContainer withMenu={shouldMenuAppear} withMorePadding>
             {!isLoading && (
                 <AHTLDashboard.DetailsContainer>
-                    {schools.map(
-                        ({
-                            id,
-                            name: schoolName,
-                            type,
-                            description,
-                            address,
-                            creationDate,
-                            headTeacher: { email, name, surname }
-                        }) => {
-                            return (
-                                <div key={id}>
-                                    <HTPComposed.Detail
-                                        label="Dyrektor"
-                                        value={`${name} ${surname}`}
-                                    />
-                                    <HTPComposed.Detail label="E-mail" value={email} />
-                                    <HTPComposed.Detail label="Nazwa szkoły" value={schoolName} />
-                                    <HTPComposed.Detail label="Rodzaj szkoły" value={type} />
-                                    <HTPComposed.Detail label="Opis szkoły" value={description} />
-                                    <HTPComposed.Detail label="Adres szkoły" value={address} />
-                                    <HTPComposed.Detail
-                                        label="Data utworzenia szkoły"
-                                        value={creationDate}
-                                    />
-                                </div>
-                            )
-                        }
+                    {schools.length > 0 ? (
+                        schools.map(
+                            ({
+                                id,
+                                name: schoolName,
+                                type,
+                                description,
+                                address,
+                                creationDate,
+                                headTeacher: { email, name, surname }
+                            }) => {
+                                return (
+                                    <div key={id}>
+                                        <HTPComposed.Detail
+                                            label="Dyrektor"
+                                            value={`${name} ${surname}`}
+                                        />
+                                        <HTPComposed.Detail label="E-mail" value={email} />
+                                        <HTPComposed.Detail
+                                            label="Nazwa szkoły"
+                                            value={schoolName}
+                                        />
+                                        <HTPComposed.Detail label="Rodzaj szkoły" value={type} />
+                                        <HTPComposed.Detail
+                                            label="Opis szkoły"
+                                            value={description}
+                                        />
+                                        <HTPComposed.Detail label="Adres szkoły" value={address} />
+                                        <HTPComposed.Detail
+                                            label="Data utworzenia szkoły"
+                                            value={creationDate}
+                                        />
+                                    </div>
+                                )
+                            }
+                        )
+                    ) : (
+                        <AHTLDashboard.Warning>
+                            Nie należysz do żadnej szkoły!
+                        </AHTLDashboard.Warning>
                     )}
                 </AHTLDashboard.DetailsContainer>
             )}

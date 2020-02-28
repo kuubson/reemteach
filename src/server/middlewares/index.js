@@ -10,6 +10,7 @@ import checkValidationResult from './checkValidationResult'
 import rateLimiter from './rateLimiter'
 import authWithJwt from './authWithJwt'
 import checkForSchool from './checkForSchool'
+import checkForSchools from './checkForSchools'
 
 import initializePassport from './passport'
 import initializeSocketio from '../socketio/socketio'
@@ -48,5 +49,6 @@ export {
     checkValidationResult,
     rateLimiter,
     authWithJwt,
-    checkForSchool
+    checkForSchool,
+    checkForSchools
 }

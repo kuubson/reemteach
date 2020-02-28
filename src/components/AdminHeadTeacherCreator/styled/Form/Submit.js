@@ -10,13 +10,13 @@ export default styled.button`
     font-size: 9.5px;
     color: black;
     transition: transform 0.5s ease-in-out;
+    :hover {
+        transform: scale(1.03);
+    }
     @media (max-width: 700px) {
         font-size: 8.5px;
     }
     @media (max-width: 600px) {
         font-size: 7.5px;
-    }
-    :hover {
-        transform: scale(1.03);
     }
 `

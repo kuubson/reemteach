@@ -30,7 +30,7 @@ const Teacher = ({
     closeMenuOnClick
 }) => {
     const [shouldChildrenAppear, setShouldChildrenAppear] = useState(false)
-    const [menuOptions] = useState([
+    const [menuOptions, setMenuOptions] = useState([
         {
             option: 'Strona główna',
             pathname: '/nauczyciel/profil'
@@ -40,8 +40,8 @@ const Teacher = ({
             pathname: '/nauczyciel/lista-szkół'
         },
         {
-            option: 'Utwórz ucznia',
-            pathname: '/nauczyciel/tworzenie-ucznia'
+            option: 'Lista uczniów',
+            pathname: '/nauczyciel/lista-uczniów'
         }
     ])
     useEffect(() => {
@@ -50,7 +50,7 @@ const Teacher = ({
             const response = await delayedApiAxios.get(url)
             if (response) {
                 const profilePathname = '/nauczyciel/profil'
-                const { role, isActivated } = response.data
+                const { role, isActivated, hasSchools } = response.data
                 if (role === 'guest' || role !== 'teacher') {
                     delayedRedirectTo('/')
                 }
@@ -58,6 +58,15 @@ const Teacher = ({
                     setTimeout(() => {
                         delayedRedirectTo(profilePathname)
                     }, 800)
+                }
+                if (hasSchools) {
+                    setMenuOptions([
+                        ...menuOptions,
+                        {
+                            option: 'Utwórz ucznia',
+                            pathname: '/nauczyciel/tworzenie-ucznia'
+                        }
+                    ])
                 }
             }
         }

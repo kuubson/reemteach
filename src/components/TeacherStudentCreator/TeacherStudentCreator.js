@@ -135,7 +135,7 @@ const TeacherStudentCreator = ({ shouldMenuAppear }) => {
                             label="Szkoła"
                             value={school}
                             placeholder="Zaznacz szkołę..."
-                            options={schools}
+                            options={schools.length > 0 ? schools : ['Brak szkół']}
                             error={schoolError}
                             onChange={setSchool}
                         />

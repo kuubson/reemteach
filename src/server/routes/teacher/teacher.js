@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { rateLimiter, authWithJwt, checkValidationResult } from '@middlewares'
+import { rateLimiter, authWithJwt, checkValidationResult, checkForSchools } from '@middlewares'
 
 import Services from './services'
 
@@ -39,9 +39,12 @@ router.get('/teacher/getSchools', authWithJwt, Services.getSchools.default)
 router.post(
     '/teacher/createStudent',
     authWithJwt,
+    checkForSchools,
     Services.createStudent.validation(),
     checkValidationResult,
     Services.createStudent.default
 )
+
+router.get('/teacher/getStudents', authWithJwt, Services.getStudents.default)
 
 export default router
