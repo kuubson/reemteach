@@ -178,26 +178,18 @@ const App = ({
             render: () => <Redirect to="/" />
         }
     ]
-    const getExactRoute = value => routes.filter(({ pathname }) => pathname === value)[0]
-    const getSimilarRoute = value =>
-        routes.filter(({ pathname }) => pathname.startsWith(value.substring(0, 6)))[0]
-    const currentKey = location.pathname
     const [pageDirection, setPageDirection] = useState()
     const [currentPath, setCurrentPath] = useState(location.pathname)
+    const [exactRoute] = routes.filter(({ pathname }) => pathname === location.pathname)
+    const [similarRoute] = routes.filter(({ pathname }) =>
+        pathname.startsWith(location.pathname.substring(0, 6))
+    )
     const [currentPathOrder, setCurrentPathOrder] = useState(
-        getExactRoute(currentKey)
-            ? getExactRoute(currentKey).order
-            : getSimilarRoute(currentKey)
-            ? getSimilarRoute(currentKey).order
-            : 30
+        exactRoute ? exactRoute.order : similarRoute ? similarRoute.order : 30
     )
     useEffect(() => {
         const newPath = location.pathname
-        const newPathOrder = getExactRoute(newPath)
-            ? getExactRoute(newPath).order
-            : getSimilarRoute(newPath)
-            ? getSimilarRoute(newPath).order
-            : 30
+        const newPathOrder = exactRoute ? exactRoute.order : similarRoute ? similarRoute.order : 30
         if (newPath !== currentPath) {
             const direction = currentPathOrder < newPathOrder ? 'left' : 'right'
             setCurrentPath(newPath)
@@ -211,7 +203,7 @@ const App = ({
             {shouldFeedbackHandlerAppear && <FeedbackHandler />}
             {shouldConfirmationPopupAppear && <ConfirmationPopup />}
             <TransitionGroup className={pageDirection}>
-                <CSSTransition key={currentKey} timeout={800} classNames="route">
+                <CSSTransition key={location.pathname} timeout={800} classNames="route">
                     <div className="route__container">
                         <Switch location={location}>
                             {routes.map(({ pathname, render }) => (
