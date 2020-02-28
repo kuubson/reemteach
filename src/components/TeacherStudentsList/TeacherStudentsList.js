@@ -6,7 +6,9 @@ import { withMenu } from '@hoc'
 
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
 import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
+import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
 import HForm from '@components/Home/styled/Form'
+import Dashboard from './styled/Dashboard'
 
 import HTPComposed from '@components/HeadTeacherProfile/composed'
 
@@ -54,17 +56,17 @@ const TeacherStudentsList = ({ shouldMenuAppear }) => {
                             <div key={id}>
                                 <HTPComposed.Detail label="Szkoła" value={name} />
                                 {grades.map(({ grade, students }) => (
-                                    <div key={grade}>
+                                    <Dashboard.DetailOuterContainer key={grade}>
                                         <HTPComposed.Detail
                                             label="Klasa"
                                             value={grade}
                                             onClick={() => setStudents(students)}
                                             withPointer
                                         />
-                                        <AHTLDashboard.Button>
+                                        <AHTCForm.Submit withLessMargin>
                                             Rozpocznij wykład
-                                        </AHTLDashboard.Button>
-                                    </div>
+                                        </AHTCForm.Submit>
+                                    </Dashboard.DetailOuterContainer>
                                 ))}
                             </div>
                         ))
