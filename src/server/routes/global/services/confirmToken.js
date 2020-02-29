@@ -43,9 +43,7 @@ export default (req, res, next) => {
                                 where: {
                                     email
                                 },
-                                include: {
-                                    model: School
-                                }
+                                include: School
                             })
                             if (!headTeacher) {
                                 clearCookie()
@@ -66,9 +64,7 @@ export default (req, res, next) => {
                                 where: {
                                     email
                                 },
-                                include: {
-                                    model: School
-                                }
+                                include: School
                             })
                             if (!teacher) {
                                 clearCookie()

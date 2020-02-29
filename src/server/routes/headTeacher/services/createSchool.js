@@ -11,6 +11,15 @@ export default async (req, res, next) => {
             throw new ApiError(`Posiadasz już utworzoną szkołę!`, 409)
         }
         const { name, type, description, address, creationDate } = req.body
+        if (
+            await School.findOne({
+                where: {
+                    name
+                }
+            })
+        ) {
+            throw new ApiError(`Szkoła o nazwie ${name} istnieje już w systemie!`, 409)
+        }
         await req.user.createSchool(
             {
                 name,
@@ -117,9 +126,7 @@ export default async (req, res, next) => {
                 ]
             },
             {
-                include: {
-                    model: SchoolBell
-                }
+                include: SchoolBell
             }
         )
         res.send({
@@ -137,21 +144,7 @@ export const validation = () => [
         .withMessage('Wprowadź nazwę szkoły!')
         .bail()
         .custom(detectSanitization)
-        .withMessage('Nazwa szkoły zawiera niedozwolone znaki!')
-        .bail()
-        .custom(async name => {
-            const school = await School.findOne({
-                where: {
-                    name
-                }
-            })
-            if (school) {
-                throw new Error()
-            } else {
-                return school
-            }
-        })
-        .withMessage(name => `Szkoła o nazwie ${name} istnieje już w systemie!`),
+        .withMessage('Nazwa szkoły zawiera niedozwolone znaki!'),
     check('type')
         .trim()
         .notEmpty()

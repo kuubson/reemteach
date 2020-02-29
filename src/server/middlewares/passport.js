@@ -6,14 +6,7 @@ const JwtStrategy = passportJwt.Strategy
 const ExtractJwt = passportJwt.ExtractJwt
 
 export default passport => {
-    const extractJwtFromCookies = req => {
-        const { token } = req.cookies
-        if (token) {
-            return token
-        } else {
-            return null
-        }
-    }
+    const extractJwtFromCookies = ({ cookies }) => cookies.token
     passport.use(
         new JwtStrategy(
             {

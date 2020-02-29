@@ -61,32 +61,31 @@ export default async (req, res, next) => {
                     `Nauczyciel z adresem ${email} ma już konto w Twojej szkole!`,
                     409
                 )
-            } else {
-                await teacher.addSchool(school)
-                const mailOptions = {
-                    from: process.env.NODEMAILER_USERNAME,
-                    to: email,
-                    subject: `Konto nauczycielskie w aplikacji Reemteach`,
-                    html: `
+            }
+            await school.addTeacher(teacher)
+            const mailOptions = {
+                from: process.env.NODEMAILER_USERNAME,
+                to: email,
+                subject: `Konto nauczycielskie w aplikacji Reemteach`,
+                html: `
                     <h2>Dyrektor ${name} ${surname} dodał Cię do szkoły ${school.name}!</h2>
         		`
-                }
-                transporter.sendMail(mailOptions, async (error, info) => {
-                    try {
-                        if (error || !info) {
-                            throw new ApiError(
-                                'Wystąpił niespodziewany problem przy wysyłaniu e-maila z informacją o dodaniu do szkoły!',
-                                500
-                            )
-                        }
-                        res.send({
-                            successMessage: `Na adres ${email} został wysłany e-mail z informacją o dodaniu do szkoły!`
-                        })
-                    } catch (error) {
-                        next(error)
-                    }
-                })
             }
+            transporter.sendMail(mailOptions, async (error, info) => {
+                try {
+                    if (error || !info) {
+                        throw new ApiError(
+                            'Wystąpił niespodziewany problem przy wysyłaniu e-maila z informacją o dodaniu do szkoły!',
+                            500
+                        )
+                    }
+                    res.send({
+                        successMessage: `Na adres ${email} został wysłany e-mail z informacją o dodaniu do szkoły!`
+                    })
+                } catch (error) {
+                    next(error)
+                }
+            })
         }
     } catch (error) {
         next(error)

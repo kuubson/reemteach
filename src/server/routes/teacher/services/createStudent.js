@@ -2,7 +2,7 @@ import { check } from 'express-validator'
 import nodemailer from 'nodemailer'
 import crypto from 'crypto'
 
-import { Student } from '@database'
+import { School, Grade, Student } from '@database'
 
 import { ApiError, detectSanitization } from '@utils'
 
@@ -18,6 +18,20 @@ export default async (req, res, next) => {
     try {
         const { name, surname } = req.user
         const { email, school, grade } = req.body
+        const student = await Student.findOne({
+            where: {
+                email
+            },
+            include: {
+                model: Grade,
+                include: {
+                    model: School,
+                    where: {
+                        name: school
+                    }
+                }
+            }
+        })
         const [foundSchool] = await req.user.getSchools({
             where: {
                 name: school
@@ -33,11 +47,6 @@ export default async (req, res, next) => {
             (await foundSchool.createGrade({
                 grade
             }))
-        const student = await Student.findOne({
-            where: {
-                email
-            }
-        })
         if (!student) {
             const password = crypto.randomBytes(20).toString('hex')
             await schoolGrade.createStudent({
@@ -50,7 +59,7 @@ export default async (req, res, next) => {
                 subject: `Konto uczniowskie w aplikacji Reemteach`,
                 html: `
                     <h2>Nauczyciel ${name} ${surname} utworzył Twoje konto uczniowskie!</h2>
-                    <h3>Zostałeś dodany do klasy ${grade} w szkole ${foundSchool.name}!</h3>
+                    <h3>Zostałeś dodany do klasy ${schoolGrade.grade} w szkole ${foundSchool.name}!</h3>
                     <h3>Zaloguj się, uzupełnij dane personalne i ustaw nowe hasło!</h3>
                     <p>E-mail: ${email}</p>
                     <p>Hasło: ${password}</p>
@@ -60,12 +69,12 @@ export default async (req, res, next) => {
                 try {
                     if (error || !info) {
                         throw new ApiError(
-                            `Wystąpił niespodziewany problem przy wysyłaniu e-maila z danymi do zalogowania się na konto uczniowskie oraz z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`,
+                            `Wystąpił niespodziewany problem przy wysyłaniu e-maila z danymi do zalogowania się na konto uczniowskie oraz z informacją o dodaniu do klasy ${schoolGrade.grade} w szkole ${foundSchool.name}!`,
                             500
                         )
                     }
                     res.send({
-                        successMessage: `Na adres ${email} został wysłany e-mail z danymi do zalogowania się na konto uczniowskie oraz z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`
+                        successMessage: `Na adres ${email} został wysłany e-mail z danymi do zalogowania się na konto uczniowskie oraz z informacją o dodaniu do klasy ${schoolGrade.grade} w szkole ${foundSchool.name}!`
                     })
                 } catch (error) {
                     next(error)
@@ -74,35 +83,40 @@ export default async (req, res, next) => {
         } else {
             if (await schoolGrade.hasStudent(student)) {
                 throw new ApiError(
-                    `Uczeń z adresem ${email} znajduje się już w klasie ${grade} w szkole ${foundSchool.name}!`,
+                    `Uczeń z adresem ${email} znajduje się już w klasie ${schoolGrade.grade} w szkole ${foundSchool.name}!`,
                     409
                 )
-            } else {
-                await schoolGrade.addStudent(student)
-                const mailOptions = {
-                    from: process.env.NODEMAILER_USERNAME,
-                    to: email,
-                    subject: `Konto uczniowskie w aplikacji Reemteach`,
-                    html: `
-                    <h2>Nauczyciel ${name} ${surname} dodał Cię do klasy ${grade} w szkole ${foundSchool.name}!</h2>
-        		`
-                }
-                transporter.sendMail(mailOptions, async (error, info) => {
-                    try {
-                        if (error || !info) {
-                            throw new ApiError(
-                                `Wystąpił niespodziewany problem przy wysyłaniu e-maila z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`,
-                                500
-                            )
-                        }
-                        res.send({
-                            successMessage: `Na adres ${email} został wysłany e-mail z informacją o dodaniu do klasy ${grade} w szkole ${foundSchool.name}!`
-                        })
-                    } catch (error) {
-                        next(error)
-                    }
-                })
             }
+            if (student.grades.length === 1) {
+                throw new ApiError(
+                    `Uczeń z adresem ${email} znajduje się już w szkole ${student.grades[0].school.name} w klasie ${student.grades[0].grade}!`,
+                    409
+                )
+            }
+            await schoolGrade.addStudent(student)
+            const mailOptions = {
+                from: process.env.NODEMAILER_USERNAME,
+                to: email,
+                subject: `Konto uczniowskie w aplikacji Reemteach`,
+                html: `
+                    <h2>Nauczyciel ${name} ${surname} dodał Cię do klasy ${schoolGrade.grade} w szkole ${foundSchool.name}!</h2>
+        		`
+            }
+            transporter.sendMail(mailOptions, async (error, info) => {
+                try {
+                    if (error || !info) {
+                        throw new ApiError(
+                            `Wystąpił niespodziewany problem przy wysyłaniu e-maila z informacją o dodaniu do klasy ${schoolGrade.grade} w szkole ${foundSchool.name}!`,
+                            500
+                        )
+                    }
+                    res.send({
+                        successMessage: `Na adres ${email} został wysłany e-mail z informacją o dodaniu do klasy ${schoolGrade.grade} w szkole ${foundSchool.name}!`
+                    })
+                } catch (error) {
+                    next(error)
+                }
+            })
         }
     } catch (error) {
         next(error)

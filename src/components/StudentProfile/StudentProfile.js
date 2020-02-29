@@ -59,10 +59,12 @@ const StudentProfile = ({ shouldMenuAppear }) => {
                 setIsLoading(false)
                 const { email, name, surname, age, nick, isActivated } = response.data
                 setEmail(email)
-                setName(name)
-                setSurname(surname)
-                setAge(age)
-                setNick(nick)
+                if (isActivated) {
+                    setName(name)
+                    setSurname(surname)
+                    setAge(age)
+                    setNick(nick)
+                }
                 setIsActivated(isActivated)
             }
         }

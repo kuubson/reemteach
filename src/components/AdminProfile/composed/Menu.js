@@ -38,7 +38,7 @@ const MenuContainer = styled.div`
 const Menu = ({ children, shouldMenuAppear, setShouldMenuAppear }) => {
     const menuRef = useRef()
     const handleOnScroll = () => {
-        if (menuRef.current && window.innerWidth > 500) {
+        if (window.innerWidth > 500 && menuRef.current) {
             menuRef.current.style.top = `${window.scrollY}px`
         }
     }

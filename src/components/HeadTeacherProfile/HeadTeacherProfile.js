@@ -56,9 +56,11 @@ const HeadTeacherProfile = ({ shouldMenuAppear }) => {
                 setIsLoading(false)
                 const { email, name, surname, age, isActivated } = response.data
                 setEmail(email)
-                setName(name)
-                setSurname(surname)
-                setAge(age)
+                if (isActivated) {
+                    setName(name)
+                    setSurname(surname)
+                    setAge(age)
+                }
                 setIsActivated(isActivated)
             }
         }

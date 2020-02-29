@@ -71,11 +71,13 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                     isActivated
                 } = response.data
                 setEmail(email)
-                setName(name)
-                setSurname(surname)
-                setAge(age)
-                setDescription(description)
-                setSubject(subject)
+                if (isActivated) {
+                    setName(name)
+                    setSurname(surname)
+                    setAge(age)
+                    setDescription(description)
+                    setSubject(subject)
+                }
                 setIsActivated(isActivated)
             }
         }

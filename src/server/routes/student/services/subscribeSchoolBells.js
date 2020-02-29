@@ -35,9 +35,7 @@ export default async (req, res, next) => {
         })
         const subscriptions = await Subscription.findAll()
         const schoolBells = await SchoolBell.findAll({
-            include: {
-                model: School
-            }
+            include: School
         }).then(schoolBells =>
             schoolBells.filter(
                 (v, i, a) => a.findIndex(t => t.from === v.from && t.to === v.to) === i
@@ -46,9 +44,7 @@ export default async (req, res, next) => {
         const students = await Student.findAll({
             include: {
                 model: Grade,
-                include: {
-                    model: School
-                }
+                include: School
             }
         })
         schoolBells.map(({ from, to, isRecess, school }) => {

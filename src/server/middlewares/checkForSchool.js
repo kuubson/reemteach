@@ -5,10 +5,9 @@ export default async (req, _, next) => {
         const school = await req.user.getSchool()
         if (!school) {
             throw new ApiError('Musisz najpierw utworzyć szkołę w systemie!', 409)
-        } else {
-            req.user.school = school
-            next()
         }
+        req.user.school = school
+        next()
     } catch (error) {
         next(error)
     }

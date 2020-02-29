@@ -5,9 +5,8 @@ export default async (req, _, next) => {
         const schools = await req.user.getSchools()
         if (schools.length <= 0) {
             throw new ApiError('Nie należysz do żadnej szkoły!', 409)
-        } else {
-            next()
         }
+        next()
     } catch (error) {
         next(error)
     }

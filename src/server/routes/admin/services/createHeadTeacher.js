@@ -29,6 +29,15 @@ transporter.verify((error, success) => {
 export default async (req, res, next) => {
     try {
         const { email } = req.body
+        if (
+            await HeadTeacher.findOne({
+                where: {
+                    email
+                }
+            })
+        ) {
+            throw new ApiError(`Dyrektor z adresem ${email} znajduje się już w systemie!`, 409)
+        }
         const password = crypto.randomBytes(20).toString('hex')
         await HeadTeacher.create({
             email,
@@ -74,17 +83,4 @@ export const validation = () => [
         .isEmail()
         .withMessage('Wprowadź poprawny adres e-mail!')
         .normalizeEmail()
-        .custom(async email => {
-            const headTeacher = await HeadTeacher.findOne({
-                where: {
-                    email
-                }
-            })
-            if (headTeacher) {
-                throw new Error()
-            } else {
-                return headTeacher
-            }
-        })
-        .withMessage('Dyrektor z tym adresem e-mail znajduje się już w systemie!')
 ]

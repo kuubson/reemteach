@@ -13,11 +13,10 @@ const EditableDetailContainer = styled.div`
 const EditableDetail = ({ label, value, error, onChange, onBlur, textarea, trim }) => {
     const textareaRef = useRef()
     useEffect(() => {
-        if (!value && textareaRef.current) {
-            textareaRef.current.style.minHeight = '16px'
-        } else {
-            if (textarea && textareaRef.current) {
+        if (textarea && textareaRef.current) {
+            if (!value) {
                 textareaRef.current.style.minHeight = '16px'
+            } else {
                 textareaRef.current.style.minHeight = `${textareaRef.current.scrollHeight}px`
             }
         }

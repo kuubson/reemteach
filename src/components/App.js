@@ -213,7 +213,7 @@ const App = ({
             {shouldFeedbackHandlerAppear && <FeedbackHandler />}
             {shouldConfirmationPopupAppear && <ConfirmationPopup />}
             <TransitionGroup className={pageDirection}>
-                <CSSTransition key={location.pathname} timeout={800} classNames="route">
+                <CSSTransition key={location.pathname} classNames="route" timeout={800}>
                     <div className="route__container">
                         <Switch location={location}>
                             {routes.map(({ pathname, render }) => (

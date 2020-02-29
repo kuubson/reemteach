@@ -25,10 +25,10 @@ const Input = ({
 }) => {
     const textareaRef = useRef()
     useEffect(() => {
-        if (!value && textareaRef.current) {
-            textareaRef.current.style.height = '50px'
-        } else {
-            if (textarea && textareaRef.current) {
+        if (textarea && textareaRef.current) {
+            if (!value) {
+                textareaRef.current.style.height = '50px'
+            } else {
                 textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
             }
         }
