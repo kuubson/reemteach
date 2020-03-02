@@ -8,7 +8,7 @@ import StyledLecturePopup from '../styled/LecturePopup'
 const LecturePopupContainer = styled.div`
     width: 100%;
     height: 100vh;
-    background: rgba(242, 75, 75, 0.95);
+    background: rgba(242, 75, 75, 0.98);
     display: flex;
     justify-content: center;
     align-items: center;

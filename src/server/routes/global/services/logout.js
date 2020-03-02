@@ -3,7 +3,7 @@ import { check } from 'express-validator'
 export default (_, res, next) => {
     try {
         res.clearCookie('token', {
-            secure: !process.env.NODE_ENV === 'development',
+            secure: process.env.NODE_ENV === 'production',
             httpOnly: true,
             sameSite: true
         }).send({

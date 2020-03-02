@@ -19,7 +19,7 @@ export default async (req, res, next) => {
         }
         const token = jwt.sign({ email, role: 'teacher' }, process.env.JWT_KEY)
         res.cookie('token', token, {
-            secure: !process.env.NODE_ENV === 'development',
+            secure: process.env.NODE_ENV === 'production',
             httpOnly: true,
             sameSite: true
         }).send({

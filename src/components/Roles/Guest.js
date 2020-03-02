@@ -19,6 +19,10 @@ const GuestContainer = styled.div`
 const Guest = ({ children, socket, setSocket, shouldFeedbackHandlerAppear }) => {
     const [shouldChildrenAppear, setShouldChildrenAppear] = useState(false)
     useEffect(() => {
+        if (socket) {
+            socket.disconnect()
+            setSocket()
+        }
         const confirmToken = async () => {
             const url = '/api/confirmToken'
             const response = await delayedApiAxios.get(url)
@@ -41,10 +45,6 @@ const Guest = ({ children, socket, setSocket, shouldFeedbackHandlerAppear }) => 
         confirmToken()
         setTimeout(() => {
             setShouldChildrenAppear(true)
-            if (socket) {
-                socket.disconnect()
-                setSocket()
-            }
         }, 0)
     }, [])
     return (

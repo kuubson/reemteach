@@ -36,10 +36,10 @@ const HeadTeacher = ({ children, location, shouldFeedbackHandlerAppear, closeMen
                 const profilePathname = '/dyrektor/profil'
                 const { role, isActivated, hasSchool } = response.data
                 if (role === 'guest' || role !== 'headTeacher') {
-                    delayedRedirectTo('/')
+                    return delayedRedirectTo('/')
                 }
                 if (!isActivated && location.pathname !== profilePathname) {
-                    setTimeout(() => {
+                    return setTimeout(() => {
                         delayedRedirectTo(profilePathname)
                     }, 800)
                 }

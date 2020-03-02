@@ -4,6 +4,7 @@ import { Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { ThemeProvider } from 'styled-components/macro'
+import adapter from 'webrtc-adapter'
 
 import { store, persistor } from '@redux'
 

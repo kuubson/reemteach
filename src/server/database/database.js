@@ -5,6 +5,7 @@ const { DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_HOST } = p
 const connection = new Sequelize(DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD, {
     host: DATABASE_HOST,
     dialect: 'mysql'
+    // ,logging: false
 })
 
 const Admin = connection.import('./models/Admin')
@@ -28,8 +29,8 @@ Teacher.belongsToMany(School, { through: 'composedSchools' })
 School.hasMany(Grade)
 Grade.belongsTo(School)
 
-Grade.belongsToMany(Student, { through: 'composedGrades' })
-Student.belongsToMany(Grade, { through: 'composedGrades' })
+Grade.hasMany(Student)
+Student.belongsTo(Grade)
 
 Student.hasMany(Subscription)
 Subscription.belongsTo(Student)

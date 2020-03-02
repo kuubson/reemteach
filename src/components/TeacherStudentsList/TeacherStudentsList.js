@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withSocket, withMenu } from '@hoc'
 
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
 import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
@@ -15,6 +15,8 @@ import Composed from './composed'
 
 import { delayedApiAxios, setFeedbackData } from '@utils'
 
+const teacher = new RTCPeerConnection()
+
 const TeacherStudentsListContainer = styled(APDashboard.Container)`
     min-height: 100vh;
     display: flex;
@@ -23,7 +25,7 @@ const TeacherStudentsListContainer = styled(APDashboard.Container)`
     flex-direction: column;
 `
 
-const TeacherStudentsList = ({ shouldMenuAppear }) => {
+const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [schools, setSchools] = useState([])
     const [students, setStudents] = useState([])
@@ -53,6 +55,15 @@ const TeacherStudentsList = ({ shouldMenuAppear }) => {
             }
         }
         getStudents()
+        socket.on('callTeacher', async ({ socketId, offer }) => {
+            await teacher.setRemoteDescription(offer)
+            const answer = await teacher.createAnswer()
+            await teacher.setLocalDescription(new RTCSessionDescription(answer))
+            socket.emit('answerStudent', {
+                socketId,
+                answer
+            })
+        })
     }, [])
     const updateLectures = (school, grade, key, value, shouldLecturePopupAppear) => {
         setLectures(
@@ -67,20 +78,23 @@ const TeacherStudentsList = ({ shouldMenuAppear }) => {
             )
         )
     }
-    const startLecture = (school, grade) => {
-        navigator.getUserMedia(
-            {
+    const startLecture = async (id, school, grade) => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
                 video: true,
                 audio: true
-            },
-            stream => updateLectures(school, grade, 'stream', stream, true),
-            () => {
-                setFeedbackData(
-                    'Wystąpił niespodziewany problem podczas rozpoczynania wykładu!',
-                    'Ok'
-                )
-            }
-        )
+            })
+            teacher.addStream(stream)
+            updateLectures(school, grade, 'stream', stream, true)
+            socket.emit('startLecture', {
+                id,
+                school,
+                grade
+            })
+            teacher.ontrack = ({ streams: [stream] }) => {}
+        } catch (error) {
+            setFeedbackData('Wystąpił niespodziewany problem podczas rozpoczynania wykładu!', 'Ok')
+        }
     }
     const areThereStudents = students.length > 0
     return (
@@ -126,7 +140,7 @@ const TeacherStudentsList = ({ shouldMenuAppear }) => {
                                                 label="Klasa"
                                                 value={grade}
                                                 onClick={() => setStudents(students)}
-                                                withPointer
+                                                withPointer={students.length > 0}
                                             />
                                             {students.length <= 0 ? (
                                                 <Dashboard.Warning>
@@ -134,7 +148,7 @@ const TeacherStudentsList = ({ shouldMenuAppear }) => {
                                                 </Dashboard.Warning>
                                             ) : (
                                                 <AHTCForm.Submit
-                                                    onClick={() => startLecture(name, grade)}
+                                                    onClick={() => startLecture(id, name, grade)}
                                                     withLessMargin
                                                 >
                                                     Rozpocznij wykład
@@ -160,4 +174,4 @@ const TeacherStudentsList = ({ shouldMenuAppear }) => {
     )
 }
 
-export default compose(withMenu)(TeacherStudentsList)
+export default compose(withSocket, withMenu)(TeacherStudentsList)

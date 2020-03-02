@@ -33,6 +33,7 @@ import TeacherSchoolsList from './TeacherSchoolsList/TeacherSchoolsList'
 import TeacherStudentsList from './TeacherStudentsList/TeacherStudentsList'
 
 import StudentProfile from './StudentProfile/StudentProfile'
+import StudentLecturesList from './StudentLecturesList/StudentLecturesList'
 
 setConfig({
     reloadHooks: false
@@ -179,6 +180,15 @@ const App = ({
             render: () => (
                 <Roles.Student>
                     <StudentProfile />
+                </Roles.Student>
+            )
+        },
+        {
+            pathname: '/uczeń/lista-wykładów',
+            order: 3,
+            render: () => (
+                <Roles.Student>
+                    <StudentLecturesList />
                 </Roles.Student>
             )
         },

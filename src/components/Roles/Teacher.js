@@ -45,6 +45,9 @@ const Teacher = ({
         }
     ])
     useEffect(() => {
+        if (!socket) {
+            setSocket(io('/teacher'))
+        }
         const confirmToken = async () => {
             const url = '/api/confirmToken'
             const response = await delayedApiAxios.get(url)
@@ -52,10 +55,10 @@ const Teacher = ({
                 const profilePathname = '/nauczyciel/profil'
                 const { role, isActivated, hasSchools } = response.data
                 if (role === 'guest' || role !== 'teacher') {
-                    delayedRedirectTo('/')
+                    return delayedRedirectTo('/')
                 }
                 if (!isActivated && location.pathname !== profilePathname) {
-                    setTimeout(() => {
+                    return setTimeout(() => {
                         delayedRedirectTo(profilePathname)
                     }, 800)
                 }
@@ -73,9 +76,6 @@ const Teacher = ({
         confirmToken()
         setTimeout(() => {
             setShouldChildrenAppear(true)
-            if (!socket) {
-                setSocket(io())
-            }
         }, 0)
     }, [])
     return (

@@ -7,7 +7,7 @@ export default (req, res, next) => {
     try {
         const clearCookie = () => {
             res.clearCookie('token', {
-                secure: !process.env.NODE_ENV === 'development',
+                secure: process.env.NODE_ENV === 'production',
                 httpOnly: true,
                 sameSite: true
             }).send({

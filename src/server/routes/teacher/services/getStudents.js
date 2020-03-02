@@ -8,18 +8,7 @@ export default async (req, res, next) => {
                     model: Grade,
                     include: {
                         model: Student,
-                        attributes: [
-                            'id',
-                            'email',
-                            'name',
-                            'surname',
-                            'age',
-                            'nick',
-                            'isActivated'
-                        ],
-                        through: {
-                            attributes: []
-                        }
+                        attributes: ['id', 'email', 'name', 'surname', 'age', 'nick', 'isActivated']
                     }
                 }
             ],

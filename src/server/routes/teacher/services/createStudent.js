@@ -83,13 +83,13 @@ export default async (req, res, next) => {
         } else {
             if (await schoolGrade.hasStudent(student)) {
                 throw new ApiError(
-                    `Uczeń z adresem ${email} znajduje się już w klasie ${schoolGrade.grade} w szkole ${foundSchool.name}!`,
+                    `Uczeń z adresem ${email} znajduje się już w klasie ${schoolGrade.grade}!`,
                     409
                 )
             }
-            if (student.grades.length === 1) {
+            if (student.grade) {
                 throw new ApiError(
-                    `Uczeń z adresem ${email} znajduje się już w szkole ${student.grades[0].school.name} w klasie ${student.grades[0].grade}!`,
+                    `Uczeń z adresem ${email} znajduje się już w szkole ${student.grade.school.name} w klasie ${student.grade.grade}!`,
                     409
                 )
             }

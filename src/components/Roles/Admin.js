@@ -43,7 +43,7 @@ const Admin = ({ children, location, shouldFeedbackHandlerAppear, closeMenuOnCli
             if (response) {
                 const { role } = response.data
                 if (role === 'guest' || role !== 'admin') {
-                    delayedRedirectTo('/')
+                    return delayedRedirectTo('/')
                 }
             }
         }

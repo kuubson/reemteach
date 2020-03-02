@@ -34,32 +34,36 @@ const Student = ({
         {
             option: 'Strona główna',
             pathname: '/uczeń/profil'
+        },
+        {
+            option: 'Lista wykładów',
+            pathname: '/uczeń/lista-wykładów'
         }
     ])
     useEffect(() => {
+        if (!socket) {
+            setSocket(io('/student'))
+        }
         const confirmToken = async () => {
             const url = '/api/confirmToken'
             const response = await delayedApiAxios.get(url)
             if (response) {
-                subscribePushNotifications('/api/student/subscribeSchoolBells')
                 const profilePathname = '/uczeń/profil'
                 const { role, isActivated } = response.data
                 if (role === 'guest' || role !== 'student') {
-                    delayedRedirectTo('/')
+                    return delayedRedirectTo('/')
                 }
                 if (!isActivated && location.pathname !== profilePathname) {
-                    setTimeout(() => {
+                    return setTimeout(() => {
                         delayedRedirectTo(profilePathname)
                     }, 800)
                 }
+                subscribePushNotifications('/api/student/subscribeSchoolBells')
             }
         }
         confirmToken()
         setTimeout(() => {
             setShouldChildrenAppear(true)
-            if (!socket) {
-                setSocket(io())
-            }
         }, 0)
     }, [])
     return (

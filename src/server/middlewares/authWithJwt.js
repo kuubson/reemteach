@@ -4,7 +4,7 @@ export default (req, res, next) => {
     const rejectUnauthorizedUser = () => {
         const status = 401
         res.clearCookie('token', {
-            secure: !process.env.NODE_ENV === 'development',
+            secure: process.env.NODE_ENV === 'production',
             httpOnly: true,
             sameSite: true
         })

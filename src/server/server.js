@@ -22,9 +22,7 @@ errorHandler(app)
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
-const developmentMode = process.env.NODE_ENV === 'development'
-
-const buildPath = developmentMode ? '../../build' : '../build'
+const buildPath = process.env.NODE_ENV === 'development' ? '../../build' : '../build'
 
 app.use(express.static(path.resolve(__dirname, buildPath)))
 
