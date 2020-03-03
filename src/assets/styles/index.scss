@@ -84,3 +84,18 @@ input:-webkit-autofill:active {
 .right .route-exit-active {
     transform: translateX(100%);
 }
+
+.icon-desktop::before,
+.icon-desktop::after,
+.icon-cancel-circled::before,
+.icon-cancel-circled::after,
+.icon-mute::before,
+.icon-mute::after,
+.icon-mic::before,
+.icon-mic::after {
+    padding: 0px !important;
+    margin: 0px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

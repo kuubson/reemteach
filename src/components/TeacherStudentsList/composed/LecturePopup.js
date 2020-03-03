@@ -1,14 +1,16 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styled, { css } from 'styled-components/macro'
 
 import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
 import HForm from '@components/Home/styled/Form'
 import StyledLecturePopup from '../styled/LecturePopup'
 
+import Composed from '../composed'
+
 const LecturePopupContainer = styled.div`
     width: 100%;
     height: 100vh;
-    background: rgba(242, 75, 75, 0.98);
+    background: #f24b4b;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,6 +30,7 @@ const LecturePopupContainer = styled.div`
 `
 
 const LecturePopup = ({ stream, onClick, shouldSlideIn }) => {
+    const [isMuted, setIsMuted] = useState()
     const videoRef = useRef()
     useEffect(() => {
         if (videoRef.current) {
@@ -37,12 +40,23 @@ const LecturePopup = ({ stream, onClick, shouldSlideIn }) => {
     return (
         <LecturePopupContainer shouldSlideIn={shouldSlideIn}>
             <HForm.CloseButton onClick={onClick} />
-            <StyledLecturePopup.Video
-                ref={videoRef}
-                className="lecture"
-                srcObject={stream}
-                autoPlay
-            />
+            <StyledLecturePopup.VideoContainer>
+                <StyledLecturePopup.Video
+                    ref={videoRef}
+                    className="lecture"
+                    srcObject={stream}
+                    muted={isMuted}
+                    autoPlay
+                />
+                <StyledLecturePopup.IconsContainer>
+                    <Composed.Icon icon="icon-desktop" />
+                    <Composed.Icon icon="icon-cancel-circled" big />
+                    <Composed.Icon
+                        icon={isMuted ? 'icon-mic' : 'icon-mic'}
+                        onClick={() => setIsMuted(isMuted => !isMuted)}
+                    />
+                </StyledLecturePopup.IconsContainer>
+            </StyledLecturePopup.VideoContainer>
             <StyledLecturePopup.StudentsContainer>
                 <AHTLDashboard.Warning white>
                     Na wykładzie nie ma jeszcze żadnego ucznia!

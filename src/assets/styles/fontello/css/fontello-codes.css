@@ -1,0 +1,5 @@
+
+.icon-cancel-circled:before { content: '\e800'; } /* '' */
+.icon-desktop:before { content: '\f108'; } /* '' */
+.icon-mic:before { content: '\f130'; } /* '' */
+.icon-mute:before { content: '\f131'; } /* '' */

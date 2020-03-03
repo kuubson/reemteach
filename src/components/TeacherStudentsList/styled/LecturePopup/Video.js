@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 
 export default styled.video`
-    width: 50%;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
 `
