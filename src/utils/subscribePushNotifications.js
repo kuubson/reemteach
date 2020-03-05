@@ -53,7 +53,7 @@ export default async url => {
                 break
             default:
                 setFeedbackData(
-                    'Aplikacja wymaga zgody na wyświetlanie powiadomień! Udostępnij je w ustawieniach przeglądarki!'
+                    'Aplikacja wymaga zgody na wyświetlanie powiadomień! Udostępnij ją w ustawieniach przeglądarki!'
                 )
         }
     } catch (error) {

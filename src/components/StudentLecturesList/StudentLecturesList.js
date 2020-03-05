@@ -9,10 +9,9 @@ import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
 import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
 
 import HTPComposed from '@components/HeadTeacherProfile/composed'
+import Composed from './composed'
 
 import { setFeedbackData } from '@utils'
-
-const student = new RTCPeerConnection()
 
 const StudentLecturesListContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -26,46 +25,78 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [lectures, setLectures] = useState([])
     useEffect(() => {
-        socket.emit('getLectures')
-        socket.on('getLectures', lectures => {
+        socket.emit('getLectures', lectures => {
             setIsLoading(false)
             setLectures(lectures)
         })
-        socket.on('updateLectures', lectures => setLectures(lectures))
-        socket.on('breakLecture', socketId =>
+        socket.on('audio', audioBuffer => {
+            const blob = new Blob([audioBuffer])
+            const audio = document.createElement('audio')
+            audio.src = window.URL.createObjectURL(blob)
+            audio.play()
+        })
+        return () => {
+            socket.removeListener('updateLectures')
+            socket.removeListener('audio')
+        }
+    }, [])
+    useEffect(() => {
+        socket.once('updateLectures', updatedLectures => {
+            setLectures(
+                updatedLectures.map(lecture => {
+                    const { shouldLecturePopupAppear } =
+                        lectures.find(({ lecturerId }) => lecturerId === lecture.lecturerId) || {}
+                    return {
+                        ...lecture,
+                        shouldLecturePopupAppear
+                    }
+                })
+            )
+        })
+        socket.once('breakLecture', socketId =>
             setLectures(lectures.filter(lecture => lecture.socketId !== socketId))
         )
-        socket.on('answerStudent', async ({ answer }) => await student.setRemoteDescription(answer))
-    }, [])
-    const joinLecture = async socketId => {
+    }, [lectures])
+    const joinLecture = async lecturerRoom => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: true
-            })
-            student.addStream(stream)
-            const offer = await student.createOffer()
-            await student.setLocalDescription(new RTCSessionDescription(offer))
-            socket.emit('callTeacher', {
-                socketId,
-                streamId: stream.id,
-                offer
-            })
-            student.ontrack = ({ streams: [stream] }) => {}
+            socket.emit('joinLecture', lecturerRoom)
         } catch (error) {
             setFeedbackData('Wystąpił niespodziewany problem podczas dołączania do wykładu!', 'Ok')
         }
     }
+    const updateLectures = (lecturerId, shouldLecturePopupAppear) => {
+        setLectures(
+            lectures.map(lecture =>
+                lecture.lecturerId === lecturerId
+                    ? {
+                          ...lecture,
+                          shouldLecturePopupAppear
+                      }
+                    : lecture
+            )
+        )
+    }
     return (
         <StudentLecturesListContainer withMenu={shouldMenuAppear} withMorePadding>
+            {lectures.map(({ lecturerId, stream, shouldLecturePopupAppear }) => (
+                <Composed.LecturePopup
+                    key={lecturerId}
+                    stream={stream}
+                    onClick={() => updateLectures(lecturerId, false)}
+                    shouldSlideIn={shouldLecturePopupAppear}
+                />
+            ))}
             {!isLoading && (
                 <AHTLDashboard.DetailsContainer>
                     {lectures.length > 0 ? (
-                        lectures.map(({ socketId, lecturer }) => (
-                            <div key={socketId}>
+                        lectures.map(({ lecturerId, lecturer, lecturerRoom }) => (
+                            <div key={lecturerId}>
                                 <HTPComposed.Detail label="Wykładowca" value={lecturer} />
                                 <AHTCForm.Submit
-                                    onClick={() => joinLecture(socketId)}
+                                    onClick={() => {
+                                        joinLecture(lecturerRoom)
+                                        updateLectures(lecturerId, true)
+                                    }}
                                     withLessMargin
                                 >
                                     Dołącz

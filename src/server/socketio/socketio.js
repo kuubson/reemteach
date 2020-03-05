@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-import { School, Teacher, Student } from '@database'
+import { School, Grade, Teacher, Student } from '@database'
 
 import { getCookie } from '@utils'
 
@@ -54,6 +54,10 @@ export default io => {
                             },
                             attributes: {
                                 exclude: ['password']
+                            },
+                            include: {
+                                model: Grade,
+                                include: School
                             }
                         })
                         if (!student) {
@@ -70,6 +74,7 @@ export default io => {
         }
     })
     let lectures = []
+    let students = []
     const getLectures = (school, grade) =>
         lectures
             .map(lecture => {
@@ -79,66 +84,55 @@ export default io => {
             })
             .filter(lecture => lecture)
     io.of('/teacher').on('connection', socket => {
-        socket.on('startLecture', ({ school, grade }) => {
-            socket.join(grade)
-            const lecturer = `${socket.teacher.name} ${socket.teacher.surname}`
-            if (
-                !lectures.some(
+        const lecturerId = socket.teacher.id
+        const lecturer = `${socket.teacher.name} ${socket.teacher.surname}`
+        const lecturerRoom = `${lecturerId} ${lecturer}`
+        socket.on('video', ({ school, grade, stream }) => {
+            socket.join(lecturerRoom)
+            lectures = [
+                ...lectures.filter(
                     lecture =>
-                        lecture.school === school &&
-                        lecture.grade === grade &&
-                        lecture.lecturer === lecturer
-                )
-            ) {
-                lectures.push({
+                        lecture.school !== school &&
+                        lecture.grade !== grade &&
+                        lecture.lecturerId !== lecturerId
+                ),
+                {
                     socketId: socket.id,
                     school,
                     grade,
-                    lecturer
-                })
-            }
+                    stream,
+                    lecturerId,
+                    lecturer,
+                    lecturerRoom
+                }
+            ]
             io.of('/student')
                 .to(grade)
                 .emit('updateLectures', getLectures(school, grade))
         })
-        socket.on('answerStudent', ({ socketId, answer }) => {
-            io.of('/student')
-                .to(socketId)
-                .emit('answerStudent', {
-                    socketId: socket.id,
-                    answer
-                })
-        })
+        socket.on('audio', audio =>
+            io
+                .of('/student')
+                .to(lecturerRoom)
+                .emit('audio', audio)
+        )
         socket.on('disconnect', () => {
             lectures = lectures.filter(lecture => lecture.socketId !== socket.id)
             io.of('/student').emit('breakLecture', socket.id)
         })
     })
     io.of('/student').on('connection', socket => {
-        socket.on('getLectures', async () => {
-            const { grade, school } = await socket.student.getGrade({
-                include: [School]
-            })
+        socket.on('getLectures', async sendLectures => {
+            const { grade, school } = socket.student.grade
             socket.join(grade)
-            socket.emit('getLectures', getLectures(school.name, grade))
+            sendLectures(getLectures(school.name, grade))
         })
-        socket.on('callTeacher', async ({ socketId, streamId, offer }) => {
-            const { grade, school } = await socket.student.getGrade({
-                include: [School]
-            })
-            io.of('/teacher')
-                .to(socketId)
-                .emit('callTeacher', {
-                    socketId: socket.id,
-                    offer,
-                    school: school.name,
-                    grade,
-                    student: {
-                        streamId,
-                        id: socket.student.id,
-                        fullName: `${socket.student.name} ${socket.student.surname}`
-                    }
-                })
+        socket.on('joinLecture', lecturerRoom => {
+            socket.join(lecturerRoom)
+            // student.push({
+            //     lecturerRoom,
+
+            // })
         })
     })
 }

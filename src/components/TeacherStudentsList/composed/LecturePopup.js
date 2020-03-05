@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled, { css } from 'styled-components/macro'
 
+import { compose } from 'redux'
+import { withSocket } from '@hoc'
+
 import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
 import HForm from '@components/Home/styled/Form'
 import StyledLecturePopup from '../styled/LecturePopup'
@@ -29,24 +32,67 @@ const LecturePopupContainer = styled.div`
     }}
 `
 
-const LecturePopup = ({ stream, students, onClick, shouldSlideIn }) => {
+const LecturePopup = ({ socket, school, grade, stream, students, onClick, shouldSlideIn }) => {
     const videoRef = useRef()
-    const [isMuted, setIsMuted] = useState(true)
+    const canvasRef = useRef()
+    const [videoIntervalId, setVideoIntervalId] = useState()
+    const [audioIntervalId, setAudioIntervalId] = useState()
+    const [isMuted, setIsMuted] = useState(false)
     useEffect(() => {
         if (videoRef.current) {
             videoRef.current.srcObject = stream
         }
     }, [stream])
+    useEffect(() => {
+        if (shouldSlideIn && canvasRef.current) {
+            const context = canvasRef.current.getContext('2d')
+            setVideoIntervalId(
+                setInterval(() => {
+                    context.drawImage(
+                        videoRef.current,
+                        0,
+                        0,
+                        canvasRef.current.width,
+                        canvasRef.current.height
+                    )
+                    socket.emit('video', {
+                        school,
+                        grade,
+                        stream: canvasRef.current.toDataURL('image/webp')
+                    })
+                }, 60)
+            )
+        } else {
+            window.clearInterval(videoIntervalId)
+            window.clearInterval(audioIntervalId)
+        }
+        if (shouldSlideIn && !isMuted && stream) {
+            const recorder = new MediaRecorder(stream)
+            let chunks = []
+            recorder.onstart = () => (chunks = [])
+            recorder.ondataavailable = ({ data }) => chunks.push(data)
+            recorder.onstop = () => socket.emit('audio', new Blob(chunks))
+            recorder.start()
+            setAudioIntervalId(
+                setInterval(() => {
+                    recorder.stop()
+                    recorder.start()
+                }, 1000)
+            )
+        } else {
+            window.clearInterval(audioIntervalId)
+        }
+        return () => {
+            window.clearInterval(videoIntervalId)
+            window.clearInterval(audioIntervalId)
+        }
+    }, [shouldSlideIn, isMuted])
     return (
         <LecturePopupContainer shouldSlideIn={shouldSlideIn}>
             <HForm.CloseButton onClick={onClick} />
+            <StyledLecturePopup.Canvas ref={canvasRef} />
             <StyledLecturePopup.VideoContainer>
-                <StyledLecturePopup.Video
-                    ref={videoRef}
-                    className="lecture"
-                    muted={isMuted}
-                    autoPlay
-                />
+                <StyledLecturePopup.Video ref={videoRef} autoPlay muted />
                 <StyledLecturePopup.IconsContainer>
                     <Composed.Icon icon="icon-desktop" />
                     <Composed.Icon icon="icon-cancel-circled" big />
@@ -71,4 +117,4 @@ const LecturePopup = ({ stream, students, onClick, shouldSlideIn }) => {
     )
 }
 
-export default LecturePopup
+export default compose(withSocket)(LecturePopup)

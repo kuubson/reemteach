@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withSocket, withMenu } from '@hoc'
+import { withMenu } from '@hoc'
 
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
 import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
@@ -15,8 +15,6 @@ import Composed from './composed'
 
 import { delayedApiAxios, setFeedbackData } from '@utils'
 
-const teacher = new RTCPeerConnection()
-
 const TeacherStudentsListContainer = styled(APDashboard.Container)`
     min-height: 100vh;
     display: flex;
@@ -25,12 +23,11 @@ const TeacherStudentsListContainer = styled(APDashboard.Container)`
     flex-direction: column;
 `
 
-const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
+const TeacherStudentsList = ({ shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [schools, setSchools] = useState([])
     const [students, setStudents] = useState([])
     const [lectures, setLectures] = useState([])
-    const [temporaryStudent, setTemporaryStudent] = useState({})
     useEffect(() => {
         const getStudents = async () => {
             const url = '/api/teacher/getStudents'
@@ -41,9 +38,10 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                 setSchools(schools)
                 setLectures(
                     schools
-                        .map(({ name, grades }) =>
+                        .map(({ id, name, grades }) =>
                             grades.map(({ grade }) => {
                                 return {
+                                    id,
                                     school: name,
                                     grade,
                                     stream: undefined,
@@ -58,48 +56,6 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
         }
         getStudents()
     }, [])
-    useEffect(() => {
-        socket.on('callTeacher', async ({ socketId, offer, school, grade, student }) => {
-            setTemporaryStudent({
-                school,
-                grade,
-                student
-            })
-            await teacher.setRemoteDescription(offer)
-            const answer = await teacher.createAnswer()
-            await teacher.setLocalDescription(new RTCSessionDescription(answer))
-            socket.emit('answerStudent', {
-                socketId,
-                answer
-            })
-        })
-        return () => socket.off('callTeacher')
-    }, [lectures])
-    useEffect(() => {
-        const handleOnTrack = ({ streams: [stream] }) => {
-            const { school, grade, student } = temporaryStudent
-            setLectures(
-                lectures.map(lecture => {
-                    return lecture.school === school &&
-                        lecture.grade === grade &&
-                        !lecture.students.some(({ id }) => id === student.id)
-                        ? {
-                              ...lecture,
-                              students: [
-                                  ...lecture.students,
-                                  {
-                                      ...student,
-                                      stream
-                                  }
-                              ]
-                          }
-                        : lecture
-                })
-            )
-        }
-        teacher.addEventListener('track', handleOnTrack)
-        return () => teacher.removeEventListener('track', handleOnTrack)
-    }, [temporaryStudent])
     const updateLectures = (school, grade, key, value, shouldLecturePopupAppear) => {
         setLectures(
             lectures.map(lecture =>
@@ -114,17 +70,39 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
         )
     }
     const startLecture = async (school, grade) => {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true
+        })
+        updateLectures(school, grade, 'stream', stream, true)
+    }
+    const setUpLecture = async (school, grade) => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: true
-            })
-            teacher.addStream(stream)
-            updateLectures(school, grade, 'stream', stream, true)
-            socket.emit('startLecture', {
-                school,
-                grade
-            })
+            const { mediaDevices, permissions } = navigator
+            if (!mediaDevices || !permissions) {
+                return setFeedbackData(
+                    'Twoja przeglądarka nie wspiera używania kamery i mikrofonu!',
+                    'Ok'
+                )
+            }
+            const { state: cameraState } = await permissions.query({ name: 'camera' })
+            const { state: microphoneState } = await permissions.query({ name: 'microphone' })
+            switch (true) {
+                case cameraState === 'granted' && microphoneState === 'granted':
+                    startLecture(school, grade)
+                    break
+                case cameraState === 'prompt' && microphoneState === 'prompt':
+                    setFeedbackData(
+                        'Aplikacja wymaga zgody na korzystanie z kamery i mikrofonu!',
+                        'Udostępnij',
+                        () => startLecture(school, grade)
+                    )
+                    break
+                default:
+                    setFeedbackData(
+                        'Aplikacja wymaga zgody na korzystanie z kamery i mikrofonu! Udostępnij ją w ustawieniach przeglądarki!'
+                    )
+            }
         } catch (error) {
             setFeedbackData('Wystąpił niespodziewany problem podczas rozpoczynania wykładu!', 'Ok')
         }
@@ -132,9 +110,11 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
     const areThereStudents = students.length > 0
     return (
         <TeacherStudentsListContainer withMenu={shouldMenuAppear} withMorePadding>
-            {lectures.map(({ school, grade, stream, students, shouldLecturePopupAppear }) => (
+            {lectures.map(({ id, school, grade, stream, students, shouldLecturePopupAppear }) => (
                 <Composed.LecturePopup
-                    key={grade}
+                    key={id}
+                    school={school}
+                    grade={grade}
                     stream={stream}
                     students={students}
                     onClick={() => {
@@ -182,7 +162,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                                                 </Dashboard.Warning>
                                             ) : (
                                                 <AHTCForm.Submit
-                                                    onClick={() => startLecture(name, grade)}
+                                                    onClick={() => setUpLecture(name, grade)}
                                                     withLessMargin
                                                 >
                                                     Rozpocznij wykład
@@ -208,4 +188,4 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
     )
 }
 
-export default compose(withSocket, withMenu)(TeacherStudentsList)
+export default compose(withMenu)(TeacherStudentsList)
