@@ -45,6 +45,8 @@ const LecturePopup = ({ socket, school, grade, stream, students, onClick, should
     }, [stream])
     useEffect(() => {
         if (shouldSlideIn && canvasRef.current) {
+            canvasRef.current.width = 800
+            canvasRef.current.height = 800
             const context = canvasRef.current.getContext('2d')
             setVideoIntervalId(
                 setInterval(() => {
@@ -58,29 +60,30 @@ const LecturePopup = ({ socket, school, grade, stream, students, onClick, should
                     socket.emit('video', {
                         school,
                         grade,
-                        stream: canvasRef.current.toDataURL('image/webp')
+                        video: canvasRef.current.toDataURL('image/webp')
                     })
                 }, 60)
             )
+            if (stream && !isMuted) {
+                const recorder = new MediaRecorder(stream)
+                let chunks = []
+                recorder.onstart = () => (chunks = [])
+                recorder.ondataavailable = ({ data }) => chunks.push(data)
+                recorder.onstop = () => socket.emit('audio', new Blob(chunks))
+                recorder.start()
+                setAudioIntervalId(
+                    setInterval(() => {
+                        recorder.stop()
+                        recorder.start()
+                    }, 1000)
+                )
+            }
         } else {
             window.clearInterval(videoIntervalId)
             window.clearInterval(audioIntervalId)
-        }
-        if (shouldSlideIn && !isMuted && stream) {
-            const recorder = new MediaRecorder(stream)
-            let chunks = []
-            recorder.onstart = () => (chunks = [])
-            recorder.ondataavailable = ({ data }) => chunks.push(data)
-            recorder.onstop = () => socket.emit('audio', new Blob(chunks))
-            recorder.start()
-            setAudioIntervalId(
-                setInterval(() => {
-                    recorder.stop()
-                    recorder.start()
-                }, 1000)
-            )
-        } else {
-            window.clearInterval(audioIntervalId)
+            if (stream) {
+                stream.getTracks().map(track => track.stop())
+            }
         }
         return () => {
             window.clearInterval(videoIntervalId)

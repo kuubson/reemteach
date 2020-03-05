@@ -7,7 +7,6 @@ import { withSocket } from '@hoc'
 import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
 import HForm from '@components/Home/styled/Form'
 import TSLStyledLecturePopup from '@components/TeacherStudentsList/styled/LecturePopup'
-import StyledLecturePopup from '../styled/LecturePopup'
 
 import TSLComposed from '@components/TeacherStudentsList/composed'
 
@@ -33,62 +32,33 @@ const LecturePopupContainer = styled.div`
     }}
 `
 
-const LecturePopup = ({ socket, stream, onClick, shouldSlideIn }) => {
-    const videoRef = useRef()
+const LecturePopup = ({ socket, onClick, shouldSlideIn }) => {
     const canvasRef = useRef()
-    const [videoIntervalId, setVideoIntervalId] = useState()
-    const [audioIntervalId, setAudioIntervalId] = useState()
     const [isMuted, setIsMuted] = useState(false)
-    // useEffect(() => {
-    //     if (shouldSlideIn && canvasRef.current) {
-    //         const context = canvasRef.current.getContext('2d')
-    //         setVideoIntervalId(
-    //             setInterval(() => {
-    //                 context.drawImage(
-    //                     videoRef.current,
-    //                     0,
-    //                     0,
-    //                     canvasRef.current.width,
-    //                     canvasRef.current.height
-    //                 )
-    //                 socket.emit('video', {
-    //                     school,
-    //                     grade,
-    //                     stream: canvasRef.current.toDataURL('image/webp')
-    //                 })
-    //             }, 60)
-    //         )
-    //     } else {
-    //         window.clearInterval(videoIntervalId)
-    //         window.clearInterval(audioIntervalId)
-    //     }
-    //     if (shouldSlideIn && !isMuted && stream) {
-    //         const recorder = new MediaRecorder(stream)
-    //         let chunks = []
-    //         recorder.onstart = () => (chunks = [])
-    //         recorder.ondataavailable = ({ data }) => chunks.push(data)
-    //         recorder.onstop = () => socket.emit('audio', new Blob(chunks))
-    //         recorder.start()
-    //         setAudioIntervalId(
-    //             setInterval(() => {
-    //                 recorder.stop()
-    //                 recorder.start()
-    //             }, 1000)
-    //         )
-    //     } else {
-    //         window.clearInterval(audioIntervalId)
-    //     }
-    //     return () => {
-    //         window.clearInterval(videoIntervalId)
-    //         window.clearInterval(audioIntervalId)
-    //     }
-    // }, [shouldSlideIn, isMuted])
+    const [video, setVideo] = useState()
+    const [audio, setAudio] = useState()
+    useEffect(() => {
+        if (shouldSlideIn) {
+            socket.on('video', video => setVideo(video))
+            socket.on('audio', audioBuffer =>
+                setAudio(window.URL.createObjectURL(new Blob([audioBuffer])))
+            )
+        } else {
+            socket.removeListener('video')
+            socket.removeListener('audio')
+        }
+        return () => {
+            socket.removeListener('video')
+            socket.removeListener('audio')
+        }
+    }, [shouldSlideIn])
     return (
         <LecturePopupContainer shouldSlideIn={shouldSlideIn}>
             <HForm.CloseButton onClick={onClick} />
             <TSLStyledLecturePopup.Canvas ref={canvasRef} />
             <TSLStyledLecturePopup.VideoContainer>
-                <StyledLecturePopup.Image src={stream} />
+                <TSLStyledLecturePopup.Image src={video} />
+                <TSLStyledLecturePopup.Audio src={audio} autoPlay />
                 <TSLStyledLecturePopup.IconsContainer>
                     <TSLComposed.Icon icon="icon-desktop" />
                     <TSLComposed.Icon icon="icon-cancel-circled" big />

@@ -29,45 +29,27 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
             setIsLoading(false)
             setLectures(lectures)
         })
-        socket.on('audio', audioBuffer => {
-            const blob = new Blob([audioBuffer])
-            const audio = document.createElement('audio')
-            audio.src = window.URL.createObjectURL(blob)
-            audio.play()
-        })
-        return () => {
-            socket.removeListener('updateLectures')
-            socket.removeListener('audio')
-        }
+        socket.on('updateLectures', updatedLectures => setLectures(updatedLectures))
+        return () => socket.removeListener('updateLectures')
     }, [])
     useEffect(() => {
-        socket.once('updateLectures', updatedLectures => {
-            setLectures(
-                updatedLectures.map(lecture => {
-                    const { shouldLecturePopupAppear } =
-                        lectures.find(({ lecturerId }) => lecturerId === lecture.lecturerId) || {}
-                    return {
-                        ...lecture,
-                        shouldLecturePopupAppear
-                    }
-                })
-            )
-        })
-        socket.once('breakLecture', socketId =>
+        socket.on('breakLecture', socketId =>
             setLectures(lectures.filter(lecture => lecture.socketId !== socketId))
         )
+        return () => socket.removeListener('breakLecture')
     }, [lectures])
     const joinLecture = async lecturerRoom => {
         try {
             socket.emit('joinLecture', lecturerRoom)
+            updateLectures(lecturerRoom, true)
         } catch (error) {
             setFeedbackData('Wystąpił niespodziewany problem podczas dołączania do wykładu!', 'Ok')
         }
     }
-    const updateLectures = (lecturerId, shouldLecturePopupAppear) => {
+    const updateLectures = (lecturerRoom, shouldLecturePopupAppear) => {
         setLectures(
             lectures.map(lecture =>
-                lecture.lecturerId === lecturerId
+                lecture.lecturerRoom === lecturerRoom
                     ? {
                           ...lecture,
                           shouldLecturePopupAppear
@@ -78,11 +60,10 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
     }
     return (
         <StudentLecturesListContainer withMenu={shouldMenuAppear} withMorePadding>
-            {lectures.map(({ lecturerId, stream, shouldLecturePopupAppear }) => (
+            {lectures.map(({ lecturerId, lecturerRoom, shouldLecturePopupAppear }) => (
                 <Composed.LecturePopup
                     key={lecturerId}
-                    stream={stream}
-                    onClick={() => updateLectures(lecturerId, false)}
+                    onClick={() => updateLectures(lecturerRoom, false)}
                     shouldSlideIn={shouldLecturePopupAppear}
                 />
             ))}
@@ -93,10 +74,7 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
                             <div key={lecturerId}>
                                 <HTPComposed.Detail label="Wykładowca" value={lecturer} />
                                 <AHTCForm.Submit
-                                    onClick={() => {
-                                        joinLecture(lecturerRoom)
-                                        updateLectures(lecturerId, true)
-                                    }}
+                                    onClick={() => joinLecture(lecturerRoom)}
                                     withLessMargin
                                 >
                                     Dołącz

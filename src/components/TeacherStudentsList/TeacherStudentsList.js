@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withSocket, withMenu } from '@hoc'
 
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
 import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
@@ -23,7 +23,7 @@ const TeacherStudentsListContainer = styled(APDashboard.Container)`
     flex-direction: column;
 `
 
-const TeacherStudentsList = ({ shouldMenuAppear }) => {
+const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [schools, setSchools] = useState([])
     const [students, setStudents] = useState([])
@@ -70,39 +70,23 @@ const TeacherStudentsList = ({ shouldMenuAppear }) => {
         )
     }
     const startLecture = async (school, grade) => {
-        const stream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true
-        })
-        updateLectures(school, grade, 'stream', stream, true)
-    }
-    const setUpLecture = async (school, grade) => {
         try {
-            const { mediaDevices, permissions } = navigator
-            if (!mediaDevices || !permissions) {
+            const { mediaDevices } = navigator
+            if (!mediaDevices) {
                 return setFeedbackData(
                     'Twoja przeglądarka nie wspiera używania kamery i mikrofonu!',
                     'Ok'
                 )
             }
-            const { state: cameraState } = await permissions.query({ name: 'camera' })
-            const { state: microphoneState } = await permissions.query({ name: 'microphone' })
-            switch (true) {
-                case cameraState === 'granted' && microphoneState === 'granted':
-                    startLecture(school, grade)
-                    break
-                case cameraState === 'prompt' && microphoneState === 'prompt':
-                    setFeedbackData(
-                        'Aplikacja wymaga zgody na korzystanie z kamery i mikrofonu!',
-                        'Udostępnij',
-                        () => startLecture(school, grade)
-                    )
-                    break
-                default:
-                    setFeedbackData(
-                        'Aplikacja wymaga zgody na korzystanie z kamery i mikrofonu! Udostępnij ją w ustawieniach przeglądarki!'
-                    )
-            }
+            const stream = await mediaDevices.getUserMedia({
+                video: true,
+                audio: true
+            })
+            socket.emit('startLecture', {
+                school,
+                grade
+            })
+            updateLectures(school, grade, 'stream', stream, true)
         } catch (error) {
             setFeedbackData('Wystąpił niespodziewany problem podczas rozpoczynania wykładu!', 'Ok')
         }
@@ -117,12 +101,7 @@ const TeacherStudentsList = ({ shouldMenuAppear }) => {
                     grade={grade}
                     stream={stream}
                     students={students}
-                    onClick={() => {
-                        updateLectures(school, grade, 'stream', stream, false)
-                        setTimeout(() => {
-                            updateLectures(school, grade, 'stream', undefined, false)
-                        }, 700)
-                    }}
+                    onClick={() => updateLectures(school, grade, 'stream', stream, false)}
                     shouldSlideIn={shouldLecturePopupAppear}
                 />
             ))}
@@ -162,7 +141,7 @@ const TeacherStudentsList = ({ shouldMenuAppear }) => {
                                                 </Dashboard.Warning>
                                             ) : (
                                                 <AHTCForm.Submit
-                                                    onClick={() => setUpLecture(name, grade)}
+                                                    onClick={() => startLecture(name, grade)}
                                                     withLessMargin
                                                 >
                                                     Rozpocznij wykład
@@ -188,4 +167,4 @@ const TeacherStudentsList = ({ shouldMenuAppear }) => {
     )
 }
 
-export default compose(withMenu)(TeacherStudentsList)
+export default compose(withSocket, withMenu)(TeacherStudentsList)

@@ -74,7 +74,6 @@ export default io => {
         }
     })
     let lectures = []
-    let students = []
     const getLectures = (school, grade) =>
         lectures
             .map(lecture => {
@@ -87,28 +86,25 @@ export default io => {
         const lecturerId = socket.teacher.id
         const lecturer = `${socket.teacher.name} ${socket.teacher.surname}`
         const lecturerRoom = `${lecturerId} ${lecturer}`
-        socket.on('video', ({ school, grade, stream }) => {
-            socket.join(lecturerRoom)
-            lectures = [
-                ...lectures.filter(
-                    lecture =>
-                        lecture.school !== school &&
-                        lecture.grade !== grade &&
-                        lecture.lecturerId !== lecturerId
-                ),
-                {
+        socket.on('startLecture', ({ school, grade }) => {
+            if (!lectures.some(lecture => lecture.lecturerId === lecturerId)) {
+                lectures.push({
                     socketId: socket.id,
                     school,
                     grade,
-                    stream,
                     lecturerId,
                     lecturer,
                     lecturerRoom
-                }
-            ]
+                })
+                io.of('/student')
+                    .to(grade)
+                    .emit('updateLectures', getLectures(school, grade))
+            }
+        })
+        socket.on('video', ({ video }) => {
             io.of('/student')
-                .to(grade)
-                .emit('updateLectures', getLectures(school, grade))
+                .to(lecturerRoom)
+                .emit('video', video)
         })
         socket.on('audio', audio =>
             io
@@ -127,12 +123,6 @@ export default io => {
             socket.join(grade)
             sendLectures(getLectures(school.name, grade))
         })
-        socket.on('joinLecture', lecturerRoom => {
-            socket.join(lecturerRoom)
-            // student.push({
-            //     lecturerRoom,
-
-            // })
-        })
+        socket.on('joinLecture', lecturerRoom => socket.join(lecturerRoom))
     })
 }

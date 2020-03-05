@@ -16,7 +16,7 @@ const handleSubscribtion = async (url, serviceWorker) => {
         const { pushManager } = await serviceWorker.ready
         if (!pushManager) {
             return setFeedbackData(
-                'Twoja przeglądarka nie wspiera powiadomień, niektóre funkcje aplikacji nie będą działały poprawnie!',
+                'Twoja przeglądarka nie wspiera powiadomień! Niektóre funkcje aplikacji nie będą działały poprawnie!',
                 'Ok'
             )
         }
@@ -35,7 +35,7 @@ export default async url => {
         const { serviceWorker, permissions } = navigator
         if (!serviceWorker || !permissions) {
             return setFeedbackData(
-                'Twoja przeglądarka nie wspiera powiadomień, niektóre funkcje aplikacji nie będą działały poprawnie!',
+                'Twoja przeglądarka nie wspiera powiadomień! Niektóre funkcje aplikacji nie będą działały poprawnie!',
                 'Ok'
             )
         }
