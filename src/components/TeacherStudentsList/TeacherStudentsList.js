@@ -30,6 +30,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
     const [schools, setSchools] = useState([])
     const [students, setStudents] = useState([])
     const [lectures, setLectures] = useState([])
+    const [temporaryStudent, setTemporaryStudent] = useState({})
     useEffect(() => {
         const getStudents = async () => {
             const url = '/api/teacher/getStudents'
@@ -46,6 +47,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                                     school: name,
                                     grade,
                                     stream: undefined,
+                                    students: [],
                                     shouldLecturePopupAppear: false
                                 }
                             })
@@ -55,7 +57,14 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
             }
         }
         getStudents()
-        socket.on('callTeacher', async ({ socketId, offer }) => {
+    }, [])
+    useEffect(() => {
+        socket.on('callTeacher', async ({ socketId, offer, school, grade, student }) => {
+            setTemporaryStudent({
+                school,
+                grade,
+                student
+            })
             await teacher.setRemoteDescription(offer)
             const answer = await teacher.createAnswer()
             await teacher.setLocalDescription(new RTCSessionDescription(answer))
@@ -64,7 +73,33 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                 answer
             })
         })
-    }, [])
+        return () => socket.off('callTeacher')
+    }, [lectures])
+    useEffect(() => {
+        const handleOnTrack = ({ streams: [stream] }) => {
+            const { school, grade, student } = temporaryStudent
+            setLectures(
+                lectures.map(lecture => {
+                    return lecture.school === school &&
+                        lecture.grade === grade &&
+                        !lecture.students.some(({ id }) => id === student.id)
+                        ? {
+                              ...lecture,
+                              students: [
+                                  ...lecture.students,
+                                  {
+                                      ...student,
+                                      stream
+                                  }
+                              ]
+                          }
+                        : lecture
+                })
+            )
+        }
+        teacher.addEventListener('track', handleOnTrack)
+        return () => teacher.removeEventListener('track', handleOnTrack)
+    }, [temporaryStudent])
     const updateLectures = (school, grade, key, value, shouldLecturePopupAppear) => {
         setLectures(
             lectures.map(lecture =>
@@ -78,7 +113,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
             )
         )
     }
-    const startLecture = async (id, school, grade) => {
+    const startLecture = async (school, grade) => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: true,
@@ -87,11 +122,9 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
             teacher.addStream(stream)
             updateLectures(school, grade, 'stream', stream, true)
             socket.emit('startLecture', {
-                id,
                 school,
                 grade
             })
-            teacher.ontrack = ({ streams: [stream] }) => {}
         } catch (error) {
             setFeedbackData('Wystąpił niespodziewany problem podczas rozpoczynania wykładu!', 'Ok')
         }
@@ -99,10 +132,11 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
     const areThereStudents = students.length > 0
     return (
         <TeacherStudentsListContainer withMenu={shouldMenuAppear} withMorePadding>
-            {lectures.map(({ school, grade, stream, shouldLecturePopupAppear }) => (
+            {lectures.map(({ school, grade, stream, students, shouldLecturePopupAppear }) => (
                 <Composed.LecturePopup
                     key={grade}
                     stream={stream}
+                    students={students}
                     onClick={() => {
                         updateLectures(school, grade, 'stream', stream, false)
                         setTimeout(() => {
@@ -148,7 +182,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                                                 </Dashboard.Warning>
                                             ) : (
                                                 <AHTCForm.Submit
-                                                    onClick={() => startLecture(id, name, grade)}
+                                                    onClick={() => startLecture(name, grade)}
                                                     withLessMargin
                                                 >
                                                     Rozpocznij wykład

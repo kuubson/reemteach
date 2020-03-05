@@ -29,9 +29,9 @@ const LecturePopupContainer = styled.div`
     }}
 `
 
-const LecturePopup = ({ stream, onClick, shouldSlideIn }) => {
-    const [isMuted, setIsMuted] = useState()
+const LecturePopup = ({ stream, students, onClick, shouldSlideIn }) => {
     const videoRef = useRef()
+    const [isMuted, setIsMuted] = useState(true)
     useEffect(() => {
         if (videoRef.current) {
             videoRef.current.srcObject = stream
@@ -44,7 +44,6 @@ const LecturePopup = ({ stream, onClick, shouldSlideIn }) => {
                 <StyledLecturePopup.Video
                     ref={videoRef}
                     className="lecture"
-                    srcObject={stream}
                     muted={isMuted}
                     autoPlay
                 />
@@ -52,15 +51,21 @@ const LecturePopup = ({ stream, onClick, shouldSlideIn }) => {
                     <Composed.Icon icon="icon-desktop" />
                     <Composed.Icon icon="icon-cancel-circled" big />
                     <Composed.Icon
-                        icon={isMuted ? 'icon-mic' : 'icon-mic'}
+                        icon={isMuted ? 'icon-mute' : 'icon-mic'}
                         onClick={() => setIsMuted(isMuted => !isMuted)}
                     />
                 </StyledLecturePopup.IconsContainer>
             </StyledLecturePopup.VideoContainer>
             <StyledLecturePopup.StudentsContainer>
-                <AHTLDashboard.Warning white>
-                    Na wykładzie nie ma jeszcze żadnego ucznia!
-                </AHTLDashboard.Warning>
+                {students.length > 0 ? (
+                    students.map(({ id, stream, fullName }) => (
+                        <Composed.Student key={id} stream={stream} fullName={fullName} />
+                    ))
+                ) : (
+                    <AHTLDashboard.Warning white>
+                        Na wykładzie nie ma jeszcze żadnego ucznia!
+                    </AHTLDashboard.Warning>
+                )}
             </StyledLecturePopup.StudentsContainer>
         </LecturePopupContainer>
     )

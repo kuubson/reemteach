@@ -48,6 +48,7 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
             await student.setLocalDescription(new RTCSessionDescription(offer))
             socket.emit('callTeacher', {
                 socketId,
+                streamId: stream.id,
                 offer
             })
             student.ontrack = ({ streams: [stream] }) => {}
@@ -61,7 +62,7 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
                 <AHTLDashboard.DetailsContainer>
                     {lectures.length > 0 ? (
                         lectures.map(({ socketId, lecturer }) => (
-                            <div>
+                            <div key={socketId}>
                                 <HTPComposed.Detail label="Wykładowca" value={lecturer} />
                                 <AHTCForm.Submit
                                     onClick={() => joinLecture(socketId)}

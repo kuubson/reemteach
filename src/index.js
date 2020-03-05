@@ -8,9 +8,9 @@ import adapter from 'webrtc-adapter'
 
 import { store, persistor } from '@redux'
 
+import '@styles/fontello/css/fontello.css'
 import theme from '@styles/theme'
 import 'destyle.css'
-import '@styles/fontello/css/fontello.css'
 import '@styles/index.scss'
 
 import Loader from './components/Loader/Loader'

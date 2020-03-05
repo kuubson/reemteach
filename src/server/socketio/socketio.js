@@ -79,7 +79,7 @@ export default io => {
             })
             .filter(lecture => lecture)
     io.of('/teacher').on('connection', socket => {
-        socket.on('startLecture', ({ id, school, grade }) => {
+        socket.on('startLecture', ({ school, grade }) => {
             socket.join(grade)
             const lecturer = `${socket.teacher.name} ${socket.teacher.surname}`
             if (
@@ -92,7 +92,6 @@ export default io => {
             ) {
                 lectures.push({
                     socketId: socket.id,
-                    id,
                     school,
                     grade,
                     lecturer
@@ -123,12 +122,22 @@ export default io => {
             socket.join(grade)
             socket.emit('getLectures', getLectures(school.name, grade))
         })
-        socket.on('callTeacher', ({ socketId, offer }) => {
+        socket.on('callTeacher', async ({ socketId, streamId, offer }) => {
+            const { grade, school } = await socket.student.getGrade({
+                include: [School]
+            })
             io.of('/teacher')
                 .to(socketId)
                 .emit('callTeacher', {
                     socketId: socket.id,
-                    offer
+                    offer,
+                    school: school.name,
+                    grade,
+                    student: {
+                        streamId,
+                        id: socket.student.id,
+                        fullName: `${socket.student.name} ${socket.student.surname}`
+                    }
                 })
         })
     })
