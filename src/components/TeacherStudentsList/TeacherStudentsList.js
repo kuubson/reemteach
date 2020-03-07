@@ -17,10 +17,7 @@ import { delayedApiAxios, setFeedbackData } from '@utils'
 
 const teacher = new RTCPeerConnection()
 
-teacher.ontrack = ({ streams: [stream] }) => {
-    console.log(stream)
-    document.getElementById('student').srcObject = stream
-}
+teacher.ontrack = ({ streams: [stream] }) => (document.getElementById('student').srcObject = stream)
 
 const TeacherStudentsListContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -50,8 +47,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                                 return {
                                     id,
                                     school: name,
-                                    grade,
-                                    students: []
+                                    grade
                                 }
                             })
                         )
@@ -60,7 +56,16 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
             }
         }
         getStudents()
-        socket.on('joinLecture', answer => teacher.setRemoteDescription(answer))
+        socket.on('callTeacher', async ({ room, offer }) => {
+            await teacher.setRemoteDescription(offer)
+            const answer = await teacher.createAnswer()
+            await teacher.setLocalDescription(new RTCSessionDescription(answer))
+            socket.emit('answerStudent', {
+                room,
+                answer
+            })
+        })
+        return () => socket.removeListener('callTeacher')
     }, [])
     const updateLectures = (school, grade, stream, shouldLecturePopupAppear) => {
         setLectures(
@@ -89,12 +94,9 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                 audio: true
             })
             stream.getTracks().map(track => teacher.addTrack(track, stream))
-            const offer = await teacher.createOffer()
-            await teacher.setLocalDescription(new RTCSessionDescription(offer))
             socket.emit('startLecture', {
                 school,
-                grade,
-                offer
+                grade
             })
             updateLectures(school, grade, stream, true)
         } catch (error) {
@@ -103,13 +105,12 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
     }
     return (
         <TeacherStudentsListContainer withMenu={shouldMenuAppear} withMorePadding>
-            {lectures.map(({ school, grade, stream, students, shouldLecturePopupAppear }) => (
+            {lectures.map(({ school, grade, stream, shouldLecturePopupAppear }) => (
                 <Composed.LecturePopup
                     key={`${school} ${grade}`}
                     school={school}
                     grade={grade}
                     stream={stream}
-                    students={students}
                     onClick={() => updateLectures(school, grade, stream, false)}
                     shouldSlideIn={shouldLecturePopupAppear}
                 />

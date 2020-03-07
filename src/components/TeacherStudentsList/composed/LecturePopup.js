@@ -28,9 +28,9 @@ const LecturePopupContainer = styled.div`
     }}
 `
 
-const LecturePopup = ({ stream, students, onClick, shouldSlideIn }) => {
+const LecturePopup = ({ stream, onClick, shouldSlideIn }) => {
     const videoRef = useRef()
-    const [isMuted, setIsMuted] = useState(false)
+    const [isMuted, setIsMuted] = useState(true)
     useEffect(() => {
         if (videoRef.current) {
             videoRef.current.srcObject = stream

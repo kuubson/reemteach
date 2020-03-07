@@ -15,10 +15,7 @@ import { setFeedbackData } from '@utils'
 
 const student = new RTCPeerConnection()
 
-student.ontrack = ({ streams: [stream] }) => {
-    console.log(stream)
-    document.getElementById('teacher').srcObject = stream
-}
+student.ontrack = ({ streams: [stream] }) => (document.getElementById('teacher').srcObject = stream)
 
 const StudentLecturesListContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -37,7 +34,11 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
             setLectures(lectures)
         })
         socket.on('updateLectures', updatedLectures => setLectures(updatedLectures))
-        return () => socket.removeListener('updateLectures')
+        socket.on('answerStudent', async answer => await student.setRemoteDescription(answer))
+        return () => {
+            socket.removeListener('updateLectures')
+            socket.removeListener('answerStudent')
+        }
     }, [])
     useEffect(() => {
         socket.on('breakLecture', socketId =>
@@ -58,7 +59,7 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
             )
         )
     }
-    const joinLecture = async (room, offer) => {
+    const joinLecture = async room => {
         try {
             const { mediaDevices } = navigator
             if (!mediaDevices) {
@@ -72,12 +73,11 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
                 audio: true
             })
             stream.getTracks().map(track => student.addTrack(track, stream))
-            await student.setRemoteDescription(offer)
-            const answer = await student.createAnswer()
-            await student.setLocalDescription(new RTCSessionDescription(answer))
+            const offer = await student.createOffer()
+            await student.setLocalDescription(new RTCSessionDescription(offer))
             socket.emit('joinLecture', {
                 room,
-                answer
+                offer
             })
             updateLectures(room, stream, true)
         } catch (error) {
@@ -97,16 +97,13 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
             {!isLoading && (
                 <AHTLDashboard.DetailsContainer>
                     {lectures.length > 0 ? (
-                        lectures.map(({ lecturer: { id, name, surname, room }, offer }) => (
+                        lectures.map(({ lecturer: { id, name, surname, room } }) => (
                             <div key={id}>
                                 <HTPComposed.Detail
                                     label="Wykładowca"
                                     value={`${name} ${surname}`}
                                 />
-                                <AHTCForm.Submit
-                                    onClick={() => joinLecture(room, offer)}
-                                    withLessMargin
-                                >
+                                <AHTCForm.Submit onClick={() => joinLecture(room)} withLessMargin>
                                     Dołącz
                                 </AHTCForm.Submit>
                             </div>

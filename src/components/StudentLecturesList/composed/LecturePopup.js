@@ -30,7 +30,7 @@ const LecturePopupContainer = styled.div`
 
 const LecturePopup = ({ stream, onClick, shouldSlideIn }) => {
     const videoRef = useRef()
-    const [isMuted, setIsMuted] = useState(false)
+    const [isMuted, setIsMuted] = useState(true)
     useEffect(() => {
         if (videoRef.current) {
             videoRef.current.srcObject = stream
@@ -47,7 +47,7 @@ const LecturePopup = ({ stream, onClick, shouldSlideIn }) => {
                 </TSLStyledLecturePopup.IconsContainer>
             </TSLStyledLecturePopup.VideoContainer>
             <TSLStyledLecturePopup.VideoContainer>
-                <TSLStyledLecturePopup.Video id="teacher" autoPlay />
+                <TSLStyledLecturePopup.Video id="teacher" muted={isMuted} autoPlay />
                 <TSLStyledLecturePopup.IconsContainer>
                     <TSLComposed.Icon icon="icon-cancel-circled" big />
                     <TSLComposed.Icon

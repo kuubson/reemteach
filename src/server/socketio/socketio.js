@@ -89,7 +89,7 @@ export default io => {
     teacherIo.on('connection', socket => {
         const { id, name, surname } = socket.teacher
         const room = `${id} ${name} ${surname}`
-        socket.on('startLecture', ({ school, grade, offer }) => {
+        socket.on('startLecture', ({ school, grade }) => {
             if (!lectures.some(({ lecturer }) => lecturer.id === id)) {
                 socket.join(room)
                 lectures.push({
@@ -101,12 +101,14 @@ export default io => {
                         name,
                         surname,
                         room
-                    },
-                    offer
+                    }
                 })
                 studentIo.to(grade).emit('updateLectures', getLectures(school, grade))
             }
         })
+        socket.on('answerStudent', ({ room, answer }) =>
+            studentIo.to(room).emit('answerStudent', answer)
+        )
         socket.on('disconnect', () => {
             lectures = lectures.filter(({ socketId }) => socketId !== socket.id)
             studentIo.emit('breakLecture', socket.id)
@@ -118,9 +120,12 @@ export default io => {
             socket.join(grade)
             sendLectures(getLectures(school.name, grade))
         })
-        socket.on('joinLecture', ({ room, answer }) => {
+        socket.on('joinLecture', ({ room, offer }) => {
             socket.join(room)
-            teacherIo.to(room).emit('joinLecture', answer)
+            teacherIo.emit('callTeacher', {
+                room,
+                offer
+            })
         })
     })
 }
