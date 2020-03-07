@@ -4,15 +4,28 @@ import { School, Grade, Teacher, Student } from '@database'
 
 import { getCookie } from '@utils'
 
+let lectures = []
+
+const getLectures = (school, grade) =>
+    lectures
+        .map(lecture => {
+            if (lecture.school === school && lecture.grade === grade) {
+                return lecture
+            }
+        })
+        .filter(lecture => lecture)
+
 export default io => {
-    io.of('/teacher').use((socket, next) => {
+    const teacherIo = io.of('/teacher')
+    const studentIo = io.of('/student')
+    teacherIo.use((socket, next) => {
         const token = getCookie(socket.request.headers.cookie, 'token')
         if (!token) {
-            next(new Error('Authentication error!'))
+            next(new Error())
         } else {
             jwt.verify(token, process.env.JWT_KEY, async (error, data) => {
                 if (error) {
-                    next(new Error('Authentication error!'))
+                    next(new Error())
                 } else {
                     const { email } = data
                     try {
@@ -25,26 +38,26 @@ export default io => {
                             }
                         })
                         if (!teacher) {
-                            next(new Error('Authentication error!'))
+                            next(new Error())
                         } else {
                             socket.teacher = teacher
                             next()
                         }
                     } catch (error) {
-                        next(new Error('Authentication error!'))
+                        next(new Error())
                     }
                 }
             })
         }
     })
-    io.of('/student').use((socket, next) => {
+    studentIo.use((socket, next) => {
         const token = getCookie(socket.request.headers.cookie, 'token')
         if (!token) {
-            next(new Error('Authentication error!'))
+            next(new Error())
         } else {
             jwt.verify(token, process.env.JWT_KEY, async (error, data) => {
                 if (error) {
-                    next(new Error('Authentication error!'))
+                    next(new Error())
                 } else {
                     const { email } = data
                     try {
@@ -61,68 +74,53 @@ export default io => {
                             }
                         })
                         if (!student) {
-                            next(new Error('Authentication error!'))
+                            next(new Error())
                         } else {
                             socket.student = student
                             next()
                         }
                     } catch (error) {
-                        next(new Error('Authentication error!'))
+                        next(new Error())
                     }
                 }
             })
         }
     })
-    let lectures = []
-    const getLectures = (school, grade) =>
-        lectures
-            .map(lecture => {
-                if (lecture.school === school && lecture.grade === grade) {
-                    return lecture
-                }
-            })
-            .filter(lecture => lecture)
-    io.of('/teacher').on('connection', socket => {
-        const lecturerId = socket.teacher.id
-        const lecturer = `${socket.teacher.name} ${socket.teacher.surname}`
-        const lecturerRoom = `${lecturerId} ${lecturer}`
-        socket.on('startLecture', ({ school, grade }) => {
-            if (!lectures.some(lecture => lecture.lecturerId === lecturerId)) {
+    teacherIo.on('connection', socket => {
+        const { id, name, surname } = socket.teacher
+        const room = `${id} ${name} ${surname}`
+        socket.on('startLecture', ({ school, grade, offer }) => {
+            if (!lectures.some(({ lecturer }) => lecturer.id === id)) {
+                socket.join(room)
                 lectures.push({
                     socketId: socket.id,
                     school,
                     grade,
-                    lecturerId,
-                    lecturer,
-                    lecturerRoom
+                    lecturer: {
+                        id,
+                        name,
+                        surname,
+                        room
+                    },
+                    offer
                 })
-                io.of('/student')
-                    .to(grade)
-                    .emit('updateLectures', getLectures(school, grade))
+                studentIo.to(grade).emit('updateLectures', getLectures(school, grade))
             }
         })
-        socket.on('video', ({ video }) => {
-            io.of('/student')
-                .to(lecturerRoom)
-                .emit('video', video)
-        })
-        socket.on('audio', audio =>
-            io
-                .of('/student')
-                .to(lecturerRoom)
-                .emit('audio', audio)
-        )
         socket.on('disconnect', () => {
-            lectures = lectures.filter(lecture => lecture.socketId !== socket.id)
-            io.of('/student').emit('breakLecture', socket.id)
+            lectures = lectures.filter(({ socketId }) => socketId !== socket.id)
+            studentIo.emit('breakLecture', socket.id)
         })
     })
-    io.of('/student').on('connection', socket => {
+    studentIo.on('connection', socket => {
         socket.on('getLectures', async sendLectures => {
             const { grade, school } = socket.student.grade
             socket.join(grade)
             sendLectures(getLectures(school.name, grade))
         })
-        socket.on('joinLecture', lecturerRoom => socket.join(lecturerRoom))
+        socket.on('joinLecture', ({ room, answer }) => {
+            socket.join(room)
+            teacherIo.to(room).emit('joinLecture', answer)
+        })
     })
 }

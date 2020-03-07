@@ -13,6 +13,13 @@ import Composed from './composed'
 
 import { setFeedbackData } from '@utils'
 
+const student = new RTCPeerConnection()
+
+student.ontrack = ({ streams: [stream] }) => {
+    console.log(stream)
+    document.getElementById('teacher').srcObject = stream
+}
+
 const StudentLecturesListContainer = styled(APDashboard.Container)`
     min-height: 100vh;
     display: flex;
@@ -38,43 +45,66 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
         )
         return () => socket.removeListener('breakLecture')
     }, [lectures])
-    const joinLecture = async lecturerRoom => {
-        try {
-            socket.emit('joinLecture', lecturerRoom)
-            updateLectures(lecturerRoom, true)
-        } catch (error) {
-            setFeedbackData('Wystąpił niespodziewany problem podczas dołączania do wykładu!', 'Ok')
-        }
-    }
-    const updateLectures = (lecturerRoom, shouldLecturePopupAppear) => {
+    const updateLectures = (room, stream, shouldLecturePopupAppear) => {
         setLectures(
             lectures.map(lecture =>
-                lecture.lecturerRoom === lecturerRoom
+                lecture.lecturer.room === room
                     ? {
                           ...lecture,
+                          stream,
                           shouldLecturePopupAppear
                       }
                     : lecture
             )
         )
     }
+    const joinLecture = async (room, offer) => {
+        try {
+            const { mediaDevices } = navigator
+            if (!mediaDevices) {
+                return setFeedbackData(
+                    'Twoja przeglądarka nie wspiera używania kamery lub mikrofonu!',
+                    'Ok'
+                )
+            }
+            const stream = await mediaDevices.getUserMedia({
+                video: true,
+                audio: true
+            })
+            stream.getTracks().map(track => student.addTrack(track, stream))
+            await student.setRemoteDescription(offer)
+            const answer = await student.createAnswer()
+            await student.setLocalDescription(new RTCSessionDescription(answer))
+            socket.emit('joinLecture', {
+                room,
+                answer
+            })
+            updateLectures(room, stream, true)
+        } catch (error) {
+            setFeedbackData('Wystąpił niespodziewany problem przy dołączaniu do wykładu!', 'Ok')
+        }
+    }
     return (
         <StudentLecturesListContainer withMenu={shouldMenuAppear} withMorePadding>
-            {lectures.map(({ lecturerId, lecturerRoom, shouldLecturePopupAppear }) => (
+            {lectures.map(({ lecturer: { id, room }, stream, shouldLecturePopupAppear }) => (
                 <Composed.LecturePopup
-                    key={lecturerId}
-                    onClick={() => updateLectures(lecturerRoom, false)}
+                    key={id}
+                    stream={stream}
+                    onClick={() => updateLectures(room, stream, false)}
                     shouldSlideIn={shouldLecturePopupAppear}
                 />
             ))}
             {!isLoading && (
                 <AHTLDashboard.DetailsContainer>
                     {lectures.length > 0 ? (
-                        lectures.map(({ lecturerId, lecturer, lecturerRoom }) => (
-                            <div key={lecturerId}>
-                                <HTPComposed.Detail label="Wykładowca" value={lecturer} />
+                        lectures.map(({ lecturer: { id, name, surname, room }, offer }) => (
+                            <div key={id}>
+                                <HTPComposed.Detail
+                                    label="Wykładowca"
+                                    value={`${name} ${surname}`}
+                                />
                                 <AHTCForm.Submit
-                                    onClick={() => joinLecture(lecturerRoom)}
+                                    onClick={() => joinLecture(room, offer)}
                                     withLessMargin
                                 >
                                     Dołącz

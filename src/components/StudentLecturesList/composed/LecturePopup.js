@@ -1,10 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled, { css } from 'styled-components/macro'
 
-import { compose } from 'redux'
-import { withSocket } from '@hoc'
-
-import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
 import HForm from '@components/Home/styled/Form'
 import TSLStyledLecturePopup from '@components/TeacherStudentsList/styled/LecturePopup'
 
@@ -32,35 +28,27 @@ const LecturePopupContainer = styled.div`
     }}
 `
 
-const LecturePopup = ({ socket, onClick, shouldSlideIn }) => {
-    const canvasRef = useRef()
+const LecturePopup = ({ stream, onClick, shouldSlideIn }) => {
+    const videoRef = useRef()
     const [isMuted, setIsMuted] = useState(false)
-    const [video, setVideo] = useState()
-    const [audio, setAudio] = useState()
     useEffect(() => {
-        if (shouldSlideIn) {
-            socket.on('video', video => setVideo(video))
-            socket.on('audio', audioBuffer =>
-                setAudio(window.URL.createObjectURL(new Blob([audioBuffer])))
-            )
-        } else {
-            socket.removeListener('video')
-            socket.removeListener('audio')
+        if (videoRef.current) {
+            videoRef.current.srcObject = stream
         }
-        return () => {
-            socket.removeListener('video')
-            socket.removeListener('audio')
-        }
-    }, [shouldSlideIn])
+    }, [stream])
     return (
         <LecturePopupContainer shouldSlideIn={shouldSlideIn}>
-            <HForm.CloseButton onClick={onClick} />
-            <TSLStyledLecturePopup.Canvas ref={canvasRef} />
+            <HForm.CloseButton onClick={onClick} black />
             <TSLStyledLecturePopup.VideoContainer>
-                <TSLStyledLecturePopup.Image src={video} />
-                <TSLStyledLecturePopup.Audio src={audio} autoPlay />
+                <TSLStyledLecturePopup.Video ref={videoRef} muted autoPlay />
                 <TSLStyledLecturePopup.IconsContainer>
                     <TSLComposed.Icon icon="icon-desktop" />
+                    <TSLComposed.Icon icon="icon-cancel-circled" big />
+                </TSLStyledLecturePopup.IconsContainer>
+            </TSLStyledLecturePopup.VideoContainer>
+            <TSLStyledLecturePopup.VideoContainer>
+                <TSLStyledLecturePopup.Video id="teacher" autoPlay />
+                <TSLStyledLecturePopup.IconsContainer>
                     <TSLComposed.Icon icon="icon-cancel-circled" big />
                     <TSLComposed.Icon
                         icon={isMuted ? 'icon-mute' : 'icon-mic'}
@@ -68,9 +56,8 @@ const LecturePopup = ({ socket, onClick, shouldSlideIn }) => {
                     />
                 </TSLStyledLecturePopup.IconsContainer>
             </TSLStyledLecturePopup.VideoContainer>
-            <TSLStyledLecturePopup.StudentsContainer></TSLStyledLecturePopup.StudentsContainer>
         </LecturePopupContainer>
     )
 }
 
-export default compose(withSocket)(LecturePopup)
+export default LecturePopup

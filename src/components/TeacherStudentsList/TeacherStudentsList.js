@@ -15,6 +15,13 @@ import Composed from './composed'
 
 import { delayedApiAxios, setFeedbackData } from '@utils'
 
+const teacher = new RTCPeerConnection()
+
+teacher.ontrack = ({ streams: [stream] }) => {
+    console.log(stream)
+    document.getElementById('student').srcObject = stream
+}
+
 const TeacherStudentsListContainer = styled(APDashboard.Container)`
     min-height: 100vh;
     display: flex;
@@ -44,9 +51,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                                     id,
                                     school: name,
                                     grade,
-                                    stream: undefined,
-                                    students: [],
-                                    shouldLecturePopupAppear: false
+                                    students: []
                                 }
                             })
                         )
@@ -55,14 +60,15 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
             }
         }
         getStudents()
+        socket.on('joinLecture', answer => teacher.setRemoteDescription(answer))
     }, [])
-    const updateLectures = (school, grade, key, value, shouldLecturePopupAppear) => {
+    const updateLectures = (school, grade, stream, shouldLecturePopupAppear) => {
         setLectures(
             lectures.map(lecture =>
                 lecture.school === school && lecture.grade === grade
                     ? {
                           ...lecture,
-                          [key]: value,
+                          stream,
                           shouldLecturePopupAppear
                       }
                     : lecture
@@ -74,7 +80,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
             const { mediaDevices } = navigator
             if (!mediaDevices) {
                 return setFeedbackData(
-                    'Twoja przeglądarka nie wspiera używania kamery i mikrofonu!',
+                    'Twoja przeglądarka nie wspiera używania kamery lub mikrofonu!',
                     'Ok'
                 )
             }
@@ -82,46 +88,59 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                 video: true,
                 audio: true
             })
+            stream.getTracks().map(track => teacher.addTrack(track, stream))
+            const offer = await teacher.createOffer()
+            await teacher.setLocalDescription(new RTCSessionDescription(offer))
             socket.emit('startLecture', {
                 school,
-                grade
+                grade,
+                offer
             })
-            updateLectures(school, grade, 'stream', stream, true)
+            updateLectures(school, grade, stream, true)
         } catch (error) {
-            setFeedbackData('Wystąpił niespodziewany problem podczas rozpoczynania wykładu!', 'Ok')
+            setFeedbackData('Wystąpił niespodziewany problem przy rozpoczynaniu wykładu!', 'Ok')
         }
     }
-    const areThereStudents = students.length > 0
     return (
         <TeacherStudentsListContainer withMenu={shouldMenuAppear} withMorePadding>
-            {lectures.map(({ id, school, grade, stream, students, shouldLecturePopupAppear }) => (
+            {lectures.map(({ school, grade, stream, students, shouldLecturePopupAppear }) => (
                 <Composed.LecturePopup
-                    key={id}
+                    key={`${school} ${grade}`}
                     school={school}
                     grade={grade}
                     stream={stream}
                     students={students}
-                    onClick={() => updateLectures(school, grade, 'stream', stream, false)}
+                    onClick={() => updateLectures(school, grade, stream, false)}
                     shouldSlideIn={shouldLecturePopupAppear}
                 />
             ))}
-            {areThereStudents && <HForm.CloseButton onClick={() => setStudents([])} black />}
             {!isLoading && (
                 <AHTLDashboard.DetailsContainer>
-                    {areThereStudents ? (
-                        students.map(({ id, email, name, surname, age, nick, isActivated }) => (
-                            <div key={id}>
-                                <HTPComposed.Detail label="E-mail" value={email} />
-                                {isActivated && (
-                                    <>
-                                        <HTPComposed.Detail label="Imię" value={name} />
-                                        <HTPComposed.Detail label="Nazwisko" value={surname} />
-                                        <HTPComposed.Detail label="Wiek" value={age} />
-                                        <HTPComposed.Detail label="Pseudonim" value={nick} />
-                                    </>
-                                )}
-                            </div>
-                        ))
+                    {students.length > 0 ? (
+                        <>
+                            <HForm.CloseButton onClick={() => setStudents([])} black />
+                            {students.map(
+                                ({ id, email, name, surname, age, nick, isActivated }) => (
+                                    <div key={id}>
+                                        <HTPComposed.Detail label="E-mail" value={email} />
+                                        {isActivated && (
+                                            <>
+                                                <HTPComposed.Detail label="Imię" value={name} />
+                                                <HTPComposed.Detail
+                                                    label="Nazwisko"
+                                                    value={surname}
+                                                />
+                                                <HTPComposed.Detail label="Wiek" value={age} />
+                                                <HTPComposed.Detail
+                                                    label="Pseudonim"
+                                                    value={nick}
+                                                />
+                                            </>
+                                        )}
+                                    </div>
+                                )
+                            )}
+                        </>
                     ) : schools.length > 0 ? (
                         schools.map(({ id, name, grades }) => (
                             <div key={id}>

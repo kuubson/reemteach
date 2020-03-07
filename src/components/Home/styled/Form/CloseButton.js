@@ -8,6 +8,7 @@ const CloseButtonContainer = styled.button`
     position: absolute;
     top: 20px;
     right: 20px;
+    z-index: 2;
     @media (max-width: 500px) {
         font-size: 18px;
     }
