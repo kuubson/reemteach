@@ -106,9 +106,8 @@ export default io => {
                 studentIo.to(grade).emit('updateLectures', getLectures(school, grade))
             }
         })
-        socket.on('answerStudent', ({ room, answer }) =>
-            studentIo.to(room).emit('answerStudent', answer)
-        )
+        socket.on('answer', answer => studentIo.emit('answer', answer))
+        socket.on('candidate', candidate => studentIo.emit('candidate', candidate))
         socket.on('disconnect', () => {
             lectures = lectures.filter(({ socketId }) => socketId !== socket.id)
             studentIo.emit('breakLecture', socket.id)
@@ -120,12 +119,7 @@ export default io => {
             socket.join(grade)
             sendLectures(getLectures(school.name, grade))
         })
-        socket.on('joinLecture', ({ room, offer }) => {
-            socket.join(room)
-            teacherIo.emit('callTeacher', {
-                room,
-                offer
-            })
-        })
+        socket.on('call', offer => teacherIo.emit('call', offer))
+        socket.on('candidate', candidate => teacherIo.emit('candidate', candidate))
     })
 }

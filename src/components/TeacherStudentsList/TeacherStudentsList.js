@@ -15,10 +15,6 @@ import Composed from './composed'
 
 import { delayedApiAxios, setFeedbackData } from '@utils'
 
-const teacher = new RTCPeerConnection()
-
-teacher.ontrack = ({ streams: [stream] }) => (document.getElementById('student').srcObject = stream)
-
 const TeacherStudentsListContainer = styled(APDashboard.Container)`
     min-height: 100vh;
     display: flex;
@@ -56,24 +52,13 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
             }
         }
         getStudents()
-        socket.on('callTeacher', async ({ room, offer }) => {
-            await teacher.setRemoteDescription(offer)
-            const answer = await teacher.createAnswer()
-            await teacher.setLocalDescription(new RTCSessionDescription(answer))
-            socket.emit('answerStudent', {
-                room,
-                answer
-            })
-        })
-        return () => socket.removeListener('callTeacher')
     }, [])
-    const updateLectures = (school, grade, stream, shouldLecturePopupAppear) => {
+    const updateLectures = (school, grade, shouldLecturePopupAppear) => {
         setLectures(
             lectures.map(lecture =>
                 lecture.school === school && lecture.grade === grade
                     ? {
                           ...lecture,
-                          stream,
                           shouldLecturePopupAppear
                       }
                     : lecture
@@ -89,15 +74,27 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                     'Ok'
                 )
             }
-            const stream = await mediaDevices.getUserMedia({
+            const stream = await navigator.mediaDevices.getUserMedia({
                 video: true,
                 audio: true
             })
-            stream.getTracks().map(track => teacher.addTrack(track, stream))
             socket.emit('startLecture', {
                 school,
                 grade
             })
+            socket.on('call', async offer => {
+                const teacher = new RTCPeerConnection()
+                stream.getTracks().map(track => teacher.addTrack(track, stream))
+                teacher.onicecandidate = ({ candidate }) => socket.emit('candidate', candidate)
+                teacher.ontrack = ({ streams: [stream] }) =>
+                    (document.getElementById('student').srcObject = stream)
+                await teacher.setRemoteDescription(new RTCSessionDescription(offer))
+                const answer = await teacher.createAnswer()
+                await teacher.setLocalDescription(answer)
+                socket.emit('answer', answer)
+                socket.on('candidate', async candidate => await teacher.addIceCandidate(candidate))
+            })
+            document.getElementById('teacher').srcObject = stream
             updateLectures(school, grade, stream, true)
         } catch (error) {
             setFeedbackData('Wystąpił niespodziewany problem przy rozpoczynaniu wykładu!', 'Ok')
@@ -105,13 +102,12 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
     }
     return (
         <TeacherStudentsListContainer withMenu={shouldMenuAppear} withMorePadding>
-            {lectures.map(({ school, grade, stream, shouldLecturePopupAppear }) => (
+            {lectures.map(({ school, grade, shouldLecturePopupAppear }) => (
                 <Composed.LecturePopup
                     key={`${school} ${grade}`}
                     school={school}
                     grade={grade}
-                    stream={stream}
-                    onClick={() => updateLectures(school, grade, stream, false)}
+                    onClick={() => updateLectures(school, grade, false)}
                     shouldSlideIn={shouldLecturePopupAppear}
                 />
             ))}

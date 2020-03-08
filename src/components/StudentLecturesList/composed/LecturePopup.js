@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useState } from 'react'
 import styled, { css } from 'styled-components/macro'
 
 import HForm from '@components/Home/styled/Form'
@@ -28,19 +28,13 @@ const LecturePopupContainer = styled.div`
     }}
 `
 
-const LecturePopup = ({ stream, onClick, shouldSlideIn }) => {
-    const videoRef = useRef()
+const LecturePopup = ({ onClick, shouldSlideIn }) => {
     const [isMuted, setIsMuted] = useState(true)
-    useEffect(() => {
-        if (videoRef.current) {
-            videoRef.current.srcObject = stream
-        }
-    }, [stream])
     return (
         <LecturePopupContainer shouldSlideIn={shouldSlideIn}>
             <HForm.CloseButton onClick={onClick} black />
             <TSLStyledLecturePopup.VideoContainer>
-                <TSLStyledLecturePopup.Video ref={videoRef} muted autoPlay />
+                <TSLStyledLecturePopup.Video id="student" muted autoPlay />
                 <TSLStyledLecturePopup.IconsContainer>
                     <TSLComposed.Icon icon="icon-desktop" />
                     <TSLComposed.Icon icon="icon-cancel-circled" big />

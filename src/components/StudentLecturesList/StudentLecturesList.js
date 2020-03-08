@@ -13,10 +13,6 @@ import Composed from './composed'
 
 import { setFeedbackData } from '@utils'
 
-const student = new RTCPeerConnection()
-
-student.ontrack = ({ streams: [stream] }) => (document.getElementById('teacher').srcObject = stream)
-
 const StudentLecturesListContainer = styled(APDashboard.Container)`
     min-height: 100vh;
     display: flex;
@@ -34,25 +30,19 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
             setLectures(lectures)
         })
         socket.on('updateLectures', updatedLectures => setLectures(updatedLectures))
-        socket.on('answerStudent', async answer => await student.setRemoteDescription(answer))
-        return () => {
-            socket.removeListener('updateLectures')
-            socket.removeListener('answerStudent')
-        }
+        return () => socket.removeListener('updateLectures')
     }, [])
     useEffect(() => {
-        socket.on('breakLecture', socketId =>
+        socket.once('breakLecture', socketId =>
             setLectures(lectures.filter(lecture => lecture.socketId !== socketId))
         )
-        return () => socket.removeListener('breakLecture')
     }, [lectures])
-    const updateLectures = (room, stream, shouldLecturePopupAppear) => {
+    const updateLectures = (room, shouldLecturePopupAppear) => {
         setLectures(
             lectures.map(lecture =>
                 lecture.lecturer.room === room
                     ? {
                           ...lecture,
-                          stream,
                           shouldLecturePopupAppear
                       }
                     : lecture
@@ -72,25 +62,28 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
                 video: true,
                 audio: true
             })
+            const student = new RTCPeerConnection()
             stream.getTracks().map(track => student.addTrack(track, stream))
+            student.onicecandidate = ({ candidate }) => socket.emit('candidate', candidate)
+            student.ontrack = ({ streams: [stream] }) =>
+                (document.getElementById('teacher').srcObject = stream)
             const offer = await student.createOffer()
-            await student.setLocalDescription(new RTCSessionDescription(offer))
-            socket.emit('joinLecture', {
-                room,
-                offer
-            })
-            updateLectures(room, stream, true)
+            await student.setLocalDescription(offer)
+            socket.emit('call', offer)
+            socket.on('answer', async answer => await student.setRemoteDescription(answer))
+            socket.on('candidate', async candidate => await student.addIceCandidate(candidate))
+            document.getElementById('student').srcObject = stream
+            updateLectures(room, true)
         } catch (error) {
             setFeedbackData('Wystąpił niespodziewany problem przy dołączaniu do wykładu!', 'Ok')
         }
     }
     return (
         <StudentLecturesListContainer withMenu={shouldMenuAppear} withMorePadding>
-            {lectures.map(({ lecturer: { id, room }, stream, shouldLecturePopupAppear }) => (
+            {lectures.map(({ lecturer: { id, room }, shouldLecturePopupAppear }) => (
                 <Composed.LecturePopup
                     key={id}
-                    stream={stream}
-                    onClick={() => updateLectures(room, stream, false)}
+                    onClick={() => updateLectures(room, false)}
                     shouldSlideIn={shouldLecturePopupAppear}
                 />
             ))}
