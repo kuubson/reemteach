@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 
 export default styled.div`
-    width: 60%;
+    width: 40%;
     height: 100vh;
     background: #f24b4b;
     position: relative;

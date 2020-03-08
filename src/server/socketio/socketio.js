@@ -108,18 +108,35 @@ export default io => {
         })
         socket.on('answer', answer => studentIo.emit('answer', answer))
         socket.on('candidate', candidate => studentIo.emit('candidate', candidate))
+        socket.on('finishLecture', () => {
+            studentIo.to(room).emit('finishLecture', room)
+            studentIo.emit('breakLecture', socket.id)
+            lectures = lectures.filter(({ socketId }) => socketId !== socket.id)
+        })
         socket.on('disconnect', () => {
             lectures = lectures.filter(({ socketId }) => socketId !== socket.id)
             studentIo.emit('breakLecture', socket.id)
         })
     })
     studentIo.on('connection', socket => {
+        const { id, name, surname } = socket.student
         socket.on('getLectures', async sendLectures => {
             const { grade, school } = socket.student.grade
             socket.join(grade)
             sendLectures(getLectures(school.name, grade))
         })
-        socket.on('call', offer => teacherIo.emit('call', offer))
+        socket.on('call', ({ room, offer }) => {
+            socket.join(room)
+            teacherIo.emit('call', {
+                student: {
+                    id,
+                    name,
+                    surname
+                },
+                offer
+            })
+        })
+        socket.on('leaveRoom', room => socket.leave(room))
         socket.on('candidate', candidate => teacherIo.emit('candidate', candidate))
     })
 }

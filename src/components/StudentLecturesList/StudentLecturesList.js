@@ -23,7 +23,9 @@ const StudentLecturesListContainer = styled(APDashboard.Container)`
 
 const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
+    const [student, setStudent] = useState(new RTCPeerConnection())
     const [lectures, setLectures] = useState([])
+    const [localStream, setLocalStream] = useState()
     useEffect(() => {
         socket.emit('getLectures', lectures => {
             setIsLoading(false)
@@ -36,13 +38,31 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
         socket.once('breakLecture', socketId =>
             setLectures(lectures.filter(lecture => lecture.socketId !== socketId))
         )
-    }, [lectures])
-    const updateLectures = (room, shouldLecturePopupAppear) => {
+        socket.on('finishLecture', room => {
+            student.close()
+            localStream.getTracks().map(track => track.stop())
+            setStudent(new RTCPeerConnection())
+            socket.emit('leaveRoom', room)
+            setFeedbackData('Nauczyciel zakończył wykład!', 'Ok')
+        })
+        return () => socket.removeListener('finishLecture')
+    }, [lectures, localStream])
+    useEffect(() => {
+        socket.on('answer', async answer => await student.setRemoteDescription(answer))
+        socket.on('candidate', async candidate => await student.addIceCandidate(candidate))
+        return () => {
+            socket.removeListener('answer')
+            socket.removeListener('candidate')
+        }
+    }, [student])
+    const updateLectures = (room, localStream, remoteStream, shouldLecturePopupAppear) => {
         setLectures(
             lectures.map(lecture =>
                 lecture.lecturer.room === room
                     ? {
                           ...lecture,
+                          localStream,
+                          remoteStream,
                           shouldLecturePopupAppear
                       }
                     : lecture
@@ -58,35 +78,48 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
                     'Ok'
                 )
             }
-            const stream = await mediaDevices.getUserMedia({
+            const localStream = await mediaDevices.getUserMedia({
                 video: true,
                 audio: true
             })
-            const student = new RTCPeerConnection()
-            stream.getTracks().map(track => student.addTrack(track, stream))
+            setLocalStream(localStream)
+            localStream.getTracks().map(track => student.addTrack(track, localStream))
             student.onicecandidate = ({ candidate }) => socket.emit('candidate', candidate)
-            student.ontrack = ({ streams: [stream] }) =>
-                (document.getElementById('teacher').srcObject = stream)
+            student.ontrack = ({ streams: [remoteStream] }) =>
+                updateLectures(room, localStream, remoteStream, true)
             const offer = await student.createOffer()
             await student.setLocalDescription(offer)
-            socket.emit('call', offer)
-            socket.on('answer', async answer => await student.setRemoteDescription(answer))
-            socket.on('candidate', async candidate => await student.addIceCandidate(candidate))
-            document.getElementById('student').srcObject = stream
-            updateLectures(room, true)
+            socket.emit('call', {
+                room,
+                offer
+            })
+            updateLectures(room, localStream, undefined, true)
         } catch (error) {
             setFeedbackData('Wystąpił niespodziewany problem przy dołączaniu do wykładu!', 'Ok')
         }
     }
     return (
         <StudentLecturesListContainer withMenu={shouldMenuAppear} withMorePadding>
-            {lectures.map(({ lecturer: { id, room }, shouldLecturePopupAppear }) => (
-                <Composed.LecturePopup
-                    key={id}
-                    onClick={() => updateLectures(room, false)}
-                    shouldSlideIn={shouldLecturePopupAppear}
-                />
-            ))}
+            {lectures.map(
+                ({
+                    lecturer: { id, name, surname, room },
+                    localStream,
+                    remoteStream,
+                    shouldLecturePopupAppear
+                }) => (
+                    <Composed.LecturePopup
+                        key={id}
+                        lecturer={{
+                            name,
+                            surname
+                        }}
+                        localStream={localStream}
+                        remoteStream={remoteStream}
+                        onClick={() => updateLectures(room, localStream, remoteStream, false)}
+                        shouldSlideIn={shouldLecturePopupAppear}
+                    />
+                )
+            )}
             {!isLoading && (
                 <AHTLDashboard.DetailsContainer>
                     {lectures.length > 0 ? (

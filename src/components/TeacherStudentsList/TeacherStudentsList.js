@@ -25,6 +25,7 @@ const TeacherStudentsListContainer = styled(APDashboard.Container)`
 
 const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
+    const [teacher, setTeacher] = useState(new RTCPeerConnection())
     const [schools, setSchools] = useState([])
     const [students, setStudents] = useState([])
     const [lectures, setLectures] = useState([])
@@ -53,12 +54,26 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
         }
         getStudents()
     }, [])
-    const updateLectures = (school, grade, shouldLecturePopupAppear) => {
+    useEffect(() => {
+        socket.on('candidate', async candidate => await teacher.addIceCandidate(candidate))
+        return () => socket.removeListener('candidate')
+    }, [teacher])
+    const updateLectures = (
+        school,
+        grade,
+        student,
+        localStream,
+        remoteStream,
+        shouldLecturePopupAppear
+    ) => {
         setLectures(
             lectures.map(lecture =>
                 lecture.school === school && lecture.grade === grade
                     ? {
                           ...lecture,
+                          student,
+                          localStream,
+                          remoteStream,
                           shouldLecturePopupAppear
                       }
                     : lecture
@@ -74,43 +89,60 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                     'Ok'
                 )
             }
-            const stream = await navigator.mediaDevices.getUserMedia({
+            const localStream = await navigator.mediaDevices.getUserMedia({
                 video: true,
                 audio: true
             })
+            localStream.getTracks().map(track => teacher.addTrack(track, localStream))
             socket.emit('startLecture', {
                 school,
                 grade
             })
-            socket.on('call', async offer => {
-                const teacher = new RTCPeerConnection()
-                stream.getTracks().map(track => teacher.addTrack(track, stream))
+            socket.once('call', async ({ student, offer }) => {
                 teacher.onicecandidate = ({ candidate }) => socket.emit('candidate', candidate)
-                teacher.ontrack = ({ streams: [stream] }) =>
-                    (document.getElementById('student').srcObject = stream)
+                teacher.ontrack = ({ streams: [remoteStream] }) =>
+                    updateLectures(school, grade, student, localStream, remoteStream, true)
                 await teacher.setRemoteDescription(new RTCSessionDescription(offer))
                 const answer = await teacher.createAnswer()
                 await teacher.setLocalDescription(answer)
                 socket.emit('answer', answer)
-                socket.on('candidate', async candidate => await teacher.addIceCandidate(candidate))
             })
-            document.getElementById('teacher').srcObject = stream
-            updateLectures(school, grade, stream, true)
+            updateLectures(school, grade, undefined, localStream, undefined, true)
         } catch (error) {
             setFeedbackData('Wystąpił niespodziewany problem przy rozpoczynaniu wykładu!', 'Ok')
         }
     }
     return (
         <TeacherStudentsListContainer withMenu={shouldMenuAppear} withMorePadding>
-            {lectures.map(({ school, grade, shouldLecturePopupAppear }) => (
-                <Composed.LecturePopup
-                    key={`${school} ${grade}`}
-                    school={school}
-                    grade={grade}
-                    onClick={() => updateLectures(school, grade, false)}
-                    shouldSlideIn={shouldLecturePopupAppear}
-                />
-            ))}
+            {lectures.map(
+                ({
+                    school,
+                    grade,
+                    student,
+                    localStream,
+                    remoteStream,
+                    shouldLecturePopupAppear
+                }) => (
+                    <Composed.LecturePopup
+                        key={`${school} ${grade}`}
+                        school={school}
+                        grade={grade}
+                        student={student}
+                        localStream={localStream}
+                        remoteStream={remoteStream}
+                        onClick={() => {
+                            updateLectures(school, grade, student, localStream, remoteStream, false)
+                            setTimeout(() => {
+                                teacher.close()
+                                localStream.getTracks().map(track => track.stop())
+                                setTeacher(new RTCPeerConnection())
+                                socket.emit('finishLecture')
+                            }, 700)
+                        }}
+                        shouldSlideIn={shouldLecturePopupAppear}
+                    />
+                )
+            )}
             {!isLoading && (
                 <AHTLDashboard.DetailsContainer>
                     {students.length > 0 ? (

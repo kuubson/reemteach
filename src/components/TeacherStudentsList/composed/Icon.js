@@ -4,7 +4,7 @@ import styled from 'styled-components/macro'
 import StyledLecturePopup from '../styled/LecturePopup'
 
 const IconContainer = styled.i`
-    color: white;
+    color: #f24b4b;
     font-size: ${({ big }) => (big ? 25 : 20)}px;
 `
 

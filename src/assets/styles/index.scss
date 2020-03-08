@@ -92,10 +92,20 @@ input:-webkit-autofill:active {
 .icon-mute::before,
 .icon-mute::after,
 .icon-mic::before,
-.icon-mic::after {
+.icon-mic::after,
+.icon-volume-off::before,
+.icon-volume-off::after,
+.icon-volume-low::before,
+.icon-volume-low::after {
     padding: 0px !important;
     margin: 0px !important;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.icon-volume-off::before,
+.icon-volume-off::after {
+    margin-left: 3px !important;
+    margin-bottom: 1.5px !important;
 }

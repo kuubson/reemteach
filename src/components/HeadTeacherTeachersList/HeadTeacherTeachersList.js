@@ -102,7 +102,7 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
         if (response) {
             const { successMessage } = response.data
             setFeedbackData(successMessage, 'Ok')
-            updateTeachers(id, 'shouldSaveButtonAppear', false)
+            updateTeachers(id)
         }
     }
     return (

@@ -96,7 +96,7 @@ const AdminHeadTeachersList = ({ shouldMenuAppear }) => {
         if (response) {
             const { successMessage } = response.data
             setFeedbackData(successMessage, 'Ok')
-            updateHeadTeachers(id, 'shouldSaveButtonAppear', false)
+            updateHeadTeachers(id)
         }
     }
     return (

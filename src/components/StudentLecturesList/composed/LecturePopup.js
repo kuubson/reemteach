@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styled, { css } from 'styled-components/macro'
 
+import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
 import HForm from '@components/Home/styled/Form'
 import TSLStyledLecturePopup from '@components/TeacherStudentsList/styled/LecturePopup'
+import StyledLecturePopup from '../styled/LecturePopup'
 
 import TSLComposed from '@components/TeacherStudentsList/composed'
 
@@ -28,27 +30,55 @@ const LecturePopupContainer = styled.div`
     }}
 `
 
-const LecturePopup = ({ onClick, shouldSlideIn }) => {
-    const [isMuted, setIsMuted] = useState(true)
+const LecturePopup = ({ localStream, remoteStream, onClick, shouldSlideIn }) => {
+    const localStreamRef = useRef()
+    const remoteStreamRef = useRef()
+    const [isMicrophoneMuted, setIsMicrophoneMuted] = useState(false)
+    const [isTeacherMuted, setIsTeacherMuted] = useState(false)
+    useEffect(() => {
+        if (localStreamRef.current) {
+            localStreamRef.current.srcObject = localStream
+        }
+        if (remoteStreamRef.current) {
+            remoteStreamRef.current.srcObject = remoteStream
+        }
+    }, [localStream, remoteStream])
     return (
         <LecturePopupContainer shouldSlideIn={shouldSlideIn}>
-            <HForm.CloseButton onClick={onClick} black />
-            <TSLStyledLecturePopup.VideoContainer>
-                <TSLStyledLecturePopup.Video id="student" muted autoPlay />
+            <HForm.CloseButton onClick={onClick} />
+            <StyledLecturePopup.VideoContainer>
+                <TSLStyledLecturePopup.Video ref={localStreamRef} muted autoPlay />
                 <TSLStyledLecturePopup.IconsContainer>
-                    <TSLComposed.Icon icon="icon-desktop" />
-                    <TSLComposed.Icon icon="icon-cancel-circled" big />
-                </TSLStyledLecturePopup.IconsContainer>
-            </TSLStyledLecturePopup.VideoContainer>
-            <TSLStyledLecturePopup.VideoContainer>
-                <TSLStyledLecturePopup.Video id="teacher" muted={isMuted} autoPlay />
-                <TSLStyledLecturePopup.IconsContainer>
-                    <TSLComposed.Icon icon="icon-cancel-circled" big />
                     <TSLComposed.Icon
-                        icon={isMuted ? 'icon-mute' : 'icon-mic'}
-                        onClick={() => setIsMuted(isMuted => !isMuted)}
+                        icon={isMicrophoneMuted ? 'icon-mute' : 'icon-mic'}
+                        onClick={() => {
+                            const [audio] = localStream.getAudioTracks()
+                            audio.enabled = !audio.enabled
+                            setIsMicrophoneMuted(isMicrophoneMuted => !isMicrophoneMuted)
+                        }}
                     />
                 </TSLStyledLecturePopup.IconsContainer>
+            </StyledLecturePopup.VideoContainer>
+            <TSLStyledLecturePopup.VideoContainer>
+                {remoteStream ? (
+                    <>
+                        <TSLStyledLecturePopup.Video
+                            ref={remoteStreamRef}
+                            muted={isTeacherMuted}
+                            autoPlay
+                        />
+                        <TSLStyledLecturePopup.IconsContainer>
+                            <TSLComposed.Icon
+                                icon={isTeacherMuted ? 'icon-volume-off' : 'icon-volume-low'}
+                                onClick={() => setIsTeacherMuted(isTeacherMuted => !isTeacherMuted)}
+                            />
+                        </TSLStyledLecturePopup.IconsContainer>
+                    </>
+                ) : (
+                    <AHTLDashboard.Warning white>
+                        Nauczyciel nie dołączył jeszcze do wykładu!
+                    </AHTLDashboard.Warning>
+                )}
             </TSLStyledLecturePopup.VideoContainer>
         </LecturePopupContainer>
     )
