@@ -29,7 +29,14 @@ const LecturePopupContainer = styled.div`
     }}
 `
 
-const LecturePopup = ({ student, localStream, remoteStream, onClick, shouldSlideIn }) => {
+const LecturePopup = ({
+    student,
+    localStream,
+    remoteStream,
+    onClick,
+    switchStream,
+    shouldSlideIn
+}) => {
     const localStreamRef = useRef()
     const remoteStreamRef = useRef()
     const [isMicrophoneMuted, setIsMicrophoneMuted] = useState(false)
@@ -48,7 +55,7 @@ const LecturePopup = ({ student, localStream, remoteStream, onClick, shouldSlide
             <StyledLecturePopup.VideoContainer>
                 <StyledLecturePopup.Video ref={localStreamRef} muted autoPlay />
                 <StyledLecturePopup.IconsContainer>
-                    <Composed.Icon icon="icon-desktop" />
+                    <Composed.Icon icon="icon-desktop" onClick={switchStream} />
                     <Composed.Icon
                         icon={isMicrophoneMuted ? 'icon-mute' : 'icon-mic'}
                         onClick={() => {

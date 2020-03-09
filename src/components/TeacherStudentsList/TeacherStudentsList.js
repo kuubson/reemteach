@@ -107,6 +107,14 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                 await teacher.setLocalDescription(answer)
                 socket.emit('answer', answer)
             })
+            socket.once('leaveLecture', () => {
+                teacher.close()
+                localStream.getTracks().map(track => track.stop())
+                setTeacher(new RTCPeerConnection())
+                socket.emit('leaveLecture')
+                setFeedbackData('Uczeń opuścił wykład!', 'Ok')
+                updateLectures(school, grade, undefined, undefined, undefined, false)
+            })
             updateLectures(school, grade, undefined, localStream, undefined, true)
         } catch (error) {
             setFeedbackData('Wystąpił niespodziewany problem przy rozpoczynaniu wykładu!', 'Ok')
@@ -138,6 +146,28 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                                 setTeacher(new RTCPeerConnection())
                                 socket.emit('finishLecture')
                             }, 700)
+                        }}
+                        switchStream={async () => {
+                            localStream.getTracks().map(track => track.stop())
+                            const captureStream = await navigator.mediaDevices.getDisplayMedia({
+                                video: true,
+                                audio: true
+                            })
+                            updateLectures(
+                                school,
+                                grade,
+                                student,
+                                captureStream,
+                                remoteStream,
+                                true
+                            )
+                            teacher
+                                .getSenders()
+                                .map(sender =>
+                                    captureStream
+                                        .getTracks()
+                                        .map(track => sender.replaceTrack(track))
+                                )
                         }}
                         shouldSlideIn={shouldLecturePopupAppear}
                     />

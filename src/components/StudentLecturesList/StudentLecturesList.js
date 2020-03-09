@@ -115,7 +115,10 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
                         }}
                         localStream={localStream}
                         remoteStream={remoteStream}
-                        onClick={() => updateLectures(room, localStream, remoteStream, false)}
+                        onClick={() => {
+                            socket.emit('leaveLecture', room)
+                            updateLectures(room, localStream, remoteStream, false)
+                        }}
                         shouldSlideIn={shouldLecturePopupAppear}
                     />
                 )

@@ -113,6 +113,10 @@ export default io => {
             studentIo.emit('breakLecture', socket.id)
             lectures = lectures.filter(({ socketId }) => socketId !== socket.id)
         })
+        socket.on('leaveLecture', () => {
+            studentIo.emit('breakLecture', socket.id)
+            lectures = lectures.filter(({ socketId }) => socketId !== socket.id)
+        })
         socket.on('disconnect', () => {
             lectures = lectures.filter(({ socketId }) => socketId !== socket.id)
             studentIo.emit('breakLecture', socket.id)
@@ -136,6 +140,7 @@ export default io => {
             })
         })
         socket.on('leaveRoom', room => socket.leave(room))
+        socket.on('leaveLecture', room => teacherIo.to(room).emit('leaveLecture'))
         socket.on('candidate', candidate => teacherIo.emit('candidate', candidate))
     })
 }
