@@ -11,10 +11,8 @@ export default styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
-    @media (max-width: 1000px) {
-        bottom: 25px;
-    }
-    @media (max-width: 500px) {
-        bottom: 20px;
+    @media (max-width: 1250px) {
+        bottom: 0px;
+        padding: 0px 10%;
     }
 `

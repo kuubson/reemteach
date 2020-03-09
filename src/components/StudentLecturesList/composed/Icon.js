@@ -6,8 +6,8 @@ import StyledLecturePopup from '../styled/LecturePopup'
 const IconContainer = styled.i`
     color: #f24b4b;
     font-size: 20px;
-    @media (max-width: 500px) {
-        font-size: 15px;
+    @media (max-width: 1250px) {
+        font-size: 16px;
     }
 `
 

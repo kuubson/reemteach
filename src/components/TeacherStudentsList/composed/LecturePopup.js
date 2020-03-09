@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled, { css } from 'styled-components/macro'
 
-import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
 import HForm from '@components/Home/styled/Form'
 import SLLStyledLecturePopup from '@components/StudentLecturesList/styled/LecturePopup'
 import StyledLecturePopup from '../styled/LecturePopup'
 
+import SLLComposed from '@components/StudentLecturesList/composed'
 import Composed from '../composed'
 
 const LecturePopupContainer = styled.div`
@@ -29,7 +29,7 @@ const LecturePopupContainer = styled.div`
     }}
 `
 
-const LecturePopup = ({ localStream, remoteStream, onClick, shouldSlideIn }) => {
+const LecturePopup = ({ student, localStream, remoteStream, onClick, shouldSlideIn }) => {
     const localStreamRef = useRef()
     const remoteStreamRef = useRef()
     const [isMicrophoneMuted, setIsMicrophoneMuted] = useState(false)
@@ -67,17 +67,22 @@ const LecturePopup = ({ localStream, remoteStream, onClick, shouldSlideIn }) => 
                             muted={isStudentMuted}
                             autoPlay
                         />
-                        <StyledLecturePopup.IconsContainer>
-                            <Composed.Icon
+                        <SLLStyledLecturePopup.IconsContainer>
+                            <SLLComposed.Icon
                                 icon={isStudentMuted ? 'icon-volume-off' : 'icon-volume-low'}
                                 onClick={() => setIsStudentMuted(isStudentMuted => !isStudentMuted)}
                             />
-                        </StyledLecturePopup.IconsContainer>
+                        </SLLStyledLecturePopup.IconsContainer>
                     </>
                 ) : (
-                    <AHTLDashboard.Warning white>
+                    <StyledLecturePopup.Warning>
                         Uczeń nie dołączył jeszcze do wykładu!
-                    </AHTLDashboard.Warning>
+                    </StyledLecturePopup.Warning>
+                )}
+                {student && (
+                    <StyledLecturePopup.Student>
+                        {student.name} {student.surname}
+                    </StyledLecturePopup.Student>
                 )}
             </SLLStyledLecturePopup.VideoContainer>
         </LecturePopupContainer>

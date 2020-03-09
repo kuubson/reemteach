@@ -7,6 +7,7 @@ import TSLStyledLecturePopup from '@components/TeacherStudentsList/styled/Lectur
 import StyledLecturePopup from '../styled/LecturePopup'
 
 import TSLComposed from '@components/TeacherStudentsList/composed'
+import Composed from '../composed'
 
 const LecturePopupContainer = styled.div`
     width: 100%;
@@ -30,7 +31,13 @@ const LecturePopupContainer = styled.div`
     }}
 `
 
-const LecturePopup = ({ localStream, remoteStream, onClick, shouldSlideIn }) => {
+const LecturePopup = ({
+    lecturer: { name, surname },
+    localStream,
+    remoteStream,
+    onClick,
+    shouldSlideIn
+}) => {
     const localStreamRef = useRef()
     const remoteStreamRef = useRef()
     const [isMicrophoneMuted, setIsMicrophoneMuted] = useState(false)
@@ -48,8 +55,8 @@ const LecturePopup = ({ localStream, remoteStream, onClick, shouldSlideIn }) => 
             <HForm.CloseButton onClick={onClick} />
             <StyledLecturePopup.VideoContainer>
                 <TSLStyledLecturePopup.Video ref={localStreamRef} muted autoPlay />
-                <TSLStyledLecturePopup.IconsContainer>
-                    <TSLComposed.Icon
+                <StyledLecturePopup.IconsContainer>
+                    <Composed.Icon
                         icon={isMicrophoneMuted ? 'icon-mute' : 'icon-mic'}
                         onClick={() => {
                             const [audio] = localStream.getAudioTracks()
@@ -57,12 +64,12 @@ const LecturePopup = ({ localStream, remoteStream, onClick, shouldSlideIn }) => 
                             setIsMicrophoneMuted(isMicrophoneMuted => !isMicrophoneMuted)
                         }}
                     />
-                </TSLStyledLecturePopup.IconsContainer>
+                </StyledLecturePopup.IconsContainer>
             </StyledLecturePopup.VideoContainer>
             <TSLStyledLecturePopup.VideoContainer>
                 {remoteStream ? (
                     <>
-                        <TSLStyledLecturePopup.Video
+                        <StyledLecturePopup.Video
                             ref={remoteStreamRef}
                             muted={isTeacherMuted}
                             autoPlay
@@ -79,6 +86,9 @@ const LecturePopup = ({ localStream, remoteStream, onClick, shouldSlideIn }) => 
                         Nauczyciel nie dołączył jeszcze do wykładu!
                     </AHTLDashboard.Warning>
                 )}
+                <StyledLecturePopup.Teacher>
+                    {name} {surname}
+                </StyledLecturePopup.Teacher>
             </TSLStyledLecturePopup.VideoContainer>
         </LecturePopupContainer>
     )

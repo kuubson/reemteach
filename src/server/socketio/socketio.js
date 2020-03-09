@@ -129,7 +129,6 @@ export default io => {
             socket.join(room)
             teacherIo.emit('call', {
                 student: {
-                    id,
                     name,
                     surname
                 },

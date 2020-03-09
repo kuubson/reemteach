@@ -14,8 +14,8 @@ export default styled.div`
     :hover {
         transform: scale(1.05);
     }
-    @media (max-width: 500px) {
-        width: 45px;
-        height: 45px;
+    @media (max-width: 1250px) {
+        width: 40px;
+        height: 40px;
     }
 `
