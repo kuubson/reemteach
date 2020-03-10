@@ -1,7 +1,7 @@
 
-.icon-cancel-circled:before { content: '\e800'; } /* '' */
 .icon-volume-off:before { content: '\e801'; } /* '' */
 .icon-volume-low:before { content: '\e802'; } /* '' */
+.icon-videocam:before { content: '\e803'; } /* '' */
 .icon-desktop:before { content: '\f108'; } /* '' */
 .icon-mic:before { content: '\f130'; } /* '' */
 .icon-mute:before { content: '\f131'; } /* '' */

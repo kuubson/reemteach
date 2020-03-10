@@ -29,6 +29,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
     const [schools, setSchools] = useState([])
     const [students, setStudents] = useState([])
     const [lectures, setLectures] = useState([])
+    const [localStream, setLocalStream] = useState()
     useEffect(() => {
         const getStudents = async () => {
             const url = '/api/teacher/getStudents'
@@ -80,6 +81,28 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
             )
         )
     }
+    useEffect(() => {
+        socket.on('studentLeavesLecture', student => {
+            lectures.map(lecture => {
+                if (JSON.stringify(lecture.student) === JSON.stringify(student)) {
+                    teacher.close()
+                    localStream.getTracks().map(track => track.stop())
+                    setTeacher(new RTCPeerConnection())
+                    socket.emit('leaveLecture')
+                    setFeedbackData('Uczeń opuścił wykład!', 'Ok')
+                    updateLectures(
+                        lecture.school,
+                        lecture.grade,
+                        undefined,
+                        undefined,
+                        undefined,
+                        false
+                    )
+                }
+            })
+        })
+        return () => socket.removeListener('studentLeavesLecture')
+    }, [lectures])
     const startLecture = async (school, grade) => {
         try {
             const { mediaDevices } = navigator
@@ -94,6 +117,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                 audio: true
             })
             localStream.getTracks().map(track => teacher.addTrack(track, localStream))
+            setLocalStream(localStream)
             socket.emit('startLecture', {
                 school,
                 grade
@@ -147,27 +171,66 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                                 socket.emit('finishLecture')
                             }, 700)
                         }}
-                        switchStream={async () => {
-                            localStream.getTracks().map(track => track.stop())
-                            const captureStream = await navigator.mediaDevices.getDisplayMedia({
-                                video: true,
-                                audio: true
-                            })
-                            updateLectures(
-                                school,
-                                grade,
-                                student,
-                                captureStream,
-                                remoteStream,
-                                true
-                            )
-                            teacher
-                                .getSenders()
-                                .map(sender =>
-                                    captureStream
-                                        .getTracks()
-                                        .map(track => sender.replaceTrack(track))
+                        shareCamera={async () => {
+                            try {
+                                const videoStream = await navigator.mediaDevices.getUserMedia({
+                                    video: true,
+                                    audio: true
+                                })
+                                updateLectures(
+                                    school,
+                                    grade,
+                                    student,
+                                    videoStream,
+                                    remoteStream,
+                                    true
                                 )
+                                const [video] = videoStream.getVideoTracks()
+                                teacher.getSenders().map(sender => {
+                                    if (sender.track.kind === video.kind) {
+                                        sender.replaceTrack(video)
+                                    }
+                                })
+                                teacher
+                                    .getSenders()
+                                    .map(sender =>
+                                        videoStream
+                                            .getTracks()
+                                            .map(track => sender.replaceTrack(track))
+                                    )
+                            } catch (error) {
+                                setFeedbackData(
+                                    'Wystąpił niespodziewany problem przy udostępnianiu widoku z kamery!',
+                                    'Ok'
+                                )
+                            }
+                        }}
+                        shareScreen={async () => {
+                            try {
+                                const captureStream = await navigator.mediaDevices.getDisplayMedia({
+                                    video: true,
+                                    audio: true
+                                })
+                                updateLectures(
+                                    school,
+                                    grade,
+                                    student,
+                                    captureStream,
+                                    remoteStream,
+                                    true
+                                )
+                                const [video] = captureStream.getVideoTracks()
+                                teacher.getSenders().map(sender => {
+                                    if (sender.track.kind === video.kind) {
+                                        sender.replaceTrack(video)
+                                    }
+                                })
+                            } catch (error) {
+                                setFeedbackData(
+                                    'Wystąpił niespodziewany problem przy udostępnianiu ekranu!',
+                                    'Ok'
+                                )
+                            }
                         }}
                         shouldSlideIn={shouldLecturePopupAppear}
                     />

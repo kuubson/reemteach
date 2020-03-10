@@ -35,9 +35,20 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
         return () => socket.removeListener('updateLectures')
     }, [])
     useEffect(() => {
-        socket.once('breakLecture', socketId =>
+        socket.on('breakLecture', ({ socketId, room }) => {
+            if (
+                lectures.some(
+                    lecture => lecture.socketId === socketId && lecture.shouldLecturePopupAppear
+                )
+            ) {
+                student.close()
+                localStream.getTracks().map(track => track.stop())
+                setStudent(new RTCPeerConnection())
+                socket.emit('leaveRoom', room)
+                setFeedbackData('Nauczyciel zakończył wykład!', 'Ok')
+            }
             setLectures(lectures.filter(lecture => lecture.socketId !== socketId))
-        )
+        })
         socket.on('finishLecture', room => {
             student.close()
             localStream.getTracks().map(track => track.stop())
@@ -45,7 +56,10 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
             socket.emit('leaveRoom', room)
             setFeedbackData('Nauczyciel zakończył wykład!', 'Ok')
         })
-        return () => socket.removeListener('finishLecture')
+        return () => {
+            socket.removeListener('finishLecture')
+            socket.removeListener('breakLecture')
+        }
     }, [lectures, localStream])
     useEffect(() => {
         socket.on('answer', async answer => await student.setRemoteDescription(answer))

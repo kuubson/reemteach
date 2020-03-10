@@ -110,20 +110,29 @@ export default io => {
         socket.on('candidate', candidate => studentIo.emit('candidate', candidate))
         socket.on('finishLecture', () => {
             studentIo.to(room).emit('finishLecture', room)
-            studentIo.emit('breakLecture', socket.id)
+            studentIo.emit('breakLecture', {
+                socketId: socket.id,
+                room
+            })
             lectures = lectures.filter(({ socketId }) => socketId !== socket.id)
         })
         socket.on('leaveLecture', () => {
-            studentIo.emit('breakLecture', socket.id)
+            studentIo.emit('breakLecture', {
+                socketId: socket.id,
+                room
+            })
             lectures = lectures.filter(({ socketId }) => socketId !== socket.id)
         })
         socket.on('disconnect', () => {
             lectures = lectures.filter(({ socketId }) => socketId !== socket.id)
-            studentIo.emit('breakLecture', socket.id)
+            studentIo.emit('breakLecture', {
+                socketId: socket.id,
+                room
+            })
         })
     })
     studentIo.on('connection', socket => {
-        const { id, name, surname } = socket.student
+        const { name, surname } = socket.student
         socket.on('getLectures', async sendLectures => {
             const { grade, school } = socket.student.grade
             socket.join(grade)
@@ -140,7 +149,16 @@ export default io => {
             })
         })
         socket.on('leaveRoom', room => socket.leave(room))
-        socket.on('leaveLecture', room => teacherIo.to(room).emit('leaveLecture'))
+        socket.on('leaveLecture', room => {
+            socket.leave(room)
+            teacherIo.to(room).emit('leaveLecture')
+        })
         socket.on('candidate', candidate => teacherIo.emit('candidate', candidate))
+        socket.on('disconnect', () =>
+            teacherIo.emit('studentLeavesLecture', {
+                name,
+                surname
+            })
+        )
     })
 }

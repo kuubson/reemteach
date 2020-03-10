@@ -4,8 +4,8 @@ const { DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_HOST } = p
 
 const connection = new Sequelize(DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD, {
     host: DATABASE_HOST,
-    dialect: 'mysql'
-    // ,logging: false
+    dialect: 'mysql',
+    logging: false
 })
 
 const Admin = connection.import('./models/Admin')

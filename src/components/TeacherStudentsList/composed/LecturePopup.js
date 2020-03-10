@@ -34,7 +34,8 @@ const LecturePopup = ({
     localStream,
     remoteStream,
     onClick,
-    switchStream,
+    shareCamera,
+    shareScreen,
     shouldSlideIn
 }) => {
     const localStreamRef = useRef()
@@ -55,7 +56,7 @@ const LecturePopup = ({
             <StyledLecturePopup.VideoContainer>
                 <StyledLecturePopup.Video ref={localStreamRef} muted autoPlay />
                 <StyledLecturePopup.IconsContainer>
-                    <Composed.Icon icon="icon-desktop" onClick={switchStream} />
+                    <Composed.Icon icon="icon-videocam" onClick={shareCamera} />
                     <Composed.Icon
                         icon={isMicrophoneMuted ? 'icon-mute' : 'icon-mic'}
                         onClick={() => {
@@ -64,6 +65,7 @@ const LecturePopup = ({
                             setIsMicrophoneMuted(isMicrophoneMuted => !isMicrophoneMuted)
                         }}
                     />
+                    <Composed.Icon icon="icon-desktop" onClick={shareScreen} />
                 </StyledLecturePopup.IconsContainer>
             </StyledLecturePopup.VideoContainer>
             <SLLStyledLecturePopup.VideoContainer>
