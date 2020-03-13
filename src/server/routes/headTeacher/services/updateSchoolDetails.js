@@ -7,10 +7,9 @@ import { Op, detectSanitization } from '@utils'
 
 export default async (req, res, next) => {
     try {
-        const { name, type, description, address, creationDate } = req.body
+        const { name, description, address, creationDate } = req.body
         req.user.school.update({
             name,
-            type,
             description,
             address,
             creationDate
@@ -48,13 +47,6 @@ export const validation = () => [
             }
         })
         .withMessage(name => `Szkoła o nazwie ${name} istnieje już w systemie!`),
-    check('type')
-        .trim()
-        .notEmpty()
-        .withMessage('Wprowadź rodzaj szkoły!')
-        .bail()
-        .custom(detectSanitization)
-        .withMessage('Rodzaj szkoły zawiera niedozwolone znaki!'),
     check('description')
         .trim()
         .notEmpty()

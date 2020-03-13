@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components/macro'
 import io from 'socket.io-client'
+import axios from 'axios'
 
 import { compose } from 'redux'
 import { withRouter, withSocket, withFeedbackHandler, withMenu } from '@hoc'
@@ -9,7 +10,7 @@ import APMenu from '@components/AdminProfile/styled/Menu'
 
 import APComposed from '@components/AdminProfile/composed'
 
-import { delayedApiAxios, redirectTo, delayedRedirectTo, subscribePushNotifications } from '@utils'
+import { redirectTo, delayedRedirectTo, subscribePushNotifications } from '@utils'
 
 const StudentContainer = styled.div`
     ${({ blurred }) => {
@@ -46,7 +47,7 @@ const Student = ({
         }
         const confirmToken = async () => {
             const url = '/api/confirmToken'
-            const response = await delayedApiAxios.get(url)
+            const response = await axios.get(url)
             if (response) {
                 const profilePathname = '/uczeń/profil'
                 const { role, isActivated } = response.data

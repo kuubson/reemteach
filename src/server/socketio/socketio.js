@@ -5,6 +5,7 @@ import { School, Grade, Teacher, Student } from '@database'
 import { getCookie } from '@utils'
 
 let lectures = []
+let takenRooms = []
 
 const getLectures = (school, grade) =>
     lectures
@@ -115,6 +116,7 @@ export default io => {
                 room
             })
             lectures = lectures.filter(({ socketId }) => socketId !== socket.id)
+            takenRooms = takenRooms.filter(takenRoom => takenRoom !== room)
         })
         socket.on('leaveLecture', () => {
             studentIo.emit('breakLecture', {
@@ -122,9 +124,11 @@ export default io => {
                 room
             })
             lectures = lectures.filter(({ socketId }) => socketId !== socket.id)
+            takenRooms = takenRooms.filter(takenRoom => takenRoom !== room)
         })
         socket.on('disconnect', () => {
             lectures = lectures.filter(({ socketId }) => socketId !== socket.id)
+            takenRooms = takenRooms.filter(takenRoom => takenRoom !== room)
             studentIo.emit('breakLecture', {
                 socketId: socket.id,
                 room
@@ -137,6 +141,14 @@ export default io => {
             const { grade, school } = socket.student.grade
             socket.join(grade)
             sendLectures(getLectures(school.name, grade))
+        })
+        socket.on('checkRoom', (room, callback) => {
+            if (takenRooms.some(takenRoom => takenRoom === room)) {
+                callback(true)
+            } else {
+                takenRooms.push(room)
+                callback(false)
+            }
         })
         socket.on('call', ({ room, offer }) => {
             socket.join(room)

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components/macro'
+import axios from 'axios'
 
 import { compose } from 'redux'
 import { withSocket, withFeedbackHandler } from '@hoc'
 
-import { delayedApiAxios, redirectTo } from '@utils'
+import { redirectTo } from '@utils'
 
 const GuestContainer = styled.div`
     ${({ blurred }) => {
@@ -25,7 +26,7 @@ const Guest = ({ children, socket, setSocket, shouldFeedbackHandlerAppear }) => 
         }
         const confirmToken = async () => {
             const url = '/api/confirmToken'
-            const response = await delayedApiAxios.get(url)
+            const response = await axios.get(url)
             if (response) {
                 const { role } = response.data
                 if (role === 'admin') {

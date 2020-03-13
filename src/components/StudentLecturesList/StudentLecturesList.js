@@ -83,7 +83,7 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
             )
         )
     }
-    const joinLecture = async room => {
+    const joinLecture = room => {
         try {
             const { mediaDevices } = navigator
             if (!mediaDevices) {
@@ -92,23 +92,30 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
                     'Ok'
                 )
             }
-            const localStream = await mediaDevices.getUserMedia({
-                video: true,
-                audio: true
+            socket.emit('checkRoom', room, async isRoomTaken => {
+                if (isRoomTaken) {
+                    setFeedbackData('Wykład jest już zajęty przez innego ucznia!', 'Ok')
+                } else {
+                    const localStream = await mediaDevices.getUserMedia({
+                        video: true,
+                        audio: true
+                    })
+                    setLocalStream(localStream)
+                    localStream.getTracks().map(track => student.addTrack(track, localStream))
+                    student.onicecandidate = ({ candidate }) => socket.emit('candidate', candidate)
+                    student.ontrack = ({ streams: [remoteStream] }) =>
+                        updateLectures(room, localStream, remoteStream, true)
+                    const offer = await student.createOffer()
+                    await student.setLocalDescription(offer)
+                    socket.emit('call', {
+                        room,
+                        offer
+                    })
+                    updateLectures(room, localStream, undefined, true)
+                }
             })
-            setLocalStream(localStream)
-            localStream.getTracks().map(track => student.addTrack(track, localStream))
-            student.onicecandidate = ({ candidate }) => socket.emit('candidate', candidate)
-            student.ontrack = ({ streams: [remoteStream] }) =>
-                updateLectures(room, localStream, remoteStream, true)
-            const offer = await student.createOffer()
-            await student.setLocalDescription(offer)
-            socket.emit('call', {
-                room,
-                offer
-            })
-            updateLectures(room, localStream, undefined, true)
         } catch (error) {
+            console.log(error)
             setFeedbackData('Wystąpił niespodziewany problem przy dołączaniu do wykładu!', 'Ok')
         }
     }
@@ -131,6 +138,7 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
                         remoteStream={remoteStream}
                         onClick={() => {
                             socket.emit('leaveLecture', room)
+                            localStream.getTracks().map(track => track.stop())
                             updateLectures(room, localStream, remoteStream, false)
                         }}
                         shouldSlideIn={shouldLecturePopupAppear}

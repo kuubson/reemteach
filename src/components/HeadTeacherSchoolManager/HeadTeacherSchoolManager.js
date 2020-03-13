@@ -40,7 +40,6 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
     const [creationDateError, setCreationDateError] = useState('')
     const previousDetails = usePrevious({
         name,
-        type,
         description,
         address,
         creationDate
@@ -145,19 +144,16 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
         if (validate(false)) {
             const {
                 name: previousName,
-                type: previousType,
                 description: previousDescription,
                 address: previousAddress,
                 creationDate: previousCreationDate
             } = previousDetails
             if (
                 previousName &&
-                previousType &&
                 previousDetails &&
                 previousAddress &&
                 previousCreationDate &&
                 (name !== previousName ||
-                    type !== previousType ||
                     description !== previousDescription ||
                     address !== previousAddress ||
                     creationDate !== previousCreationDate)
@@ -166,7 +162,6 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
                     const url = '/api/headTeacher/updateSchoolDetails'
                     const response = await delayedApiAxios.post(url, {
                         name,
-                        type,
                         description,
                         address,
                         creationDate
@@ -180,16 +175,12 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
                         const { status, validationResults } = error.response.data
                         if (status === 422) {
                             setNameError('')
-                            setTypeError('')
                             setDescriptionError('')
                             setAddressError('')
                             setCreationDateError('')
                             validationResults.forEach(({ parameter, error }) => {
                                 if (parameter === 'name') {
                                     setNameError(error)
-                                }
-                                if (parameter === 'type') {
-                                    setTypeError(error)
                                 }
                                 if (parameter === 'description') {
                                     setDescriptionError(error)
@@ -220,13 +211,7 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
                             onChange={setName}
                             onBlur={updateDetails}
                         />
-                        <HTPComposed.EditableDetail
-                            label="Rodzaj szkoły"
-                            value={type}
-                            error={typeError}
-                            onChange={setType}
-                            onBlur={updateDetails}
-                        />
+                        <HTPComposed.Detail label="Rodzaj szkoły" value={type} />
                         <HTPComposed.EditableDetail
                             label="Opis szkoły"
                             value={description}

@@ -4,13 +4,12 @@ import { detectSanitization, detectWhiteSpaces } from '@utils'
 
 export default async (req, res, next) => {
     try {
-        const { name, surname, age, description, subject } = req.body
+        const { name, surname, age, description } = req.body
         await req.user.update({
             name,
             surname,
             age,
-            description,
-            subject
+            description
         })
         res.send({
             successMessage: 'Pomyślnie zaktualizowano profil!'
@@ -57,12 +56,5 @@ export const validation = () => [
         .withMessage('Wprowadź opis siebie!')
         .bail()
         .custom(detectSanitization)
-        .withMessage('Opis siebie zawiera niedozwolone znaki!'),
-    check('subject')
-        .trim()
-        .notEmpty()
-        .withMessage('Wprowadź przedmiot przewodni!')
-        .bail()
-        .custom(detectSanitization)
-        .withMessage('Przedmiot przewodni zawiera niedozwolone znaki!')
+        .withMessage('Opis siebie zawiera niedozwolone znaki!')
 ]

@@ -52,8 +52,7 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
         name,
         surname,
         age,
-        description,
-        subject
+        description
     })
     useEffect(() => {
         const getProfile = async () => {
@@ -284,20 +283,17 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                 name: previousName,
                 surname: previousSurname,
                 age: previousAge,
-                description: previousDescription,
-                subject: previousSubject
+                description: previousDescription
             } = previousDetails
             if (
                 previousName &&
                 previousSurname &&
                 previousAge &&
                 previousDescription &&
-                previousSubject &&
                 (name !== previousName ||
                     surname !== previousSurname ||
                     age !== previousAge ||
-                    description !== previousDescription ||
-                    subject !== previousSubject)
+                    description !== previousDescription)
             ) {
                 try {
                     const url = '/api/teacher/updateDetails'
@@ -305,8 +301,7 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                         name,
                         surname,
                         age,
-                        description,
-                        subject
+                        description
                     })
                     if (response) {
                         const { successMessage } = response.data
@@ -320,7 +315,6 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                             setSurnameError('')
                             setAgeError('')
                             setDescriptionError('')
-                            setSubjectError('')
                             validationResults.forEach(({ parameter, error }) => {
                                 if (parameter === 'name') {
                                     setNameError(error)
@@ -333,9 +327,6 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                                 }
                                 if (parameter === 'description') {
                                     setDescriptionError(error)
-                                }
-                                if (parameter === 'subject') {
-                                    setSubjectError(error)
                                 }
                             })
                         }
@@ -474,13 +465,7 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                                     onBlur={updateDetails}
                                     textarea
                                 />
-                                <HTPComposed.EditableDetail
-                                    label="Przedmiot przewodni"
-                                    value={subject}
-                                    error={subjectError}
-                                    onChange={setSubject}
-                                    onBlur={updateDetails}
-                                />
+                                <HTPComposed.Detail label="Przedmiot przewodni" value={subject} />
                                 <HTPComposed.Detail label="E-mail" value={email} />
                             </HTPDetail.DetailsContainer>
                         </>

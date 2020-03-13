@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components/macro'
 import io from 'socket.io-client'
+import axios from 'axios'
 
 import { compose } from 'redux'
 import { withRouter, withSocket, withFeedbackHandler, withMenu } from '@hoc'
@@ -9,7 +10,7 @@ import APMenu from '@components/AdminProfile/styled/Menu'
 
 import APComposed from '@components/AdminProfile/composed'
 
-import { delayedApiAxios, redirectTo, delayedRedirectTo } from '@utils'
+import { redirectTo, delayedRedirectTo } from '@utils'
 
 const TeacherContainer = styled.div`
     ${({ blurred }) => {
@@ -32,6 +33,22 @@ const Teacher = ({
     const [shouldChildrenAppear, setShouldChildrenAppear] = useState(false)
     const [menuOptions, setMenuOptions] = useState([
         {
+            option: 'Baza pytań',
+            pathname: '/nauczyciel/baza-pytań'
+        },
+        {
+            option: 'Twoja baza pytań',
+            pathname: '/nauczyciel/twoja-baza-pytań'
+        },
+        {
+            option: 'Utwórz pytanie',
+            pathname: '/nauczyciel/tworzenie-pytania'
+        },
+        {
+            option: 'Utwórz Test',
+            pathname: '/nauczyciel/tworzenie-testu'
+        },
+        {
             option: 'Strona główna',
             pathname: '/nauczyciel/profil'
         },
@@ -50,7 +67,7 @@ const Teacher = ({
         }
         const confirmToken = async () => {
             const url = '/api/confirmToken'
-            const response = await delayedApiAxios.get(url)
+            const response = await axios.get(url)
             if (response) {
                 const profilePathname = '/nauczyciel/profil'
                 const { role, isActivated, hasSchools } = response.data

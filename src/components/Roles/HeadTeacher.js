@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components/macro'
+import axios from 'axios'
 
 import { compose } from 'redux'
 import { withRouter, withFeedbackHandler, withMenu } from '@hoc'
@@ -8,7 +9,7 @@ import APMenu from '@components/AdminProfile/styled/Menu'
 
 import APComposed from '@components/AdminProfile/composed'
 
-import { delayedApiAxios, redirectTo, delayedRedirectTo } from '@utils'
+import { redirectTo, delayedRedirectTo } from '@utils'
 
 const HeadTeacherContainer = styled.div`
     ${({ blurred }) => {
@@ -31,7 +32,7 @@ const HeadTeacher = ({ children, location, shouldFeedbackHandlerAppear, closeMen
     useEffect(() => {
         const confirmToken = async () => {
             const url = '/api/confirmToken'
-            const response = await delayedApiAxios.get(url)
+            const response = await axios.get(url)
             if (response) {
                 const profilePathname = '/dyrektor/profil'
                 const { role, isActivated, hasSchool } = response.data
