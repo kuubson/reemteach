@@ -1,6 +1,15 @@
 import { Router } from 'express'
+import { MulterError } from 'multer'
 
-import { rateLimiter, authWithJwt, checkValidationResult, checkForSchools } from '@middlewares'
+import {
+    rateLimiter,
+    authWithJwt,
+    multer,
+    checkValidationResult,
+    checkForSchools
+} from '@middlewares'
+
+import { ApiError } from '@utils'
 
 import Services from './services'
 
@@ -46,5 +55,28 @@ router.post(
 )
 
 router.get('/teacher/getStudents', authWithJwt, Services.getStudents.default)
+
+router.get('/teacher/getSubject', authWithJwt, Services.getSubject.default)
+
+router.post(
+    '/teacher/createQuestion',
+    authWithJwt,
+    (req, res, next) =>
+        multer.single('image')(req, res, error => {
+            switch (true) {
+                case error instanceof MulterError && error.code === 'LIMIT_FILE_SIZE':
+                    next(new ApiError('Wybrany plik ma za duży rozmiar!', 500))
+                    break
+                case req.allowedExtenstionsError:
+                    next(new ApiError('Wybrany plik ma niedozwolone rozszerzenie!', 500))
+                    break
+                default:
+                    next()
+            }
+        }),
+    Services.createQuestion.validation(),
+    checkValidationResult,
+    Services.createQuestion.default
+)
 
 export default router

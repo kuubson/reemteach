@@ -1,7 +1,7 @@
 import { Model, DataTypes } from 'sequelize'
 import bcrypt from 'bcryptjs'
 
-const { STRING, TEXT, INTEGER, BOOLEAN } = DataTypes
+const { STRING, TEXT, INTEGER, BOOLEAN, ENUM } = DataTypes
 
 export default sequelize => {
     class Teacher extends Model {}
@@ -28,7 +28,22 @@ export default sequelize => {
                 type: TEXT
             },
             subject: {
-                type: STRING
+                type: ENUM([
+                    'Religia',
+                    'Język polski',
+                    'Język angielski',
+                    'Język niemiecki',
+                    'Język rosyjski',
+                    'Język francuski',
+                    'Matematyka',
+                    'Fizyka',
+                    'Biologia',
+                    'Chemia',
+                    'Geografia',
+                    'Wiedza o społeczeństwie',
+                    'Historia',
+                    'Informatyka'
+                ])
             },
             isActivated: {
                 type: BOOLEAN,

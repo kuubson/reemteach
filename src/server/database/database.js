@@ -14,6 +14,7 @@ const School = connection.import('./models/School')
 const SchoolBell = connection.import('./models/SchoolBell')
 const Grade = connection.import('./models/Grade')
 const Teacher = connection.import('./models/Teacher')
+const Question = connection.import('./models/Question')
 const Student = connection.import('./models/Student')
 const Subscription = connection.import('./models/Subscription')
 
@@ -25,6 +26,9 @@ SchoolBell.belongsTo(School)
 
 School.belongsToMany(Teacher, { through: 'composedSchools' })
 Teacher.belongsToMany(School, { through: 'composedSchools' })
+
+Teacher.hasMany(Question)
+Question.belongsTo(Teacher)
 
 School.hasMany(Grade)
 Grade.belongsTo(School)
@@ -50,4 +54,4 @@ const initializeDatabaseConnection = async () => {
 }
 initializeDatabaseConnection()
 
-export { Admin, HeadTeacher, School, SchoolBell, Grade, Teacher, Student, Subscription }
+export { Admin, HeadTeacher, School, SchoolBell, Grade, Teacher, Question, Student, Subscription }

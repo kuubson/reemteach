@@ -6,7 +6,7 @@ export default (req, res, next) => {
         const status = 422
         res.status(status).send({
             status,
-            errorMessage: 'Sprawdź poprawność wprowadzanych danych!',
+            errorMessage: 'Sprawdź wprowadzane dane!',
             validationResults: validationResults.errors.map(error => {
                 return {
                     parameter: error.param,

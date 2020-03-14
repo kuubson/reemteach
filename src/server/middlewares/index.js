@@ -9,6 +9,7 @@ import errorHandler from './errorHandler'
 import checkValidationResult from './checkValidationResult'
 import rateLimiter from './rateLimiter'
 import authWithJwt from './authWithJwt'
+import multer from './multer'
 import checkForSchool from './checkForSchool'
 import checkForSchools from './checkForSchools'
 
@@ -49,6 +50,7 @@ export {
     checkValidationResult,
     rateLimiter,
     authWithJwt,
+    multer,
     checkForSchool,
     checkForSchools
 }

@@ -143,7 +143,7 @@ const HeadTeacherSchoolBellsManager = ({ shouldMenuAppear }) => {
                                         <Dashboard.RemoveButton
                                             onClick={() => removeSchoolBell(id, from, to, isRecess)}
                                             visible={index !== 0}
-                                            withRecess={isRecess}
+                                            orange={isRecess}
                                         />
                                     </Dashboard.InputsContainer>
                                     {error && <Dashboard.Error>{error}</Dashboard.Error>}

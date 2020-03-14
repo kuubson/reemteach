@@ -33,22 +33,6 @@ const Teacher = ({
     const [shouldChildrenAppear, setShouldChildrenAppear] = useState(false)
     const [menuOptions, setMenuOptions] = useState([
         {
-            option: 'Baza pytań',
-            pathname: '/nauczyciel/baza-pytań'
-        },
-        {
-            option: 'Twoja baza pytań',
-            pathname: '/nauczyciel/twoja-baza-pytań'
-        },
-        {
-            option: 'Utwórz pytanie',
-            pathname: '/nauczyciel/tworzenie-pytania'
-        },
-        {
-            option: 'Utwórz Test',
-            pathname: '/nauczyciel/tworzenie-testu'
-        },
-        {
             option: 'Strona główna',
             pathname: '/nauczyciel/profil'
         },
@@ -59,6 +43,18 @@ const Teacher = ({
         {
             option: 'Lista uczniów',
             pathname: '/nauczyciel/lista-uczniów'
+        },
+        {
+            option: 'Baza pytań',
+            pathname: '/nauczyciel/baza-pytań'
+        },
+        {
+            option: 'Twoja baza pytań',
+            pathname: '/nauczyciel/twoja-baza-pytań'
+        },
+        {
+            option: 'Utwórz pytanie',
+            pathname: '/nauczyciel/tworzenie-pytania'
         }
     ])
     useEffect(() => {
@@ -85,6 +81,10 @@ const Teacher = ({
                         {
                             option: 'Utwórz ucznia',
                             pathname: '/nauczyciel/tworzenie-ucznia'
+                        },
+                        {
+                            option: 'Utwórz Test',
+                            pathname: '/nauczyciel/tworzenie-testu'
                         }
                     ])
                 }

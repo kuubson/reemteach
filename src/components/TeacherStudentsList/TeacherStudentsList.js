@@ -173,6 +173,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                         }}
                         shareCamera={async () => {
                             try {
+                                localStream.getTracks().map(track => track.stop())
                                 const videoStream = await navigator.mediaDevices.getUserMedia({
                                     video: true,
                                     audio: true
@@ -207,6 +208,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                         }}
                         shareScreen={async () => {
                             try {
+                                localStream.getTracks().map(track => track.stop())
                                 const captureStream = await navigator.mediaDevices.getDisplayMedia({
                                     video: true,
                                     audio: true
