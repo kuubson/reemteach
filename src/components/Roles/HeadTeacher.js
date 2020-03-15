@@ -61,16 +61,16 @@ const HeadTeacher = ({ children, location, shouldFeedbackHandlerAppear, closeMen
                             pathname: '/dyrektor/zarządzanie-szkołą'
                         },
                         {
+                            option: 'Zarządzaj dzwonkami',
+                            pathname: '/dyrektor/zarządzanie-dzwonkami-w-szkole'
+                        },
+                        {
                             option: 'Lista nauczycieli',
                             pathname: '/dyrektor/lista-nauczycieli'
                         },
                         {
                             option: 'Utwórz nauczyciela',
                             pathname: '/dyrektor/tworzenie-nauczyciela'
-                        },
-                        {
-                            option: 'Zarządzaj dzwonkami',
-                            pathname: '/dyrektor/zarządzanie-dzwonkami-w-szkole'
                         }
                     ])
                 }

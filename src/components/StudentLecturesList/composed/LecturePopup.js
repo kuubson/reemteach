@@ -17,9 +17,9 @@ const LecturePopupContainer = styled.div`
     justify-content: center;
     align-items: center;
     position: fixed;
-    top: 100%;
+    top: 110%;
     left: 50%;
-    transform: translate(-50%, 0%);
+    transform: translate(-80%, 0%);
     transition: transform 0.7s ease-in-out, top 0.7s ease-in-out;
     z-index: 1;
     ${({ shouldSlideIn }) => {

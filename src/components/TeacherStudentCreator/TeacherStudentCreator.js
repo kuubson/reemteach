@@ -131,7 +131,6 @@ const TeacherStudentCreator = ({ shouldMenuAppear }) => {
                         />
                         <HTSCComposed.Select
                             id="school"
-                            className="school"
                             label="Szkoła"
                             value={school}
                             placeholder="Zaznacz szkołę..."
@@ -141,7 +140,6 @@ const TeacherStudentCreator = ({ shouldMenuAppear }) => {
                         />
                         <HTSCComposed.Select
                             id="grade"
-                            className="grade"
                             label="Klasa"
                             value={grade}
                             placeholder="Zaznacz klasę..."

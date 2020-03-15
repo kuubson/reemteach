@@ -7,7 +7,7 @@ export default styled.div`
     border: 1px solid black;
     border-radius: 8px;
     cursor: pointer;
-    padding-left: 10px;
+    padding-left: ${({ withoutPadding }) => (withoutPadding ? 0 : 10)}px;
     display: flex;
     justify-content: center;
     flex-direction: column;

@@ -11,16 +11,18 @@ const SelectContainer = styled.div`
     }
 `
 
-const Select = ({ id, className, label, value, placeholder, options, error, onChange }) => {
+const Select = ({ id, label, value, placeholder, options, error, onChange, withoutPadding }) => {
     const selectOptionsRef = useRef()
     const [shouldOptionsExpand, setShouldOptionsExpand] = useState(false)
     useEffect(() => {
-        if (shouldOptionsExpand && selectOptionsRef.current) {
-            const optionsAmount = document.querySelectorAll(`.${className}`).length
-            const optionHeight = document.querySelector(`.${className}`).clientHeight
-            selectOptionsRef.current.style.height = `${optionHeight * optionsAmount}px`
-        } else {
-            selectOptionsRef.current.style.height = '0px'
+        if (selectOptionsRef.current) {
+            if (shouldOptionsExpand) {
+                const optionsAmount = document.querySelectorAll(`.${id}`).length
+                const optionHeight = document.querySelector(`.${id}`).clientHeight
+                selectOptionsRef.current.style.height = `${optionHeight * optionsAmount}px`
+            } else {
+                selectOptionsRef.current.style.height = '0px'
+            }
         }
     }, [shouldOptionsExpand])
     return (
@@ -33,6 +35,7 @@ const Select = ({ id, className, label, value, placeholder, options, error, onCh
             </AHTCForm.Label>
             <StyledSelect.Select
                 onClick={() => setShouldOptionsExpand(shouldOptionsExpand => !shouldOptionsExpand)}
+                withoutPadding={withoutPadding}
             >
                 {value || placeholder}
             </StyledSelect.Select>
@@ -40,7 +43,7 @@ const Select = ({ id, className, label, value, placeholder, options, error, onCh
                 {options.map(option => (
                     <StyledSelect.Option
                         key={option}
-                        className={className}
+                        className={id}
                         onClick={() => {
                             onChange(option)
                             setShouldOptionsExpand(false)

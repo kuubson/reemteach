@@ -167,7 +167,7 @@ const HeadTeacherSchoolBellsManager = ({ shouldMenuAppear }) => {
                         >
                             Dodaj przerwę
                         </AHTCForm.Submit>
-                        {previousSchoolBells && schoolBells !== previousSchoolBells && (
+                        {JSON.stringify(schoolBells) !== JSON.stringify(previousSchoolBells) && (
                             <AHTCForm.Submit withLessMargin>Zaktualizuj dzwonki</AHTCForm.Submit>
                         )}
                     </AHTCForm.Form>

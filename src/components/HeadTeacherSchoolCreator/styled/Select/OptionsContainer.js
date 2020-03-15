@@ -1,6 +1,7 @@
 import styled from 'styled-components/macro'
 
 export default styled.ul`
+    height: 0px;
     margin-top: ${({ expanded }) => (expanded ? 10 : 0)}px;
     border-radius: 8px;
     overflow: hidden;

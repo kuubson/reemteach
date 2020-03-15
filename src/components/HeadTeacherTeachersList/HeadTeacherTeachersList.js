@@ -244,8 +244,26 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
                                                     textarea
                                                 />
                                                 <HTPComposed.EditableDetail
+                                                    id="subject"
                                                     label="Przedmiot przewodni"
                                                     value={subject}
+                                                    placeholder="Zaznacz przedmiot przewodni..."
+                                                    options={[
+                                                        'Religia',
+                                                        'Język polski',
+                                                        'Język angielski',
+                                                        'Język niemiecki',
+                                                        'Język rosyjski',
+                                                        'Język francuski',
+                                                        'Matematyka',
+                                                        'Fizyka',
+                                                        'Biologia',
+                                                        'Chemia',
+                                                        'Geografia',
+                                                        'Wiedza o społeczeństwie',
+                                                        'Historia',
+                                                        'Informatyka'
+                                                    ]}
                                                     error={subjectError}
                                                     onChange={subject =>
                                                         updateTeachers(
@@ -267,6 +285,7 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
                                                             )
                                                         )
                                                     }
+                                                    select
                                                 />
                                             </>
                                         )}

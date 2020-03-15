@@ -49,9 +49,7 @@ const Menu = ({ children, shouldMenuAppear, setShouldMenuAppear }) => {
                 setShouldMenuAppear(false)
             }
         }, 800)
-        return () => {
-            window.removeEventListener('scroll', handleOnScroll)
-        }
+        return () => window.removeEventListener('scroll', handleOnScroll)
     }, [])
     const logout = async () => {
         const url = '/api/logout'

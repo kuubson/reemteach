@@ -56,7 +56,7 @@ export default async (req, res, next) => {
                             students.some(
                                 student =>
                                     student.id === studentId &&
-                                    student.grades.some(grade => grade.school.name === school.name)
+                                    student.grade.school.name === school.name
                             )
                         ) {
                             webpush.sendNotification(

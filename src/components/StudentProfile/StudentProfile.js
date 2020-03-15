@@ -31,6 +31,8 @@ const StudentProfileContainer = styled(APDashboard.Container)`
 const StudentProfile = ({ shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [shouldScrollToError, setShouldScrollToError] = useState(false)
+    const [school, setSchool] = useState('')
+    const [grade, setGrade] = useState('')
     const [email, setEmail] = useState('')
     const [name, setName] = useState('')
     const [surname, setSurname] = useState('')
@@ -57,9 +59,20 @@ const StudentProfile = ({ shouldMenuAppear }) => {
             const response = await delayedApiAxios.get(url)
             if (response) {
                 setIsLoading(false)
-                const { email, name, surname, age, nick, isActivated } = response.data
+                const {
+                    school,
+                    grade,
+                    email,
+                    name,
+                    surname,
+                    age,
+                    nick,
+                    isActivated
+                } = response.data
                 setEmail(email)
                 if (isActivated) {
+                    setSchool(school)
+                    setGrade(grade)
                     setName(name)
                     setSurname(surname)
                     setAge(age)
@@ -247,22 +260,7 @@ const StudentProfile = ({ shouldMenuAppear }) => {
     }
     const updateDetails = async () => {
         if (validate(false)) {
-            const {
-                name: previousName,
-                surname: previousSurname,
-                age: previousAge,
-                nick: previousNick
-            } = previousDetails
-            if (
-                previousName &&
-                previousSurname &&
-                previousAge &&
-                previousNick &&
-                (name !== previousName ||
-                    surname !== previousSurname ||
-                    age !== previousAge ||
-                    nick !== previousNick)
-            ) {
+            if (JSON.stringify({ name, surname, age, nick }) !== JSON.stringify(previousDetails)) {
                 try {
                     const url = '/api/student/updateDetails'
                     const response = await delayedApiAxios.post(url, {
@@ -375,6 +373,8 @@ const StudentProfile = ({ shouldMenuAppear }) => {
                             <APDashboard.Header>Dane twojego profilu:</APDashboard.Header>
                             <HTPDetail.DetailsContainer>
                                 <HTPComposed.Detail label="Stanowisko" value="Uczeń" />
+                                <HTPComposed.Detail label="Szkoła" value={school} />
+                                <HTPComposed.Detail label="Klasa" value={grade} />
                                 <HTPComposed.EditableDetail
                                     label="Imię"
                                     value={name}

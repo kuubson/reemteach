@@ -218,7 +218,6 @@ const TeacherQuestionCreator = ({ shouldMenuAppear }) => {
             <AHTCForm.Form onSubmit={handleSubmit}>
                 <HTSCComposed.Select
                     id="subject"
-                    className="subject"
                     label="Przedmiot pytania"
                     value={subject}
                     placeholder="Zaznacz przedmiot pytania..."
@@ -287,7 +286,6 @@ const TeacherQuestionCreator = ({ shouldMenuAppear }) => {
                 />
                 <HTSCComposed.Select
                     id="properAnswer"
-                    className="properAnswer"
                     label="Poprawna odpowiedź"
                     value={properAnswer}
                     placeholder="Zaznacz poprawną odpowiedź..."

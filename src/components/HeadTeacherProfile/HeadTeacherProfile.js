@@ -225,17 +225,7 @@ const HeadTeacherProfile = ({ shouldMenuAppear }) => {
     }
     const updateDetails = async () => {
         if (validate(false)) {
-            const {
-                name: previousName,
-                surname: previousSurname,
-                age: previousAge
-            } = previousDetails
-            if (
-                previousName &&
-                previousSurname &&
-                previousAge &&
-                (name !== previousName || surname !== previousSurname || age !== previousAge)
-            ) {
+            if (JSON.stringify({ name, surname, age }) !== JSON.stringify(previousDetails)) {
                 try {
                     const url = '/api/headTeacher/updateDetails'
                     const response = await delayedApiAxios.post(url, {

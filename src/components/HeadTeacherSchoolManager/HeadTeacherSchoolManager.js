@@ -28,6 +28,7 @@ const HeadTeacherSchoolManagerContainer = styled(APDashboard.Container)`
 
 const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
+    const [shouldDetailsUpdate, setShouldDetailsUpdate] = useState(false)
     const [name, setName] = useState('')
     const [type, setType] = useState('')
     const [description, setDescription] = useState('')
@@ -40,6 +41,7 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
     const [creationDateError, setCreationDateError] = useState('')
     const previousDetails = usePrevious({
         name,
+        type,
         description,
         address,
         creationDate
@@ -65,6 +67,11 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
         }
         getSchool()
     }, [])
+    useEffect(() => {
+        if (shouldDetailsUpdate) {
+            updateDetails()
+        }
+    }, [shouldDetailsUpdate])
     const validate = () => {
         setNameError('')
         setTypeError('')
@@ -86,7 +93,7 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
         }
         switch (true) {
             case !type:
-                setTypeError('Wprowadź rodzaj szkoły!')
+                setTypeError('Zaznacz rodzaj szkoły!')
                 isValidated = false
                 break
             case detectSanitization(type):
@@ -142,26 +149,15 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
     }
     const updateDetails = async () => {
         if (validate(false)) {
-            const {
-                name: previousName,
-                description: previousDescription,
-                address: previousAddress,
-                creationDate: previousCreationDate
-            } = previousDetails
             if (
-                previousName &&
-                previousDetails &&
-                previousAddress &&
-                previousCreationDate &&
-                (name !== previousName ||
-                    description !== previousDescription ||
-                    address !== previousAddress ||
-                    creationDate !== previousCreationDate)
+                JSON.stringify({ name, type, description, address, creationDate }) !==
+                JSON.stringify(previousDetails)
             ) {
                 try {
                     const url = '/api/headTeacher/updateSchoolDetails'
                     const response = await delayedApiAxios.post(url, {
                         name,
+                        type,
                         description,
                         address,
                         creationDate
@@ -175,12 +171,16 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
                         const { status, validationResults } = error.response.data
                         if (status === 422) {
                             setNameError('')
+                            setTypeError('')
                             setDescriptionError('')
                             setAddressError('')
                             setCreationDateError('')
                             validationResults.forEach(({ parameter, error }) => {
                                 if (parameter === 'name') {
                                     setNameError(error)
+                                }
+                                if (parameter === 'type') {
+                                    setTypeError(error)
                                 }
                                 if (parameter === 'description') {
                                     setDescriptionError(error)
@@ -211,7 +211,22 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
                             onChange={setName}
                             onBlur={updateDetails}
                         />
-                        <HTPComposed.Detail label="Rodzaj szkoły" value={type} />
+                        <HTPComposed.EditableDetail
+                            id="type"
+                            label="Rodzaj szkoły"
+                            value={type}
+                            placeholder="Zaznacz rodzaj szkoły..."
+                            options={['Gimnazjum', 'Technikum', 'Liceum']}
+                            error={typeError}
+                            onChange={type => {
+                                setType(type)
+                                setShouldDetailsUpdate(true)
+                                setTimeout(() => {
+                                    setShouldDetailsUpdate(false)
+                                }, 0)
+                            }}
+                            select
+                        />
                         <HTPComposed.EditableDetail
                             label="Opis szkoły"
                             value={description}

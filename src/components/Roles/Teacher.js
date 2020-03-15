@@ -37,14 +37,6 @@ const Teacher = ({
             pathname: '/nauczyciel/profil'
         },
         {
-            option: 'Lista szkół',
-            pathname: '/nauczyciel/lista-szkół'
-        },
-        {
-            option: 'Lista uczniów',
-            pathname: '/nauczyciel/lista-uczniów'
-        },
-        {
             option: 'Baza pytań',
             pathname: '/nauczyciel/baza-pytań'
         },
@@ -79,12 +71,20 @@ const Teacher = ({
                     setMenuOptions([
                         ...menuOptions,
                         {
-                            option: 'Utwórz ucznia',
-                            pathname: '/nauczyciel/tworzenie-ucznia'
+                            option: 'Utwórz test',
+                            pathname: '/nauczyciel/tworzenie-testu'
                         },
                         {
-                            option: 'Utwórz Test',
-                            pathname: '/nauczyciel/tworzenie-testu'
+                            option: 'Lista szkół',
+                            pathname: '/nauczyciel/lista-szkół'
+                        },
+                        {
+                            option: 'Lista uczniów',
+                            pathname: '/nauczyciel/lista-uczniów'
+                        },
+                        {
+                            option: 'Utwórz ucznia',
+                            pathname: '/nauczyciel/tworzenie-ucznia'
                         }
                     ])
                 }

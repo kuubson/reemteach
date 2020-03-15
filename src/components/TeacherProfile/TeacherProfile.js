@@ -32,6 +32,7 @@ const TeacherProfileContainer = styled(APDashboard.Container)`
 const TeacherProfile = ({ shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [shouldScrollToError, setShouldScrollToError] = useState(false)
+    const [shouldDetailsUpdate, setShouldDetailsUpdate] = useState(false)
     const [email, setEmail] = useState('')
     const [name, setName] = useState('')
     const [surname, setSurname] = useState('')
@@ -52,7 +53,8 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
         name,
         surname,
         age,
-        description
+        description,
+        subject
     })
     useEffect(() => {
         const getProfile = async () => {
@@ -87,6 +89,11 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
             document.querySelector('.error').scrollIntoView({ behavior: 'smooth', block: 'center' })
         }
     }, [shouldScrollToError])
+    useEffect(() => {
+        if (shouldDetailsUpdate) {
+            updateDetails()
+        }
+    }, [shouldDetailsUpdate])
     const validate = updatingProfile => {
         setShouldScrollToError()
         setNameError('')
@@ -159,9 +166,7 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
         }
         switch (true) {
             case !subject:
-                updatingProfile
-                    ? setSubjectError('Zaznacz przedmiot przewodni!')
-                    : setSubjectError('Wprowadź przedmiot przewodni!')
+                setSubjectError('Zaznacz przedmiot przewodni!')
                 isValidated = false
                 break
             case detectSanitization(subject):
@@ -279,21 +284,9 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
     }
     const updateDetails = async () => {
         if (validate(false)) {
-            const {
-                name: previousName,
-                surname: previousSurname,
-                age: previousAge,
-                description: previousDescription
-            } = previousDetails
             if (
-                previousName &&
-                previousSurname &&
-                previousAge &&
-                previousDescription &&
-                (name !== previousName ||
-                    surname !== previousSurname ||
-                    age !== previousAge ||
-                    description !== previousDescription)
+                JSON.stringify({ name, surname, age, description, subject }) !==
+                JSON.stringify(previousDetails)
             ) {
                 try {
                     const url = '/api/teacher/updateDetails'
@@ -301,7 +294,8 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                         name,
                         surname,
                         age,
-                        description
+                        description,
+                        subject
                     })
                     if (response) {
                         const { successMessage } = response.data
@@ -315,6 +309,7 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                             setSurnameError('')
                             setAgeError('')
                             setDescriptionError('')
+                            setSubjectError('')
                             validationResults.forEach(({ parameter, error }) => {
                                 if (parameter === 'name') {
                                     setNameError(error)
@@ -327,6 +322,9 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                                 }
                                 if (parameter === 'description') {
                                     setDescriptionError(error)
+                                }
+                                if (parameter === 'subject') {
+                                    setSubjectError(error)
                                 }
                             })
                         }
@@ -381,7 +379,6 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                                 />
                                 <HTSCComposed.Select
                                     id="subject"
-                                    className="subject"
                                     label="Przedmiot przewodni"
                                     value={subject}
                                     placeholder="Zaznacz przedmiot przewodni..."
@@ -465,7 +462,37 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                                     onBlur={updateDetails}
                                     textarea
                                 />
-                                <HTPComposed.Detail label="Przedmiot przewodni" value={subject} />
+                                <HTPComposed.EditableDetail
+                                    id="subject"
+                                    label="Przedmiot przewodni"
+                                    value={subject}
+                                    placeholder="Zaznacz przedmiot przewodni..."
+                                    options={[
+                                        'Religia',
+                                        'Język polski',
+                                        'Język angielski',
+                                        'Język niemiecki',
+                                        'Język rosyjski',
+                                        'Język francuski',
+                                        'Matematyka',
+                                        'Fizyka',
+                                        'Biologia',
+                                        'Chemia',
+                                        'Geografia',
+                                        'Wiedza o społeczeństwie',
+                                        'Historia',
+                                        'Informatyka'
+                                    ]}
+                                    error={subjectError}
+                                    onChange={subject => {
+                                        setSubject(subject)
+                                        setShouldDetailsUpdate(true)
+                                        setTimeout(() => {
+                                            setShouldDetailsUpdate(false)
+                                        }, 0)
+                                    }}
+                                    select
+                                />
                                 <HTPComposed.Detail label="E-mail" value={email} />
                             </HTPDetail.DetailsContainer>
                         </>
