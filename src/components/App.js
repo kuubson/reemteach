@@ -32,6 +32,7 @@ import TeacherStudentCreator from './TeacherStudentCreator/TeacherStudentCreator
 import TeacherSchoolsList from './TeacherSchoolsList/TeacherSchoolsList'
 import TeacherStudentsList from './TeacherStudentsList/TeacherStudentsList'
 import TeacherQuestionCreator from './TeacherQuestionCreator/TeacherQuestionCreator'
+import TeacherQuestionsManager from './TeacherQuestionsManager/TeacherQuestionsManager'
 
 import StudentProfile from './StudentProfile/StudentProfile'
 import StudentLecturesList from './StudentLecturesList/StudentLecturesList'
@@ -181,6 +182,15 @@ const App = ({
             render: () => (
                 <Roles.Teacher>
                     <TeacherQuestionCreator />
+                </Roles.Teacher>
+            )
+        },
+        {
+            pathname: '/nauczyciel/zarządzanie-pytaniami',
+            order: 7,
+            render: () => (
+                <Roles.Teacher>
+                    <TeacherQuestionsManager />
                 </Roles.Teacher>
             )
         },

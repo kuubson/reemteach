@@ -7,6 +7,14 @@ const RemoveButtonContainer = styled.span`
     font-weight: 900;
     font-size: 14px;
     cursor: pointer;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    right: 15px;
+    transform: translate(0px, -50%);
+    @media (max-width: 500px) {
+        font-size: 11px;
+    }
 `
 
 const RemoveButton = ({ onClick }) => {

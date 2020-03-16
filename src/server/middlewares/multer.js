@@ -4,14 +4,16 @@ import crypto from 'crypto'
 
 const storage = multer.diskStorage({
     destination: (req, _, callback) => {
-        if (!fs.existsSync('./uploads')) {
-            fs.mkdirSync('./uploads')
-        }
-        const directory = `./uploads/${req.user.id}`
-        if (!fs.existsSync(directory)) {
-            fs.mkdirSync(directory)
-        }
-        return callback(null, directory)
+        try {
+            if (!fs.existsSync('./uploads')) {
+                fs.mkdirSync('./uploads')
+            }
+            const directory = `./uploads/${req.user.id}`
+            if (!fs.existsSync(directory)) {
+                fs.mkdirSync(directory)
+            }
+            return callback(null, directory)
+        } catch (error) {}
     },
     filename: (req, _, callback) => {
         callback(null, `User-${req.user.id}-Image-${crypto.randomBytes(20).toString('hex')}.png`)

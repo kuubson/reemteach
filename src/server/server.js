@@ -7,7 +7,7 @@ import express from 'express'
 
 import '@database'
 
-import { initializeMiddlewares, errorHandler } from '@middlewares'
+import { initializeMiddlewares, errorsHandler } from '@middlewares'
 
 import routes from '@routes'
 
@@ -18,7 +18,7 @@ initializeMiddlewares(app, server)
 
 routes(app)
 
-errorHandler(app)
+errorsHandler(app)
 
 const developmentMode = (process.env.NODE_ENV = process.env.NODE_ENV || 'development')
 

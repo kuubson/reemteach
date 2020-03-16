@@ -5,11 +5,12 @@ import passport from 'passport'
 import io from 'socket.io'
 import csurf from 'csurf'
 
-import errorHandler from './errorHandler'
+import errorsHandler from './errorsHandler'
 import checkValidationResult from './checkValidationResult'
 import rateLimiter from './rateLimiter'
 import authWithJwt from './authWithJwt'
 import multer from './multer'
+import handleMulterErrors from './handleMulterErrors'
 import checkForSchool from './checkForSchool'
 import checkForSchools from './checkForSchools'
 
@@ -46,11 +47,12 @@ const initializeMiddlewares = (app, server) => {
 
 export {
     initializeMiddlewares,
-    errorHandler,
+    errorsHandler,
     checkValidationResult,
     rateLimiter,
     authWithJwt,
     multer,
+    handleMulterErrors,
     checkForSchool,
     checkForSchools
 }

@@ -17,7 +17,8 @@ const FileInputContainer = styled.div`
     }
 `
 
-const FileInput = ({ id, label, image, onChange, setShouldFileInputAppear }) => {
+const FileInput = ({ id, label, buttonText, image, onChange }) => {
+    const [shouldFileInputAppear, setShouldFileInputAppear] = useState(true)
     const [shouldFileInputBeActive, setShouldFileInputBeActive] = useState(true)
     const resetFileInput = () => {
         setShouldFileInputAppear(false)
@@ -43,9 +44,9 @@ const FileInput = ({ id, label, image, onChange, setShouldFileInputAppear }) => 
     }
     return (
         <FileInputContainer>
-            <AHTCForm.Label htmlFor={id}>{label}</AHTCForm.Label>
-            <StyledFileInput.Label htmlFor={id}>
-                {image ? image.name : 'Dodaj zdjęcie'}
+            {label && <AHTCForm.Label htmlFor={id}>{label}</AHTCForm.Label>}
+            <StyledFileInput.Label htmlFor={id} withImage={image}>
+                {image ? image.name : buttonText}
                 {image && (
                     <StyledFileInput.RemoveButton
                         onClick={() => {
@@ -59,11 +60,13 @@ const FileInput = ({ id, label, image, onChange, setShouldFileInputAppear }) => 
                     />
                 )}
             </StyledFileInput.Label>
-            <StyledFileInput.FileInput
-                id={shouldFileInputBeActive ? id : undefined}
-                type="file"
-                onChange={handleOnChange}
-            />
+            {shouldFileInputAppear && (
+                <StyledFileInput.FileInput
+                    id={shouldFileInputBeActive ? id : undefined}
+                    type="file"
+                    onChange={handleOnChange}
+                />
+            )}
         </FileInputContainer>
     )
 }

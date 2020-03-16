@@ -41,8 +41,8 @@ const Teacher = ({
             pathname: '/nauczyciel/baza-pytań'
         },
         {
-            option: 'Twoja baza pytań',
-            pathname: '/nauczyciel/twoja-baza-pytań'
+            option: 'Zarządzaj pytaniami',
+            pathname: '/nauczyciel/zarządzanie-pytaniami'
         },
         {
             option: 'Utwórz pytanie',

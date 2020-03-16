@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components/macro'
+import styled, { css } from 'styled-components/macro'
 
 const CloseButtonContainer = styled.button`
     color: ${({ black }) => (black ? 'black' : 'white')};
@@ -12,11 +12,17 @@ const CloseButtonContainer = styled.button`
     @media (max-width: 500px) {
         font-size: 18px;
     }
+    ${({ withBoxShadow }) => {
+        if (withBoxShadow)
+            return css`
+                filter: drop-shadow(0px 0px 1px black);
+            `
+    }}
 `
 
-const CloseButton = ({ onClick, black }) => {
+const CloseButton = ({ onClick, black, withBoxShadow }) => {
     return (
-        <CloseButtonContainer onClick={onClick} black={black}>
+        <CloseButtonContainer onClick={onClick} black={black} withBoxShadow={withBoxShadow}>
             ✕
         </CloseButtonContainer>
     )

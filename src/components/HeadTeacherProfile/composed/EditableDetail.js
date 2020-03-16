@@ -61,7 +61,6 @@ const EditableDetail = ({
             {select && shouldSelectAppear && (
                 <HTSCComposed.Select
                     id={id}
-                    className={id}
                     value={value}
                     placeholder={placeholder}
                     options={options}

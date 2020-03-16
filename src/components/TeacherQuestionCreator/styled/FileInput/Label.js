@@ -2,15 +2,17 @@ import styled from 'styled-components/macro'
 
 export default styled.label`
     width: 180px;
+    background: black;
     font-size: 9.5px;
     cursor: pointer;
-    padding: 20px 0px;
-    background: black;
+    padding: ${({ withImage }) => (withImage ? '20px 40px 20px 20px' : '20px')};
     color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     transition: transform 0.5s ease-in-out;
+    position: relative;
     :hover {
         transform: scale(1.03);
     }

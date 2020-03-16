@@ -117,7 +117,5 @@ export const validation = () => [
     check('token')
         .optional()
         .trim()
-        .notEmpty()
-        .bail()
         .isJWT()
 ]

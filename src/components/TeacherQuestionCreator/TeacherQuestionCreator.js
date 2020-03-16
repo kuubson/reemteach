@@ -6,6 +6,7 @@ import { withMenu } from '@hoc'
 
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
 import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
+import StyledFileInput from './styled/FileInput'
 
 import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 import HTSCComposed from '@components/HeadTeacherSchoolCreator/composed'
@@ -30,7 +31,6 @@ const TeacherQuestionCreatorContainer = styled(APDashboard.Container)`
 
 const TeacherQuestionCreator = ({ shouldMenuAppear }) => {
     const [shouldScrollToError, setShouldScrollToError] = useState(false)
-    const [shouldFileInputAppear, setShouldFileInputAppear] = useState(true)
     const [subject, setSubject] = useState('')
     const [content, setContent] = useState('')
     const [answerA, setAnswerA] = useState('')
@@ -172,6 +172,13 @@ const TeacherQuestionCreator = ({ shouldMenuAppear }) => {
                 if (response) {
                     const { successMessage } = response.data
                     setFeedbackData(successMessage, 'Ok')
+                    setContent('')
+                    setAnswerA('')
+                    setAnswerB('')
+                    setAnswerC('')
+                    setAnswerD('')
+                    setProperAnswer('')
+                    setImage()
                 }
             } catch (error) {
                 if (error.response) {
@@ -293,15 +300,18 @@ const TeacherQuestionCreator = ({ shouldMenuAppear }) => {
                     error={properAnswerError}
                     onChange={setProperAnswer}
                 />
-                {shouldFileInputAppear && (
-                    <Composed.FileInput
-                        id="image"
-                        label="Zdjęcie ( opcjonalne )"
-                        image={image}
-                        onChange={setImage}
-                        setShouldFileInputAppear={setShouldFileInputAppear}
-                    />
+                {image && (
+                    <StyledFileInput.ImageContainer>
+                        <StyledFileInput.Image src={URL.createObjectURL(image)} />
+                    </StyledFileInput.ImageContainer>
                 )}
+                <Composed.FileInput
+                    id="image"
+                    label="Zdjęcie ( opcjonalne )"
+                    buttonText="Dodaj zdjęcie"
+                    image={image}
+                    onChange={setImage}
+                />
                 <AHTCForm.Submit>Utwórz pytanie</AHTCForm.Submit>
             </AHTCForm.Form>
         </TeacherQuestionCreatorContainer>
