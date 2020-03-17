@@ -220,7 +220,7 @@ const TeacherQuestionCreator = ({ shouldMenuAppear }) => {
         }
     }
     return (
-        <TeacherQuestionCreatorContainer withMenu={shouldMenuAppear} withMorePadding>
+        <TeacherQuestionCreatorContainer withMenu={shouldMenuAppear}>
             <APDashboard.Header>Utwórz nowe pytanie w swojej bazie pytań</APDashboard.Header>
             <AHTCForm.Form onSubmit={handleSubmit}>
                 <HTSCComposed.Select

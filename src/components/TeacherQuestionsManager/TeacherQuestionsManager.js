@@ -9,6 +9,7 @@ import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
 import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
 import HForm from '@components/Home/styled/Form'
 import StyledFileInput from '@components/TeacherQuestionCreator/styled/FileInput'
+import Dashboard from './styled/Dashboard'
 
 import HTPComposed from '@components/HeadTeacherProfile/composed'
 import HTSCComposed from '@components/HeadTeacherSchoolCreator/composed'
@@ -110,8 +111,8 @@ const TeacherQuestionsManager = ({ shouldMenuAppear }) => {
         answerC,
         answerD,
         properAnswer,
-        initialImage,
         image,
+        initialImage,
         newImage
     ) => {
         const url = '/api/teacher/updateQuestion'
@@ -152,115 +153,48 @@ const TeacherQuestionsManager = ({ shouldMenuAppear }) => {
         )
     }
     return (
-        <TeacherQuestionsManagerContainer withMenu={shouldMenuAppear} withMorePadding>
-            {!isLoading && (
-                <>
-                    {questions.length > 0 ? (
-                        <>
-                            {chosenQuestions.length > 0 ? (
-                                <AHTLDashboard.DetailsContainer>
-                                    <HForm.CloseButton
-                                        onClick={() => setChosenQuestions([])}
-                                        black
-                                    />
-                                    {chosenQuestions.map(
-                                        ({
-                                            id,
-                                            content,
-                                            answerA,
-                                            answerB,
-                                            answerC,
-                                            answerD,
-                                            properAnswer,
-                                            contentError,
-                                            answerAError,
-                                            answerBError,
-                                            answerCError,
-                                            answerDError,
-                                            properAnswerError,
-                                            initialImage,
-                                            image,
-                                            newImage,
-                                            shouldSaveButtonAppear
-                                        }) => (
-                                            <div key={id}>
-                                                <HTPComposed.Detail label="Id pytania" value={id} />
-                                                <>
-                                                    {image && (
-                                                        <StyledFileInput.ImageContainer>
-                                                            <StyledFileInput.Image src={image} />
-                                                            <HForm.CloseButton
-                                                                onClick={() =>
-                                                                    updateQuestions(
-                                                                        id,
-                                                                        'image',
-                                                                        undefined,
-                                                                        'imageError',
-                                                                        '',
-                                                                        '',
-                                                                        undefined,
-                                                                        validateQuestion(
-                                                                            content,
-                                                                            answerA,
-                                                                            answerB,
-                                                                            answerC,
-                                                                            answerD,
-                                                                            properAnswer
-                                                                        )
-                                                                    )
-                                                                }
-                                                                withBoxShadow
-                                                            />
-                                                        </StyledFileInput.ImageContainer>
-                                                    )}
-                                                    <TQCComposed.FileInput
-                                                        id={id}
-                                                        buttonText={
-                                                            image
-                                                                ? 'Zmień zdjęcie'
-                                                                : 'Dodaj zdjęcie'
-                                                        }
-                                                        image={newImage}
-                                                        onChange={newImage => {
-                                                            updateQuestions(
-                                                                id,
-                                                                'image',
-                                                                newImage
-                                                                    ? URL.createObjectURL(newImage)
-                                                                    : initialImage,
-                                                                'imageError',
-                                                                '',
-                                                                initialImage,
-                                                                newImage,
-                                                                validateQuestion(
-                                                                    content,
-                                                                    answerA,
-                                                                    answerB,
-                                                                    answerC,
-                                                                    answerD,
-                                                                    properAnswer
-                                                                )
-                                                            )
-                                                        }}
-                                                    />
-                                                </>
-                                                <HTPComposed.EditableDetail
-                                                    label="Treść pytania"
-                                                    value={content}
-                                                    error={contentError}
-                                                    onChange={content =>
+        <TeacherQuestionsManagerContainer withMenu={shouldMenuAppear}>
+            {!isLoading &&
+                (questions.length > 0 ? (
+                    chosenQuestions.length > 0 ? (
+                        <AHTLDashboard.DetailsContainer>
+                            <HForm.CloseButton onClick={() => setChosenQuestions([])} black />
+                            {chosenQuestions.map(
+                                ({
+                                    id,
+                                    content,
+                                    answerA,
+                                    answerB,
+                                    answerC,
+                                    answerD,
+                                    properAnswer,
+                                    contentError,
+                                    answerAError,
+                                    answerBError,
+                                    answerCError,
+                                    answerDError,
+                                    properAnswerError,
+                                    image,
+                                    initialImage,
+                                    newImage,
+                                    isSelected,
+                                    shouldSaveButtonAppear
+                                }) => (
+                                    <Dashboard.DetailOuterContainer key={id} selected={isSelected}>
+                                        <HTPComposed.Detail label="Id pytania" value={id} />
+                                        {image && (
+                                            <StyledFileInput.ImageContainer>
+                                                <StyledFileInput.Image src={image} />
+                                                <HForm.CloseButton
+                                                    onClick={() =>
                                                         updateQuestions(
                                                             id,
-                                                            'content',
-                                                            content,
-                                                            'contentError',
-                                                            !content
-                                                                ? 'Wprowadź treść pytania!'
-                                                                : detectSanitization(content)
-                                                                ? 'Treść pytania zawiera niedozwolone znaki!'
-                                                                : '',
-                                                            initialImage,
-                                                            newImage,
+                                                            'image',
+                                                            '',
+                                                            '',
+                                                            '',
+                                                            '',
+                                                            '',
                                                             validateQuestion(
                                                                 content,
                                                                 answerA,
@@ -271,215 +205,302 @@ const TeacherQuestionsManager = ({ shouldMenuAppear }) => {
                                                             )
                                                         )
                                                     }
-                                                    textarea
+                                                    withBoxShadow
                                                 />
-                                                <HTPComposed.EditableDetail
-                                                    label="Odpowiedź A"
-                                                    value={answerA}
-                                                    error={answerAError}
-                                                    onChange={answerA =>
-                                                        updateQuestions(
-                                                            id,
-                                                            'answerA',
-                                                            answerA,
-                                                            'answerAError',
-                                                            !answerA
-                                                                ? 'Wprowadź odpowiedź A!'
-                                                                : detectSanitization(answerA)
-                                                                ? 'Odpowiedź A zawiera niedozwolone znaki!'
-                                                                : '',
-                                                            initialImage,
-                                                            newImage,
-                                                            validateQuestion(
-                                                                content,
-                                                                answerA,
-                                                                answerB,
-                                                                answerC,
-                                                                answerD,
-                                                                properAnswer
-                                                            )
-                                                        )
-                                                    }
-                                                    textarea
-                                                />
-                                                <HTPComposed.EditableDetail
-                                                    label="Odpowiedź B"
-                                                    value={answerB}
-                                                    error={answerBError}
-                                                    onChange={answerB =>
-                                                        updateQuestions(
-                                                            id,
-                                                            'answerB',
-                                                            answerB,
-                                                            'answerBError',
-                                                            !answerB
-                                                                ? 'Wprowadź odpowiedź B!'
-                                                                : detectSanitization(answerB)
-                                                                ? 'Odpowiedź B zawiera niedozwolone znaki!'
-                                                                : '',
-                                                            initialImage,
-                                                            newImage,
-                                                            validateQuestion(
-                                                                content,
-                                                                answerA,
-                                                                answerB,
-                                                                answerC,
-                                                                answerD,
-                                                                properAnswer
-                                                            )
-                                                        )
-                                                    }
-                                                    textarea
-                                                />
-                                                <HTPComposed.EditableDetail
-                                                    label="Odpowiedź C"
-                                                    value={answerC}
-                                                    error={answerCError}
-                                                    onChange={answerC =>
-                                                        updateQuestions(
-                                                            id,
-                                                            'answerC',
-                                                            answerC,
-                                                            'answerCError',
-                                                            !answerC
-                                                                ? 'Wprowadź odpowiedź C!'
-                                                                : detectSanitization(answerC)
-                                                                ? 'Odpowiedź C zawiera niedozwolone znaki!'
-                                                                : '',
-                                                            initialImage,
-                                                            newImage,
-                                                            validateQuestion(
-                                                                content,
-                                                                answerA,
-                                                                answerB,
-                                                                answerC,
-                                                                answerD,
-                                                                properAnswer
-                                                            )
-                                                        )
-                                                    }
-                                                    textarea
-                                                />
-                                                <HTPComposed.EditableDetail
-                                                    label="Odpowiedź D"
-                                                    value={answerD}
-                                                    error={answerDError}
-                                                    onChange={answerD =>
-                                                        updateQuestions(
-                                                            id,
-                                                            'answerD',
-                                                            answerD,
-                                                            'answerDError',
-                                                            !answerD
-                                                                ? 'Wprowadź odpowiedź D!'
-                                                                : detectSanitization(answerD)
-                                                                ? 'Odpowiedź D zawiera niedozwolone znaki!'
-                                                                : '',
-                                                            initialImage,
-                                                            newImage,
-                                                            validateQuestion(
-                                                                content,
-                                                                answerA,
-                                                                answerB,
-                                                                answerC,
-                                                                answerD,
-                                                                properAnswer
-                                                            )
-                                                        )
-                                                    }
-                                                    textarea
-                                                />
-                                                <HTPComposed.EditableDetail
-                                                    id="properAnswer"
-                                                    label="Poprawna odpowiedź"
-                                                    value={properAnswer}
-                                                    placeholder="Zaznacz poprawną odpowiedź..."
-                                                    options={['A', 'B', 'C', 'D']}
-                                                    error={properAnswerError}
-                                                    onChange={properAnswer =>
-                                                        updateQuestions(
-                                                            id,
-                                                            'properAnswer',
-                                                            properAnswer,
-                                                            'properAnswerError',
-                                                            !properAnswer
-                                                                ? 'Zaznacz poprawną odpowiedź!'
-                                                                : detectSanitization(properAnswer)
-                                                                ? 'Poprawna odpowiedź zawiera niedozwolone znaki!'
-                                                                : '',
-                                                            initialImage,
-                                                            newImage,
-                                                            validateQuestion(
-                                                                content,
-                                                                answerA,
-                                                                answerB,
-                                                                answerC,
-                                                                answerD,
-                                                                properAnswer
-                                                            )
-                                                        )
-                                                    }
-                                                    select
-                                                />
-                                                <AHTLDashboard.ButtonsContainer>
-                                                    {shouldSaveButtonAppear && (
-                                                        <AHTLDashboard.Button
-                                                            onClick={() =>
-                                                                updateQuestion(
-                                                                    id,
-                                                                    content,
-                                                                    answerA,
-                                                                    answerB,
-                                                                    answerC,
-                                                                    answerD,
-                                                                    properAnswer,
-                                                                    initialImage,
-                                                                    image,
-                                                                    newImage
-                                                                )
-                                                            }
-                                                        >
-                                                            Zapisz
-                                                        </AHTLDashboard.Button>
-                                                    )}
-                                                    <AHTLDashboard.Button
-                                                        onClick={() => destroyQuestion(id)}
-                                                    >
-                                                        Usuń
-                                                    </AHTLDashboard.Button>
-                                                </AHTLDashboard.ButtonsContainer>
-                                            </div>
-                                        )
-                                    )}
-                                </AHTLDashboard.DetailsContainer>
-                            ) : (
-                                <>
-                                    <APDashboard.Header>Zaznacz przedmiot pytań</APDashboard.Header>
-                                    <AHTCForm.Form>
-                                        <HTSCComposed.Select
-                                            id="subject"
-                                            label="Przedmiot pytań"
-                                            placeholder="Zaznacz przedmiot pytań..."
-                                            options={subjects}
-                                            onChange={subject => {
-                                                setChosenQuestions(
-                                                    questions.filter(
-                                                        question => question.subject === subject
+                                            </StyledFileInput.ImageContainer>
+                                        )}
+                                        <TQCComposed.FileInput
+                                            id={id}
+                                            buttonText={image ? 'Zmień zdjęcie' : 'Dodaj zdjęcie'}
+                                            image={newImage}
+                                            onChange={newImage => {
+                                                updateQuestions(
+                                                    id,
+                                                    'image',
+                                                    newImage ? URL.createObjectURL(newImage) : '',
+                                                    '',
+                                                    '',
+                                                    initialImage,
+                                                    newImage,
+                                                    validateQuestion(
+                                                        content,
+                                                        answerA,
+                                                        answerB,
+                                                        answerC,
+                                                        answerD,
+                                                        properAnswer
                                                     )
                                                 )
                                             }}
                                         />
-                                    </AHTCForm.Form>
-                                </>
+                                        <HTPComposed.EditableDetail
+                                            label="Treść pytania"
+                                            value={content}
+                                            error={contentError}
+                                            onChange={content =>
+                                                updateQuestions(
+                                                    id,
+                                                    'content',
+                                                    content,
+                                                    'contentError',
+                                                    !content
+                                                        ? 'Wprowadź treść pytania!'
+                                                        : detectSanitization(content)
+                                                        ? 'Treść pytania zawiera niedozwolone znaki!'
+                                                        : '',
+                                                    initialImage,
+                                                    newImage,
+                                                    validateQuestion(
+                                                        content,
+                                                        answerA,
+                                                        answerB,
+                                                        answerC,
+                                                        answerD,
+                                                        properAnswer
+                                                    )
+                                                )
+                                            }
+                                            textarea
+                                        />
+                                        <HTPComposed.EditableDetail
+                                            label="Odpowiedź A"
+                                            value={answerA}
+                                            error={answerAError}
+                                            onChange={answerA =>
+                                                updateQuestions(
+                                                    id,
+                                                    'answerA',
+                                                    answerA,
+                                                    'answerAError',
+                                                    !answerA
+                                                        ? 'Wprowadź odpowiedź A!'
+                                                        : detectSanitization(answerA)
+                                                        ? 'Odpowiedź A zawiera niedozwolone znaki!'
+                                                        : '',
+                                                    initialImage,
+                                                    newImage,
+                                                    validateQuestion(
+                                                        content,
+                                                        answerA,
+                                                        answerB,
+                                                        answerC,
+                                                        answerD,
+                                                        properAnswer
+                                                    )
+                                                )
+                                            }
+                                            textarea
+                                        />
+                                        <HTPComposed.EditableDetail
+                                            label="Odpowiedź B"
+                                            value={answerB}
+                                            error={answerBError}
+                                            onChange={answerB =>
+                                                updateQuestions(
+                                                    id,
+                                                    'answerB',
+                                                    answerB,
+                                                    'answerBError',
+                                                    !answerB
+                                                        ? 'Wprowadź odpowiedź B!'
+                                                        : detectSanitization(answerB)
+                                                        ? 'Odpowiedź B zawiera niedozwolone znaki!'
+                                                        : '',
+                                                    initialImage,
+                                                    newImage,
+                                                    validateQuestion(
+                                                        content,
+                                                        answerA,
+                                                        answerB,
+                                                        answerC,
+                                                        answerD,
+                                                        properAnswer
+                                                    )
+                                                )
+                                            }
+                                            textarea
+                                        />
+                                        <HTPComposed.EditableDetail
+                                            label="Odpowiedź C"
+                                            value={answerC}
+                                            error={answerCError}
+                                            onChange={answerC =>
+                                                updateQuestions(
+                                                    id,
+                                                    'answerC',
+                                                    answerC,
+                                                    'answerCError',
+                                                    !answerC
+                                                        ? 'Wprowadź odpowiedź C!'
+                                                        : detectSanitization(answerC)
+                                                        ? 'Odpowiedź C zawiera niedozwolone znaki!'
+                                                        : '',
+                                                    initialImage,
+                                                    newImage,
+                                                    validateQuestion(
+                                                        content,
+                                                        answerA,
+                                                        answerB,
+                                                        answerC,
+                                                        answerD,
+                                                        properAnswer
+                                                    )
+                                                )
+                                            }
+                                            textarea
+                                        />
+                                        <HTPComposed.EditableDetail
+                                            label="Odpowiedź D"
+                                            value={answerD}
+                                            error={answerDError}
+                                            onChange={answerD =>
+                                                updateQuestions(
+                                                    id,
+                                                    'answerD',
+                                                    answerD,
+                                                    'answerDError',
+                                                    !answerD
+                                                        ? 'Wprowadź odpowiedź D!'
+                                                        : detectSanitization(answerD)
+                                                        ? 'Odpowiedź D zawiera niedozwolone znaki!'
+                                                        : '',
+                                                    initialImage,
+                                                    newImage,
+                                                    validateQuestion(
+                                                        content,
+                                                        answerA,
+                                                        answerB,
+                                                        answerC,
+                                                        answerD,
+                                                        properAnswer
+                                                    )
+                                                )
+                                            }
+                                            textarea
+                                        />
+                                        <HTPComposed.EditableDetail
+                                            id="properAnswer"
+                                            label="Poprawna odpowiedź"
+                                            value={properAnswer}
+                                            placeholder="Zaznacz poprawną odpowiedź..."
+                                            options={['A', 'B', 'C', 'D']}
+                                            error={properAnswerError}
+                                            onChange={properAnswer =>
+                                                updateQuestions(
+                                                    id,
+                                                    'properAnswer',
+                                                    properAnswer,
+                                                    'properAnswerError',
+                                                    !properAnswer
+                                                        ? 'Zaznacz poprawną odpowiedź!'
+                                                        : detectSanitization(properAnswer)
+                                                        ? 'Poprawna odpowiedź zawiera niedozwolone znaki!'
+                                                        : '',
+                                                    initialImage,
+                                                    newImage,
+                                                    validateQuestion(
+                                                        content,
+                                                        answerA,
+                                                        answerB,
+                                                        answerC,
+                                                        answerD,
+                                                        properAnswer
+                                                    )
+                                                )
+                                            }
+                                            select
+                                        />
+                                        <AHTLDashboard.ButtonsContainer>
+                                            {shouldSaveButtonAppear && (
+                                                <AHTLDashboard.Button
+                                                    onClick={() =>
+                                                        updateQuestion(
+                                                            id,
+                                                            content,
+                                                            answerA,
+                                                            answerB,
+                                                            answerC,
+                                                            answerD,
+                                                            properAnswer,
+                                                            image,
+                                                            initialImage,
+                                                            newImage
+                                                        )
+                                                    }
+                                                >
+                                                    Zapisz
+                                                </AHTLDashboard.Button>
+                                            )}
+                                            {isSelected ? (
+                                                <AHTLDashboard.Button
+                                                    onClick={() =>
+                                                        updateQuestions(
+                                                            id,
+                                                            'isSelected',
+                                                            false,
+                                                            '',
+                                                            '',
+                                                            initialImage,
+                                                            newImage,
+                                                            shouldSaveButtonAppear
+                                                        )
+                                                    }
+                                                >
+                                                    Usuń z testu
+                                                </AHTLDashboard.Button>
+                                            ) : (
+                                                <AHTLDashboard.Button
+                                                    onClick={() =>
+                                                        updateQuestions(
+                                                            id,
+                                                            'isSelected',
+                                                            true,
+                                                            '',
+                                                            '',
+                                                            initialImage,
+                                                            newImage,
+                                                            shouldSaveButtonAppear
+                                                        )
+                                                    }
+                                                >
+                                                    Dodaj do testu
+                                                </AHTLDashboard.Button>
+                                            )}
+                                            <AHTLDashboard.Button
+                                                onClick={() => destroyQuestion(id)}
+                                            >
+                                                Usuń
+                                            </AHTLDashboard.Button>
+                                        </AHTLDashboard.ButtonsContainer>
+                                    </Dashboard.DetailOuterContainer>
+                                )
                             )}
-                        </>
+                        </AHTLDashboard.DetailsContainer>
                     ) : (
-                        <AHTLDashboard.Warning>
-                            Nie masz jeszcze żadnego własnego pytania!
-                        </AHTLDashboard.Warning>
-                    )}
-                </>
-            )}
+                        <>
+                            <APDashboard.Header>Zaznacz przedmiot pytań</APDashboard.Header>
+                            <AHTCForm.Form>
+                                <HTSCComposed.Select
+                                    id="subject"
+                                    label="Przedmiot pytań"
+                                    placeholder="Zaznacz przedmiot pytań..."
+                                    options={subjects}
+                                    onChange={subject => {
+                                        setChosenQuestions(
+                                            questions.filter(
+                                                question => question.subject === subject
+                                            )
+                                        )
+                                    }}
+                                />
+                            </AHTCForm.Form>
+                        </>
+                    )
+                ) : (
+                    <AHTLDashboard.Warning>
+                        Nie masz jeszcze żadnego własnego pytania!
+                    </AHTLDashboard.Warning>
+                ))}
         </TeacherQuestionsManagerContainer>
     )
 }

@@ -145,7 +145,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
         }
     }
     return (
-        <TeacherStudentsListContainer withMenu={shouldMenuAppear} withMorePadding>
+        <TeacherStudentsListContainer withMenu={shouldMenuAppear}>
             {lectures.map(
                 ({
                     school,

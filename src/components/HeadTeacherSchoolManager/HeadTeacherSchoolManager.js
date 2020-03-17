@@ -199,7 +199,7 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
         }
     }
     return (
-        <HeadTeacherSchoolManagerContainer withMenu={shouldMenuAppear} withMorePadding>
+        <HeadTeacherSchoolManagerContainer withMenu={shouldMenuAppear}>
             {!isLoading && (
                 <>
                     <APDashboard.Header>Dane twojej szkoły:</APDashboard.Header>

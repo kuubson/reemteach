@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components/macro'
 
 export default styled.section`
     width: 100%;
-    padding: ${({ withMorePadding }) => (withMorePadding ? '50px' : '0px 50px')};
+    padding: 50px;
     transition: width 0.8s ease-in-out, margin-left 0.8s ease-in-out, padding 0.8s ease-in-out;
     @media (max-width: 850px) {
         padding: 126.4px 50px 50px 50px;
@@ -20,7 +20,7 @@ export default styled.section`
                     margin-left: 300px;
                 }
                 @media (max-width: 850px) {
-                    padding: ${({ withMorePadding }) => (withMorePadding ? '50px' : '0px 50px')};
+                    padding: 50px;
                 }
                 @media (max-width: 800px) {
                     width: calc(100% - 250px);

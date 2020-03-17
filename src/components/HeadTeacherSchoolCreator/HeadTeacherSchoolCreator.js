@@ -187,7 +187,7 @@ const HeadTeacherSchoolCreator = ({ shouldMenuAppear }) => {
         }
     }
     return (
-        <HeadTeacherSchoolCreatorContainer withMenu={shouldMenuAppear} withMorePadding>
+        <HeadTeacherSchoolCreatorContainer withMenu={shouldMenuAppear}>
             <APDashboard.Header>Utwórz nową szkołę w systemie</APDashboard.Header>
             <AHTCForm.Form onSubmit={handleSubmit}>
                 <AHTCComposed.Input

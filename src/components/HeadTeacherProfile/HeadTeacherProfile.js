@@ -262,99 +262,95 @@ const HeadTeacherProfile = ({ shouldMenuAppear }) => {
         }
     }
     return (
-        <HeadTeacherProfileContainer withMenu={shouldMenuAppear} withMorePadding>
-            {!isLoading && (
-                <>
-                    {!isActivated && (
-                        <>
-                            <APDashboard.Header>Zaktualizuj swoje dane</APDashboard.Header>
-                            <AHTCForm.Form onSubmit={handleSubmit}>
-                                <AHTCComposed.Input
-                                    id="name"
-                                    label="Imię"
-                                    value={name}
-                                    placeholder="Wprowadź imię..."
-                                    error={nameError}
-                                    onChange={setName}
-                                    trim
-                                />
-                                <AHTCComposed.Input
-                                    id="surname"
-                                    label="Nazwisko"
-                                    value={surname}
-                                    placeholder="Wprowadź nazwisko..."
-                                    error={surnameError}
-                                    onChange={setSurname}
-                                    trim
-                                />
-                                <AHTCComposed.Input
-                                    id="age"
-                                    label="Wiek"
-                                    value={age}
-                                    placeholder="Wprowadź wiek..."
-                                    error={ageError}
-                                    onChange={setAge}
-                                    trim
-                                />
-                                <AHTCComposed.Input
-                                    id="password"
-                                    label="Hasło"
-                                    value={password}
-                                    placeholder="Wprowadź nowe hasło..."
-                                    error={passwordError}
-                                    onChange={setPassword}
-                                    secure
-                                    trim
-                                />
-                                <AHTCComposed.Input
-                                    id="repeatedPassword"
-                                    label="Potwórzone hasło"
-                                    value={repeatedPassword}
-                                    placeholder="Potwórz hasło..."
-                                    error={repeatedPasswordError}
-                                    onChange={setRepeatedPassword}
-                                    secure
-                                    trim
-                                />
-                                <AHTCForm.Submit>Zaktualizuj dane</AHTCForm.Submit>
-                            </AHTCForm.Form>
-                        </>
-                    )}
-                    {isActivated && (
-                        <>
-                            <APDashboard.Header>Dane twojego profilu:</APDashboard.Header>
-                            <Detail.DetailsContainer>
-                                <Composed.Detail label="Stanowisko" value="Dyrektor" />
-                                <Composed.EditableDetail
-                                    label="Imię"
-                                    value={name}
-                                    error={nameError}
-                                    onChange={setName}
-                                    onBlur={updateDetails}
-                                    trim
-                                />
-                                <Composed.EditableDetail
-                                    label="Nazwisko"
-                                    value={surname}
-                                    error={surnameError}
-                                    onChange={setSurname}
-                                    onBlur={updateDetails}
-                                    trim
-                                />
-                                <Composed.EditableDetail
-                                    label="Wiek"
-                                    value={age}
-                                    error={ageError}
-                                    onChange={setAge}
-                                    onBlur={updateDetails}
-                                    trim
-                                />
-                                <Composed.Detail label="E-mail" value={email} />
-                            </Detail.DetailsContainer>
-                        </>
-                    )}
-                </>
-            )}
+        <HeadTeacherProfileContainer withMenu={shouldMenuAppear}>
+            {!isLoading &&
+                (isActivated ? (
+                    <>
+                        <APDashboard.Header>Dane twojego profilu:</APDashboard.Header>
+                        <Detail.DetailsContainer>
+                            <Composed.Detail label="Stanowisko" value="Dyrektor" />
+                            <Composed.EditableDetail
+                                label="Imię"
+                                value={name}
+                                error={nameError}
+                                onChange={setName}
+                                onBlur={updateDetails}
+                                trim
+                            />
+                            <Composed.EditableDetail
+                                label="Nazwisko"
+                                value={surname}
+                                error={surnameError}
+                                onChange={setSurname}
+                                onBlur={updateDetails}
+                                trim
+                            />
+                            <Composed.EditableDetail
+                                label="Wiek"
+                                value={age}
+                                error={ageError}
+                                onChange={setAge}
+                                onBlur={updateDetails}
+                                trim
+                            />
+                            <Composed.Detail label="E-mail" value={email} />
+                        </Detail.DetailsContainer>
+                    </>
+                ) : (
+                    <>
+                        <APDashboard.Header>Zaktualizuj swoje dane</APDashboard.Header>
+                        <AHTCForm.Form onSubmit={handleSubmit}>
+                            <AHTCComposed.Input
+                                id="name"
+                                label="Imię"
+                                value={name}
+                                placeholder="Wprowadź imię..."
+                                error={nameError}
+                                onChange={setName}
+                                trim
+                            />
+                            <AHTCComposed.Input
+                                id="surname"
+                                label="Nazwisko"
+                                value={surname}
+                                placeholder="Wprowadź nazwisko..."
+                                error={surnameError}
+                                onChange={setSurname}
+                                trim
+                            />
+                            <AHTCComposed.Input
+                                id="age"
+                                label="Wiek"
+                                value={age}
+                                placeholder="Wprowadź wiek..."
+                                error={ageError}
+                                onChange={setAge}
+                                trim
+                            />
+                            <AHTCComposed.Input
+                                id="password"
+                                label="Hasło"
+                                value={password}
+                                placeholder="Wprowadź nowe hasło..."
+                                error={passwordError}
+                                onChange={setPassword}
+                                secure
+                                trim
+                            />
+                            <AHTCComposed.Input
+                                id="repeatedPassword"
+                                label="Potwórzone hasło"
+                                value={repeatedPassword}
+                                placeholder="Potwórz hasło..."
+                                error={repeatedPasswordError}
+                                onChange={setRepeatedPassword}
+                                secure
+                                trim
+                            />
+                            <AHTCForm.Submit>Zaktualizuj dane</AHTCForm.Submit>
+                        </AHTCForm.Form>
+                    </>
+                ))}
         </HeadTeacherProfileContainer>
     )
 }

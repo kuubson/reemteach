@@ -106,7 +106,7 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
         }
     }
     return (
-        <HeadTeacherTeachersListContainer withMenu={shouldMenuAppear} withMorePadding>
+        <HeadTeacherTeachersListContainer withMenu={shouldMenuAppear}>
             {!isLoading && (
                 <AHTLDashboard.DetailsContainer>
                     {teachers.length > 0 ? (

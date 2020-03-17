@@ -117,7 +117,7 @@ const HeadTeacherSchoolBellsManager = ({ shouldMenuAppear }) => {
         )
     }
     return (
-        <HeadTeacherSchoolBellsManagerContainer withMenu={shouldMenuAppear} withMorePadding>
+        <HeadTeacherSchoolBellsManagerContainer withMenu={shouldMenuAppear}>
             {!isLoading && (
                 <>
                     <APDashboard.Header>Zaktualizuj dzwonki w szkole</APDashboard.Header>

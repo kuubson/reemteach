@@ -115,7 +115,7 @@ const TeacherStudentCreator = ({ shouldMenuAppear }) => {
         }
     }
     return (
-        <TeacherStudentCreatorContainer withMenu={shouldMenuAppear} withMorePadding>
+        <TeacherStudentCreatorContainer withMenu={shouldMenuAppear}>
             {!isLoading && (
                 <>
                     <APDashboard.Header>Utwórz nowego ucznia w szkole</APDashboard.Header>

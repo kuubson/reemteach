@@ -120,7 +120,7 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
         }
     }
     return (
-        <StudentLecturesListContainer withMenu={shouldMenuAppear} withMorePadding>
+        <StudentLecturesListContainer withMenu={shouldMenuAppear}>
             {lectures.map(
                 ({
                     lecturer: { id, name, surname, room },

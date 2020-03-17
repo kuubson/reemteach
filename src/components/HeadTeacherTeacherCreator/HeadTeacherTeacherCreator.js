@@ -60,7 +60,7 @@ const HeadTeacherTeacherCreator = ({ shouldMenuAppear }) => {
         }
     }
     return (
-        <HeadTeacherTeacherCreatorContainer withMenu={shouldMenuAppear} withMorePadding>
+        <HeadTeacherTeacherCreatorContainer withMenu={shouldMenuAppear}>
             <APDashboard.Header>Utwórz nowego nauczyciela w szkole</APDashboard.Header>
             <AHTCForm.Form onSubmit={handleSubmit}>
                 <AHTCComposed.Input

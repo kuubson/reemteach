@@ -35,7 +35,7 @@ const TeacherSchoolsList = ({ shouldMenuAppear }) => {
         getSchools()
     }, [])
     return (
-        <TeacherSchoolsListContainer withMenu={shouldMenuAppear} withMorePadding>
+        <TeacherSchoolsListContainer withMenu={shouldMenuAppear}>
             {!isLoading && (
                 <AHTLDashboard.DetailsContainer>
                     {schools.length > 0 ? (

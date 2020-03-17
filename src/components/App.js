@@ -33,6 +33,7 @@ import TeacherSchoolsList from './TeacherSchoolsList/TeacherSchoolsList'
 import TeacherStudentsList from './TeacherStudentsList/TeacherStudentsList'
 import TeacherQuestionCreator from './TeacherQuestionCreator/TeacherQuestionCreator'
 import TeacherQuestionsManager from './TeacherQuestionsManager/TeacherQuestionsManager'
+import TeacherQuestionsDatabase from './TeacherQuestionsDatabase/TeacherQuestionsDatabase'
 
 import StudentProfile from './StudentProfile/StudentProfile'
 import StudentLecturesList from './StudentLecturesList/StudentLecturesList'
@@ -191,6 +192,15 @@ const App = ({
             render: () => (
                 <Roles.Teacher>
                     <TeacherQuestionsManager />
+                </Roles.Teacher>
+            )
+        },
+        {
+            pathname: '/nauczyciel/baza-pytań',
+            order: 8,
+            render: () => (
+                <Roles.Teacher>
+                    <TeacherQuestionsDatabase />
                 </Roles.Teacher>
             )
         },

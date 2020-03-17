@@ -83,4 +83,6 @@ router.post(
     Services.updateQuestion.default
 )
 
+router.get('/teacher/getAllQuestions', authWithJwt, Services.getAllQuestions.default)
+
 export default router

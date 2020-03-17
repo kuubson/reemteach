@@ -100,7 +100,7 @@ const AdminHeadTeachersList = ({ shouldMenuAppear }) => {
         }
     }
     return (
-        <AdminHeadTeachersListContainer withMenu={shouldMenuAppear} withMorePadding>
+        <AdminHeadTeachersListContainer withMenu={shouldMenuAppear}>
             {!isLoading && (
                 <Dashboard.DetailsContainer>
                     {headTeachers.length > 0 ? (
