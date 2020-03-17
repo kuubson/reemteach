@@ -85,4 +85,12 @@ router.post(
 
 router.get('/teacher/getAllQuestions', authWithJwt, Services.getAllQuestions.default)
 
+router.post(
+    '/teacher/getTest',
+    authWithJwt,
+    Services.getTest.validation(),
+    checkValidationResult,
+    Services.getTest.default
+)
+
 export default router

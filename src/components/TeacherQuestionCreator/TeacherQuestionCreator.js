@@ -39,7 +39,7 @@ const TeacherQuestionCreator = ({ shouldMenuAppear }) => {
     const [answerD, setAnswerD] = useState('')
     const [properAnswer, setProperAnswer] = useState('')
     const [image, setImage] = useState()
-    const [subjectError, setSubjectError] = useState()
+    const [subjectError, setSubjectError] = useState('')
     const [contentError, setContentError] = useState('')
     const [answerAError, setAnswerAError] = useState('')
     const [answerBError, setAnswerBError] = useState('')

@@ -34,6 +34,7 @@ import TeacherStudentsList from './TeacherStudentsList/TeacherStudentsList'
 import TeacherQuestionCreator from './TeacherQuestionCreator/TeacherQuestionCreator'
 import TeacherQuestionsManager from './TeacherQuestionsManager/TeacherQuestionsManager'
 import TeacherQuestionsDatabase from './TeacherQuestionsDatabase/TeacherQuestionsDatabase'
+import TeacherTestCreator from './TeacherTestCreator/TeacherTestCreator'
 
 import StudentProfile from './StudentProfile/StudentProfile'
 import StudentLecturesList from './StudentLecturesList/StudentLecturesList'
@@ -201,6 +202,15 @@ const App = ({
             render: () => (
                 <Roles.Teacher>
                     <TeacherQuestionsDatabase />
+                </Roles.Teacher>
+            )
+        },
+        {
+            pathname: '/nauczyciel/tworzenie-testu',
+            order: 9,
+            render: () => (
+                <Roles.Teacher>
+                    <TeacherTestCreator />
                 </Roles.Teacher>
             )
         },

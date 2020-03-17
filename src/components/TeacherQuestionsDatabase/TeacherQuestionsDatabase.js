@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withMenu, withTest } from '@hoc'
 
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
 import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
@@ -14,13 +14,7 @@ import StyledFileInput from '@components/TeacherQuestionCreator/styled/FileInput
 import HTPComposed from '@components/HeadTeacherProfile/composed'
 import HTSCComposed from '@components/HeadTeacherSchoolCreator/composed'
 
-import {
-    apiAxios,
-    delayedApiAxios,
-    setFeedbackData,
-    setConfirmationPopupData,
-    detectSanitization
-} from '@utils'
+import { delayedApiAxios } from '@utils'
 
 const TeacherQuestionsDatabaseContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -30,7 +24,7 @@ const TeacherQuestionsDatabaseContainer = styled(APDashboard.Container)`
     flex-direction: column;
 `
 
-const TeacherQuestionsDatabase = ({ shouldMenuAppear }) => {
+const TeacherQuestionsDatabase = ({ shouldMenuAppear, test, setTest }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [questions, setQuestions] = useState([])
     const [subjects, setSubjects] = useState([])
@@ -42,13 +36,22 @@ const TeacherQuestionsDatabase = ({ shouldMenuAppear }) => {
             if (response) {
                 setIsLoading(false)
                 const { questions } = response.data
-                setQuestions(questions)
+                setQuestions(
+                    questions.map(question =>
+                        test.some(({ id }) => id === question.id)
+                            ? {
+                                  ...question,
+                                  isSelected: true
+                              }
+                            : question
+                    )
+                )
                 setSubjects([...new Set(questions.map(({ subject }) => subject))])
             }
         }
         getAllQuestions()
     }, [])
-    const updateQuestions = (id, isSelected) => {
+    const setIsSelected = (id, isSelected) => {
         setQuestions(
             questions.map(question =>
                 question.id === id
@@ -95,7 +98,7 @@ const TeacherQuestionsDatabase = ({ shouldMenuAppear }) => {
                                         selected={isSelected}
                                     >
                                         <HTPComposed.Detail
-                                            label="Właściciel"
+                                            label="Autor"
                                             value={`${name} ${surname} (${email})`}
                                         />
                                         <HTPComposed.Detail label="Id pytania" value={id} />
@@ -116,13 +119,29 @@ const TeacherQuestionsDatabase = ({ shouldMenuAppear }) => {
                                         <AHTLDashboard.ButtonsContainer>
                                             {isSelected ? (
                                                 <AHTLDashboard.Button
-                                                    onClick={() => updateQuestions(id, false)}
+                                                    onClick={() => {
+                                                        setIsSelected(id, false)
+                                                        setTest(
+                                                            test.filter(
+                                                                ({ id: questionId }) =>
+                                                                    questionId !== id
+                                                            )
+                                                        )
+                                                    }}
                                                 >
                                                     Usuń z testu
                                                 </AHTLDashboard.Button>
                                             ) : (
                                                 <AHTLDashboard.Button
-                                                    onClick={() => updateQuestions(id, true)}
+                                                    onClick={() => {
+                                                        setIsSelected(id, true)
+                                                        setTest([
+                                                            ...test,
+                                                            {
+                                                                id
+                                                            }
+                                                        ])
+                                                    }}
                                                 >
                                                     Dodaj do testu
                                                 </AHTLDashboard.Button>
@@ -161,4 +180,4 @@ const TeacherQuestionsDatabase = ({ shouldMenuAppear }) => {
     )
 }
 
-export default compose(withMenu)(TeacherQuestionsDatabase)
+export default compose(withMenu, withTest)(TeacherQuestionsDatabase)

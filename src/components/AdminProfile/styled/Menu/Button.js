@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled, { css } from 'styled-components/macro'
 
 export default styled.button`
     text-align: center;
@@ -14,6 +14,7 @@ export default styled.button`
     position: fixed;
     top: 30px;
     left: 30px;
+    z-index: 1;
     :hover {
         transform: scale(1.03);
     }
@@ -26,4 +27,18 @@ export default styled.button`
         top: 20px;
         left: 20px;
     }
+    ${({ right }) => {
+        if (right)
+            return css`
+                font-size: 9px;
+                opacity: 1;
+                left: auto;
+                right: 30px;
+                @media (max-width: 500px) {
+                    font-size: 8px;
+                    left: auto;
+                    right: 20px;
+                }
+            `
+    }}
 `

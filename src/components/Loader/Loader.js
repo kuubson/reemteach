@@ -14,7 +14,7 @@ const LoaderContainer = styled.div`
     position: fixed;
     top: 0px;
     left: 0px;
-    z-index: 2;
+    z-index: 4;
 `
 
 const Loader = () => {

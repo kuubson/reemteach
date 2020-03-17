@@ -5,7 +5,7 @@ export default styled.p`
     overflow: hidden;
     margin: 20px auto 0px auto;
     white-space: pre-line;
-    word-break: break-all;
+    word-break: keep-all;
     font-size: 15px;
     text-transform: initial;
     resize: none;

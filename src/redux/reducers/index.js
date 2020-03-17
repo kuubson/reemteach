@@ -7,6 +7,7 @@ import loader from './loader'
 import feedbackHandler from './feedbackHandler'
 import menu from './menu'
 import confirmationPopup from './confirmationPopup'
+import test from './test'
 
 // const config = {
 //     key: 'root',
@@ -18,5 +19,6 @@ export default combineReducers({
     loader,
     feedbackHandler,
     menu,
-    confirmationPopup
+    confirmationPopup,
+    test
 })

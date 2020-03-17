@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withMenu, withTest } from '@hoc'
 
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
 import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
@@ -31,7 +31,7 @@ const TeacherQuestionsManagerContainer = styled(APDashboard.Container)`
     flex-direction: column;
 `
 
-const TeacherQuestionsManager = ({ shouldMenuAppear }) => {
+const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [questions, setQuestions] = useState([])
     const [subjects, setSubjects] = useState([])
@@ -43,7 +43,16 @@ const TeacherQuestionsManager = ({ shouldMenuAppear }) => {
             if (response) {
                 setIsLoading(false)
                 const { questions } = response.data
-                setQuestions(questions)
+                setQuestions(
+                    questions.map(question =>
+                        test.some(({ id }) => id === question.id)
+                            ? {
+                                  ...question,
+                                  isSelected: true
+                              }
+                            : question
+                    )
+                )
             }
         }
         getQuestions()
@@ -431,41 +440,65 @@ const TeacherQuestionsManager = ({ shouldMenuAppear }) => {
                                                     Zapisz
                                                 </AHTLDashboard.Button>
                                             )}
-                                            {isSelected ? (
-                                                <AHTLDashboard.Button
-                                                    onClick={() =>
-                                                        updateQuestions(
-                                                            id,
-                                                            'isSelected',
-                                                            false,
-                                                            '',
-                                                            '',
-                                                            initialImage,
-                                                            newImage,
-                                                            shouldSaveButtonAppear
-                                                        )
-                                                    }
-                                                >
-                                                    Usuń z testu
-                                                </AHTLDashboard.Button>
-                                            ) : (
-                                                <AHTLDashboard.Button
-                                                    onClick={() =>
-                                                        updateQuestions(
-                                                            id,
-                                                            'isSelected',
-                                                            true,
-                                                            '',
-                                                            '',
-                                                            initialImage,
-                                                            newImage,
-                                                            shouldSaveButtonAppear
-                                                        )
-                                                    }
-                                                >
-                                                    Dodaj do testu
-                                                </AHTLDashboard.Button>
-                                            )}
+                                            {!shouldSaveButtonAppear &&
+                                                validateQuestion(
+                                                    content,
+                                                    answerA,
+                                                    answerB,
+                                                    answerC,
+                                                    answerD,
+                                                    properAnswer
+                                                ) && (
+                                                    <>
+                                                        {isSelected ? (
+                                                            <AHTLDashboard.Button
+                                                                onClick={() => {
+                                                                    updateQuestions(
+                                                                        id,
+                                                                        'isSelected',
+                                                                        false,
+                                                                        '',
+                                                                        '',
+                                                                        initialImage,
+                                                                        newImage,
+                                                                        shouldSaveButtonAppear
+                                                                    )
+                                                                    setTest(
+                                                                        test.filter(
+                                                                            ({ id: questionId }) =>
+                                                                                questionId !== id
+                                                                        )
+                                                                    )
+                                                                }}
+                                                            >
+                                                                Usuń z testu
+                                                            </AHTLDashboard.Button>
+                                                        ) : (
+                                                            <AHTLDashboard.Button
+                                                                onClick={() => {
+                                                                    updateQuestions(
+                                                                        id,
+                                                                        'isSelected',
+                                                                        true,
+                                                                        '',
+                                                                        '',
+                                                                        initialImage,
+                                                                        newImage,
+                                                                        shouldSaveButtonAppear
+                                                                    )
+                                                                    setTest([
+                                                                        ...test,
+                                                                        {
+                                                                            id
+                                                                        }
+                                                                    ])
+                                                                }}
+                                                            >
+                                                                Dodaj do testu
+                                                            </AHTLDashboard.Button>
+                                                        )}
+                                                    </>
+                                                )}
                                             <AHTLDashboard.Button
                                                 onClick={() => destroyQuestion(id)}
                                             >
@@ -505,4 +538,4 @@ const TeacherQuestionsManager = ({ shouldMenuAppear }) => {
     )
 }
 
-export default compose(withMenu)(TeacherQuestionsManager)
+export default compose(withMenu, withTest)(TeacherQuestionsManager)

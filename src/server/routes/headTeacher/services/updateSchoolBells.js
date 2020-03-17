@@ -26,14 +26,7 @@ export default async (req, res, next) => {
 export const validation = () => [
     check('schoolBells')
         .notEmpty()
-        .isArray()
-        .custom(schoolBells => {
-            if (schoolBells.length < 1) {
-                throw new Error()
-            } else {
-                return schoolBells
-            }
-        }),
+        .isArray(),
     check('schoolBells.*.from')
         .trim()
         .notEmpty()

@@ -28,7 +28,7 @@ const TeacherStudentCreator = ({ shouldMenuAppear }) => {
     const [school, setSchool] = useState('')
     const [grade, setGrade] = useState('')
     const [emailError, setEmailError] = useState('')
-    const [schoolError, setSchoolError] = useState()
+    const [schoolError, setSchoolError] = useState('')
     const [gradeError, setGradeError] = useState('')
     useEffect(() => {
         const getSchoolNames = async () => {
