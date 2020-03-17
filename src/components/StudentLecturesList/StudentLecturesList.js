@@ -115,7 +115,6 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
                 }
             })
         } catch (error) {
-            console.log(error)
             setFeedbackData('Wystąpił niespodziewany problem przy dołączaniu do wykładu!', 'Ok')
         }
     }

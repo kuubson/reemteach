@@ -1,8 +1,15 @@
 import { Teacher, Question } from '@database'
 
-export default async (_, res, next) => {
+import { Op } from '@utils'
+
+export default async (req, res, next) => {
     try {
         const questions = await Question.findAll({
+            where: {
+                teacherId: {
+                    [Op.ne]: req.user.id
+                }
+            },
             include: {
                 model: Teacher,
                 attributes: ['email', 'name', 'surname']
