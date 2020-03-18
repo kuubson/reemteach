@@ -21,7 +21,7 @@ export default async (req, res, next) => {
         }
         if (teacher.isActivated) {
             throw new ApiError(
-                `Nauczyciel ${email} aktywował już swoje konto i nie możesz go usunąć!`,
+                `Nauczyciel z adresem ${email} aktywował już swoje konto i nie możesz go usunąć!`,
                 409
             )
         }

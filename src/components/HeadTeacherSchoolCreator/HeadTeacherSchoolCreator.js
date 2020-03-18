@@ -34,12 +34,12 @@ const HeadTeacherSchoolCreator = ({ shouldMenuAppear }) => {
     const [type, setType] = useState('')
     const [description, setDescription] = useState('')
     const [address, setAddress] = useState('')
-    const [creationDate, setCreationDate] = useState('')
+    const [creationYear, setCreationYear] = useState('')
     const [nameError, setNameError] = useState('')
     const [typeError, setTypeError] = useState('')
     const [descriptionError, setDescriptionError] = useState('')
     const [addressError, setAddressError] = useState('')
-    const [creationDateError, setCreationDateError] = useState('')
+    const [creationYearError, setCreationYearError] = useState('')
     useEffect(() => {
         const getSchool = async () => {
             const url = '/api/headTeacher/getSchool'
@@ -65,7 +65,7 @@ const HeadTeacherSchoolCreator = ({ shouldMenuAppear }) => {
         setTypeError('')
         setDescriptionError('')
         setAddressError('')
-        setCreationDateError('')
+        setCreationYearError('')
         let isValidated = true
         switch (true) {
             case !name:
@@ -116,22 +116,20 @@ const HeadTeacherSchoolCreator = ({ shouldMenuAppear }) => {
                 setAddressError('')
         }
         switch (true) {
-            case !creationDate:
-                setCreationDateError(
-                    `Wprowadź datę utworzenia szkoły (np. ${moment().format('DD.MM.YYYY')})!`
+            case !creationYear:
+                setCreationYearError(
+                    `Wprowadź rok utworzenia szkoły (np. ${moment().format('YYYY')})!`
                 )
                 isValidated = false
                 break
-            case !moment(creationDate, 'DD.MM.YYYY', true).isValid():
-                setCreationDateError(
-                    `Wprowadź poprawną date utworzenia szkoły (np. ${moment().format(
-                        'DD.MM.YYYY'
-                    )})!`
+            case !moment(creationYear, 'YYYY', true).isValid():
+                setCreationYearError(
+                    `Wprowadź poprawny rok utworzenia szkoły (np. ${moment().format('YYYY')})!`
                 )
                 isValidated = false
                 break
             default:
-                setCreationDateError('')
+                setCreationYearError('')
         }
         setTimeout(() => {
             setShouldScrollToError(!isValidated)
@@ -148,7 +146,7 @@ const HeadTeacherSchoolCreator = ({ shouldMenuAppear }) => {
                     type,
                     description,
                     address,
-                    creationDate
+                    creationYear
                 })
                 if (response) {
                     const { successMessage } = response.data
@@ -163,7 +161,7 @@ const HeadTeacherSchoolCreator = ({ shouldMenuAppear }) => {
                         setTypeError('')
                         setDescriptionError('')
                         setAddressError('')
-                        setCreationDateError('')
+                        setCreationYearError('')
                         validationResults.forEach(({ parameter, error }) => {
                             if (parameter === 'name') {
                                 setNameError(error)
@@ -177,8 +175,8 @@ const HeadTeacherSchoolCreator = ({ shouldMenuAppear }) => {
                             if (parameter === 'address') {
                                 setAddressError(error)
                             }
-                            if (parameter === 'creationDate') {
-                                setCreationDateError(error)
+                            if (parameter === 'creationYear') {
+                                setCreationYearError(error)
                             }
                         })
                     }
@@ -225,14 +223,14 @@ const HeadTeacherSchoolCreator = ({ shouldMenuAppear }) => {
                     onChange={setAddress}
                 />
                 <AHTCComposed.Input
-                    id="creationDate"
-                    label="Data utworzenia szkoły"
-                    value={creationDate}
-                    placeholder={`Wprowadź datę utworzenia szkoły (np. ${moment().format(
-                        'DD.MM.YYYY'
+                    id="creationYear"
+                    label="Rok utworzenia szkoły"
+                    value={creationYear}
+                    placeholder={`Wprowadź rok utworzenia szkoły (np. ${moment().format(
+                        'YYYY'
                     )})...`}
-                    error={creationDateError}
-                    onChange={setCreationDate}
+                    error={creationYearError}
+                    onChange={setCreationYear}
                     trim
                 />
                 <AHTCForm.Submit>Utwórz szkołę</AHTCForm.Submit>

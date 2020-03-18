@@ -21,7 +21,7 @@ export default async (req, res, next) => {
         }
         if (headTeacher.isActivated) {
             throw new ApiError(
-                `Dyrektor ${email} aktywował już swoje konto i nie możesz go usuwać!`,
+                `Dyrektor z adresem ${email} aktywował już swoje konto i nie możesz go usuwać!`,
                 409
             )
         }

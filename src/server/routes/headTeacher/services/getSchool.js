@@ -6,13 +6,13 @@ export default async (req, res, next) => {
                 hasSchool: false
             })
         } else {
-            const { name, type, description, address, creationDate } = school
+            const { name, type, description, address, creationYear } = school
             res.send({
                 name,
                 type,
                 description,
                 address,
-                creationDate,
+                creationYear,
                 hasSchool: true
             })
         }

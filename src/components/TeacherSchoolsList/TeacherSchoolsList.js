@@ -46,7 +46,7 @@ const TeacherSchoolsList = ({ shouldMenuAppear }) => {
                                 type,
                                 description,
                                 address,
-                                creationDate,
+                                creationYear,
                                 headTeacher: { email, name, surname }
                             }) => {
                                 return (
@@ -67,8 +67,8 @@ const TeacherSchoolsList = ({ shouldMenuAppear }) => {
                                         />
                                         <HTPComposed.Detail label="Adres szkoły" value={address} />
                                         <HTPComposed.Detail
-                                            label="Data utworzenia szkoły"
-                                            value={creationDate}
+                                            label="Rok utworzenia szkoły"
+                                            value={creationYear}
                                         />
                                     </div>
                                 )

@@ -3,7 +3,7 @@ import { HeadTeacher } from '@database'
 export default async (req, res, next) => {
     try {
         const schools = await req.user.getSchools({
-            attributes: ['id', 'name', 'type', 'description', 'address', 'creationDate'],
+            attributes: ['id', 'name', 'type', 'description', 'address', 'creationYear'],
             include: [
                 {
                     model: HeadTeacher,

@@ -283,12 +283,14 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                                                     W klasie {grade} nie ma jeszcze żadnego ucznia!
                                                 </Dashboard.Warning>
                                             ) : (
-                                                <AHTCForm.Submit
-                                                    onClick={() => startLecture(name, grade)}
-                                                    withLessMargin
-                                                >
-                                                    Rozpocznij wykład
-                                                </AHTCForm.Submit>
+                                                students.some(student => student.isActivated) && (
+                                                    <AHTCForm.Submit
+                                                        onClick={() => startLecture(name, grade)}
+                                                        withLessMargin
+                                                    >
+                                                        Rozpocznij wykład
+                                                    </AHTCForm.Submit>
+                                                )
                                             )}
                                         </Dashboard.DetailOuterContainer>
                                     ))

@@ -33,18 +33,18 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
     const [type, setType] = useState('')
     const [description, setDescription] = useState('')
     const [address, setAddress] = useState('')
-    const [creationDate, setCreationDate] = useState('')
+    const [creationYear, setCreationYear] = useState('')
     const [nameError, setNameError] = useState('')
     const [typeError, setTypeError] = useState('')
     const [descriptionError, setDescriptionError] = useState('')
     const [addressError, setAddressError] = useState('')
-    const [creationDateError, setCreationDateError] = useState('')
+    const [creationYearError, setCreationYearError] = useState('')
     const previousDetails = usePrevious({
         name,
         type,
         description,
         address,
-        creationDate
+        creationYear
     })
     useEffect(() => {
         const getSchool = async () => {
@@ -52,7 +52,7 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
             const response = await delayedApiAxios.get(url)
             if (response) {
                 setIsLoading(false)
-                const { name, type, description, address, creationDate, hasSchool } = response.data
+                const { name, type, description, address, creationYear, hasSchool } = response.data
                 if (!hasSchool) {
                     setFeedbackData('Musisz najpierw utworzyć szkołę w systemie!', 'Ok')
                     delayedRedirectTo('/dyrektor/tworzenie-szkoły')
@@ -61,7 +61,7 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
                     setType(type)
                     setDescription(description)
                     setAddress(address)
-                    setCreationDate(creationDate)
+                    setCreationYear(creationYear)
                 }
             }
         }
@@ -77,7 +77,7 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
         setTypeError('')
         setDescriptionError('')
         setAddressError('')
-        setCreationDateError('')
+        setCreationYearError('')
         let isValidated = true
         switch (true) {
             case !name:
@@ -128,29 +128,27 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
                 setAddressError('')
         }
         switch (true) {
-            case !creationDate:
-                setCreationDateError(
-                    `Wprowadź datę utworzenia szkoły (np. ${moment().format('DD.MM.YYYY')})!`
+            case !creationYear:
+                setCreationYearError(
+                    `Wprowadź rok utworzenia szkoły (np. ${moment().format('YYYY')})!`
                 )
                 isValidated = false
                 break
-            case !moment(creationDate, 'DD.MM.YYYY', true).isValid():
-                setCreationDateError(
-                    `Wprowadź poprawną date utworzenia szkoły (np. ${moment().format(
-                        'DD.MM.YYYY'
-                    )})!`
+            case !moment(creationYear, 'YYYY', true).isValid():
+                setCreationYearError(
+                    `Wprowadź poprawny rok utworzenia szkoły (np. ${moment().format('YYYY')})!`
                 )
                 isValidated = false
                 break
             default:
-                setCreationDateError('')
+                setCreationYearError('')
         }
         return isValidated
     }
     const updateDetails = async () => {
         if (validate(false)) {
             if (
-                JSON.stringify({ name, type, description, address, creationDate }) !==
+                JSON.stringify({ name, type, description, address, creationYear }) !==
                 JSON.stringify(previousDetails)
             ) {
                 try {
@@ -160,7 +158,7 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
                         type,
                         description,
                         address,
-                        creationDate
+                        creationYear
                     })
                     if (response) {
                         const { successMessage } = response.data
@@ -174,7 +172,7 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
                             setTypeError('')
                             setDescriptionError('')
                             setAddressError('')
-                            setCreationDateError('')
+                            setCreationYearError('')
                             validationResults.forEach(({ parameter, error }) => {
                                 if (parameter === 'name') {
                                     setNameError(error)
@@ -188,8 +186,8 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
                                 if (parameter === 'address') {
                                     setAddressError(error)
                                 }
-                                if (parameter === 'creationDate') {
-                                    setCreationDateError(error)
+                                if (parameter === 'creationYear') {
+                                    setCreationYearError(error)
                                 }
                             })
                         }
@@ -245,9 +243,9 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
                         />
                         <HTPComposed.EditableDetail
                             label="Data utworzenia"
-                            value={creationDate}
-                            error={creationDateError}
-                            onChange={setCreationDate}
+                            value={creationYear}
+                            error={creationYearError}
+                            onChange={setCreationYear}
                             onBlur={updateDetails}
                             trim
                         />

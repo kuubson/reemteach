@@ -22,7 +22,7 @@ export default sequelize => {
                 type: STRING,
                 allowNull: false
             },
-            creationDate: {
+            creationYear: {
                 type: STRING,
                 allowNull: false
             }

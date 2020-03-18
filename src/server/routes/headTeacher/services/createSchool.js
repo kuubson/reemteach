@@ -10,7 +10,7 @@ export default async (req, res, next) => {
         if (req.user.school) {
             throw new ApiError(`Posiadasz już utworzoną szkołę!`, 409)
         }
-        const { name, type, description, address, creationDate } = req.body
+        const { name, type, description, address, creationYear } = req.body
         if (
             await School.findOne({
                 where: {
@@ -26,7 +26,7 @@ export default async (req, res, next) => {
                 type,
                 description,
                 address,
-                creationDate,
+                creationYear,
                 schoolBells: [
                     {
                         from: '08:00',
@@ -166,19 +166,17 @@ export const validation = () => [
         .bail()
         .custom(detectSanitization)
         .withMessage('Adres szkoły zawiera niedozwolone znaki!'),
-    check('creationDate')
+    check('creationYear')
         .trim()
         .notEmpty()
-        .withMessage(`Wprowadź datę utworzenia szkoły (np. ${moment().format('DD.MM.YYYY')})!`)
+        .withMessage(`Wprowadź rok utworzenia szkoły (np. ${moment().format('YYYY')})!`)
         .bail()
-        .custom(creationDate => {
-            if (!moment(creationDate, 'DD.MM.YYYY', true).isValid()) {
+        .custom(creationYear => {
+            if (!moment(creationYear, 'YYYY', true).isValid()) {
                 throw new Error('')
             } else {
-                return creationDate
+                return creationYear
             }
         })
-        .withMessage(
-            `Wprowadź poprawną date utworzenia szkoły (np. ${moment().format('DD.MM.YYYY')})!`
-        )
+        .withMessage(`Wprowadź poprawny rok utworzenia szkoły (np. ${moment().format('YYYY')})!`)
 ]
