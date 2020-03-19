@@ -69,10 +69,10 @@ const StudentProfile = ({ shouldMenuAppear }) => {
                     nick,
                     isActivated
                 } = response.data
+                setSchool(school)
+                setGrade(grade)
                 setEmail(email)
                 if (isActivated) {
-                    setSchool(school)
-                    setGrade(grade)
                     setName(name)
                     setSurname(surname)
                     setAge(age)

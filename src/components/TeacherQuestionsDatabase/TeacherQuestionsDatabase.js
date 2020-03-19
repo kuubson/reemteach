@@ -173,7 +173,7 @@ const TeacherQuestionsDatabase = ({ shouldMenuAppear, test, setTest }) => {
                     )
                 ) : (
                     <AHTLDashboard.Warning>
-                        W bazie nie ma jeszcze żadnych pytań innych nauczycieli!
+                        Nie ma jeszcze żadnych pytań innych nauczycieli!
                     </AHTLDashboard.Warning>
                 ))}
         </TeacherQuestionsDatabaseContainer>

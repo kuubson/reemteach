@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withMenu, withTest } from '@hoc'
+import { withSocket, withMenu, withTest } from '@hoc'
 
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
 import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
@@ -24,12 +24,13 @@ const TeacherTestCreatorContainer = styled(APDashboard.Container)`
     flex-direction: column;
 `
 
-const TeacherTestCreator = ({ shouldMenuAppear, test, setTest }) => {
+const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [schools, setSchools] = useState([])
     const [school, setSchool] = useState('')
     const [grade, setGrade] = useState('')
     const [questions, setQuestions] = useState([])
+    const [students, setStudents] = useState([])
     const [isTestReady, setIsTestReady] = useState(false)
     useEffect(() => {
         const getTest = async () => {
@@ -49,11 +50,29 @@ const TeacherTestCreator = ({ shouldMenuAppear, test, setTest }) => {
     return (
         <TeacherTestCreatorContainer withMenu={shouldMenuAppear}>
             {!isLoading && isTestReady ? (
-                <></>
+                <>
+                    <AHTLDashboard.DetailsContainer>
+                        {students.length > 0 ? (
+                            <>
+                                <StyledMenu.Button right>Wyślij</StyledMenu.Button>
+                            </>
+                        ) : (
+                            <AHTLDashboard.Warning>
+                                Do testu nie dołączył jeszcze żaden uczeń!
+                            </AHTLDashboard.Warning>
+                        )}
+                    </AHTLDashboard.DetailsContainer>
+                </>
             ) : questions.length > 0 ? (
                 grade ? (
                     <AHTLDashboard.DetailsContainer>
-                        <StyledMenu.Button onClick={() => setIsTestReady(true)} right>
+                        <StyledMenu.Button
+                            onClick={() => {
+                                setIsTestReady(true)
+                                socket.emit('getStudents', students => setStudents(students))
+                            }}
+                            right
+                        >
                             Dalej
                         </StyledMenu.Button>
                         {questions.map(
@@ -142,4 +161,4 @@ const TeacherTestCreator = ({ shouldMenuAppear, test, setTest }) => {
     )
 }
 
-export default compose(withMenu, withTest)(TeacherTestCreator)
+export default compose(withSocket, withMenu, withTest)(TeacherTestCreator)

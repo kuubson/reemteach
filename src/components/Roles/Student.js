@@ -10,7 +10,12 @@ import APMenu from '@components/AdminProfile/styled/Menu'
 
 import APComposed from '@components/AdminProfile/composed'
 
-import { redirectTo, delayedRedirectTo, subscribePushNotifications } from '@utils'
+import {
+    redirectTo,
+    delayedRedirectTo,
+    subscribePushNotifications,
+    updateGeolocation
+} from '@utils'
 
 const StudentContainer = styled.div`
     ${({ blurred }) => {
@@ -60,6 +65,7 @@ const Student = ({
                     }, 800)
                 }
                 subscribePushNotifications('/api/student/subscribeSchoolBells')
+                updateGeolocation(role)
             }
         }
         confirmToken()

@@ -40,4 +40,12 @@ router.post(
     Services.updateDetails.default
 )
 
+router.post(
+    '/student/updateGeolocation',
+    authWithJwt,
+    Services.updateGeolocation.validation(),
+    checkValidationResult,
+    Services.updateGeolocation.default
+)
+
 export default router

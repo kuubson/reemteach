@@ -52,14 +52,14 @@ const TeacherSchoolsList = ({ shouldMenuAppear }) => {
                                 return (
                                     <div key={id}>
                                         <HTPComposed.Detail
+                                            label="Nazwa szkoły"
+                                            value={schoolName}
+                                        />
+                                        <HTPComposed.Detail
                                             label="Dyrektor"
                                             value={`${name} ${surname}`}
                                         />
                                         <HTPComposed.Detail label="E-mail" value={email} />
-                                        <HTPComposed.Detail
-                                            label="Nazwa szkoły"
-                                            value={schoolName}
-                                        />
                                         <HTPComposed.Detail label="Rodzaj szkoły" value={type} />
                                         <HTPComposed.Detail
                                             label="Opis szkoły"

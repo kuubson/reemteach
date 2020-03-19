@@ -130,7 +130,7 @@ export default async (req, res, next) => {
             }
         )
         res.send({
-            successMessage: `Pomyślnie utworzono szkołę ${name} do systemu!`
+            successMessage: `Pomyślnie utworzono szkołę ${name} w systemie!`
         })
     } catch (error) {
         next(error)

@@ -27,6 +27,9 @@ export default sequelize => {
             nick: {
                 type: STRING
             },
+            geolocation: {
+                type: TEXT
+            },
             isActivated: {
                 type: BOOLEAN,
                 defaultValue: false
