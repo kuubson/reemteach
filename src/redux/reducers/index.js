@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-// import { persistReducer } from 'redux-persist'
-// import storage from 'redux-persist/lib/storage'
+import { persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
 import socket from './socket'
 import loader from './loader'
@@ -9,10 +9,10 @@ import menu from './menu'
 import confirmationPopup from './confirmationPopup'
 import test from './test'
 
-// const config = {
-//     key: 'root',
-//     storage
-// }
+const config = {
+    key: 'test',
+    storage
+}
 
 export default combineReducers({
     socket,
@@ -20,5 +20,5 @@ export default combineReducers({
     feedbackHandler,
     menu,
     confirmationPopup,
-    test
+    test: persistReducer(config, test)
 })

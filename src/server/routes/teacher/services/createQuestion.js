@@ -105,8 +105,11 @@ export const validation = () => [
     check('properAnswer')
         .trim()
         .notEmpty()
-        .withMessage('Wprowadź poprawną odpowiedź!')
+        .withMessage('Zaznacz poprawną odpowiedź!')
         .bail()
         .custom(detectSanitization)
         .withMessage('Poprawna odpowiedź zawiera niedozwolone znaki!')
+        .bail()
+        .isIn(['A', 'B', 'C', 'D'])
+        .withMessage('Zaznacz poprawną odpowiedź!')
 ]

@@ -38,6 +38,7 @@ import TeacherTestCreator from './TeacherTestCreator/TeacherTestCreator'
 
 import StudentProfile from './StudentProfile/StudentProfile'
 import StudentLecturesList from './StudentLecturesList/StudentLecturesList'
+import StudentTest from './StudentTest/StudentTest'
 
 setConfig({
     reloadHooks: false
@@ -229,6 +230,15 @@ const App = ({
             render: () => (
                 <Roles.Student>
                     <StudentLecturesList />
+                </Roles.Student>
+            )
+        },
+        {
+            pathname: '/uczeń/test',
+            order: 3,
+            render: () => (
+                <Roles.Student>
+                    <StudentTest />
                 </Roles.Student>
             )
         },

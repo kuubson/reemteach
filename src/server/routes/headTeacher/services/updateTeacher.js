@@ -87,7 +87,7 @@ export const validation = () => [
     check('subject')
         .trim()
         .notEmpty()
-        .withMessage('Wprowadź przedmiot przewodni!')
+        .withMessage('Zaznacz przedmiot przewodni!')
         .bail()
         .custom(detectSanitization)
         .withMessage('Przedmiot przewodni zawiera niedozwolone znaki!')

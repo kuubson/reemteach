@@ -44,6 +44,10 @@ const Student = ({
         {
             option: 'Lista wykładów',
             pathname: '/uczeń/lista-wykładów'
+        },
+        {
+            option: 'Dołącz do testu',
+            pathname: '/uczeń/test'
         }
     ])
     useEffect(() => {

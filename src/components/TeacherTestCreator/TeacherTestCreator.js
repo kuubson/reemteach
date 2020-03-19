@@ -14,7 +14,7 @@ import StyledFileInput from '@components/TeacherQuestionCreator/styled/FileInput
 import HTPComposed from '@components/HeadTeacherProfile/composed'
 import HTSCComposed from '@components/HeadTeacherSchoolCreator/composed'
 
-import { delayedApiAxios, setConfirmationPopupData } from '@utils'
+import { delayedApiAxios, setConfirmationPopupData, setFeedbackData } from '@utils'
 
 const TeacherTestCreatorContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -47,6 +47,31 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
         }
         getTest()
     }, [])
+    useEffect(() => {
+        socket.on('studentLeavesTest', id => {
+            const { name, surname } = students.find(student => student.id === id)
+            setFeedbackData(`Uczeń ${name} ${surname} opuścił test!`, 'Ok')
+            setStudents(students.filter(student => student.id !== id))
+        })
+        socket.on('newStudent', student => setStudents([...students, student]))
+        socket.on('receiveTest', id => updateStudent(id, true))
+        return () => {
+            socket.removeListener('studentLeavesTest')
+            socket.removeListener('newStudent')
+            socket.removeListener('receiveTest')
+        }
+    }, [students])
+    const updateStudent = (id, hasTest) =>
+        setStudents(
+            students.map(student =>
+                student.id === id
+                    ? {
+                          ...student,
+                          hasTest
+                      }
+                    : student
+            )
+        )
     return (
         <TeacherTestCreatorContainer withMenu={shouldMenuAppear}>
             {!isLoading && isTestReady ? (
@@ -54,7 +79,31 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
                     <AHTLDashboard.DetailsContainer>
                         {students.length > 0 ? (
                             <>
-                                <StyledMenu.Button right>Wyślij</StyledMenu.Button>
+                                <StyledMenu.Button
+                                    onClick={() => {
+                                        socket.emit('sendTest', {
+                                            school,
+                                            grade,
+                                            questions
+                                        })
+                                    }}
+                                    right
+                                >
+                                    Wyślij
+                                </StyledMenu.Button>
+                                {students.map(({ id, name, surname, hasTest }) => (
+                                    <div key={id}>
+                                        <HTPComposed.Detail label="Id ucznia" value={id} />
+                                        <HTPComposed.Detail
+                                            label="Uczeń"
+                                            value={`${name} ${surname}`}
+                                        />
+                                        <HTPComposed.Detail
+                                            label="Otrzymał test"
+                                            value={hasTest ? 'Tak' : 'Nie'}
+                                        />
+                                    </div>
+                                ))}
                             </>
                         ) : (
                             <AHTLDashboard.Warning>
@@ -69,7 +118,14 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
                         <StyledMenu.Button
                             onClick={() => {
                                 setIsTestReady(true)
-                                socket.emit('getStudents', students => setStudents(students))
+                                socket.emit(
+                                    'getStudents',
+                                    {
+                                        school,
+                                        grade
+                                    },
+                                    students => setStudents(students)
+                                )
                             }}
                             right
                         >

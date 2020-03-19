@@ -272,7 +272,7 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
                                                             subject,
                                                             'subjectError',
                                                             !subject
-                                                                ? 'Wprowadź przedmiot przewodni!'
+                                                                ? 'Zaznacz przedmiot przewodni!'
                                                                 : detectSanitization(subject)
                                                                 ? 'Przedmiot przewodni zawiera niedozwolone znaki!'
                                                                 : '',

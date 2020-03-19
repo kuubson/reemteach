@@ -11,6 +11,9 @@ export default styled.button`
     color: white;
     font-size: 10px;
     transition: transform 0.5s ease-in-out;
+    :last-of-type {
+        margin: 20px 0px 0px 0px;
+    }
     :hover {
         transform: scale(1.03);
     }

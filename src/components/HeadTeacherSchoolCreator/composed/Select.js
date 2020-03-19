@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import styled from 'styled-components/macro'
+import styled, { css } from 'styled-components/macro'
 
 import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
 import StyledSelect from '../styled/Select'
@@ -9,9 +9,34 @@ const SelectContainer = styled.div`
     :last-of-type {
         margin-bottom: 0px;
     }
+    ${({ shorter }) => {
+        if (shorter)
+            return css`
+                margin: 0px 25% 20px 25%;
+                :last-of-type {
+                    margin: 0px 25% 0px 25%;
+                }
+                @media (max-width: 600px) {
+                    margin: 0px 15% 20px 15%;
+                    :last-of-type {
+                        margin: 0px 15% 0px 15%;
+                    }
+                }
+            `
+    }}
 `
 
-const Select = ({ id, label, value, placeholder, options, error, onChange, withoutPadding }) => {
+const Select = ({
+    id,
+    label,
+    value,
+    placeholder,
+    options,
+    error,
+    onChange,
+    withoutPadding,
+    shorter
+}) => {
     const selectOptionsRef = useRef()
     const [shouldOptionsExpand, setShouldOptionsExpand] = useState(false)
     useEffect(() => {
@@ -26,7 +51,7 @@ const Select = ({ id, label, value, placeholder, options, error, onChange, witho
         }
     }, [shouldOptionsExpand])
     return (
-        <SelectContainer className={error && 'error'}>
+        <SelectContainer className={error && 'error'} shorter={shorter}>
             <AHTCForm.Label
                 htmlFor={id}
                 onClick={() => setShouldOptionsExpand(shouldOptionsExpand => !shouldOptionsExpand)}

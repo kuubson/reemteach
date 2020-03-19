@@ -7,8 +7,8 @@ import Composed from './composed'
 
 const HomeContainer = styled.section`
     width: 100%;
-    height: 100vh;
-    padding: 0px 50px;
+    min-height: 100vh;
+    padding: 50px;
     perspective: 1500px;
     overflow: hidden;
     display: flex;

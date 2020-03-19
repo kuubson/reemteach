@@ -1,18 +1,26 @@
-import { delayedApiAxios, setShouldFeedbackHandlerAppear, setFeedbackData } from '@utils'
+import { delayedApiAxios, setIsLoading, setFeedbackData } from '@utils'
 
 const handleGeolocation = role =>
     navigator.geolocation.getCurrentPosition(
         async ({ coords: { latitude, longitude } }) => {
+            setIsLoading(true)
             const url = `/api/${role}/updateGeolocation`
             const response = await delayedApiAxios.post(url, {
                 latitude,
                 longitude
             })
             if (response) {
-                setShouldFeedbackHandlerAppear(false)
+                setIsLoading(false)
             }
         },
-        () => setFeedbackData('Wystąpił niespodziewany problem przy udostępnianiu lokalizacji!')
+        () => {
+            setIsLoading(false)
+            setFeedbackData(
+                'Wystąpił niespodziewany problem przy udostępnianiu lokalizacji!',
+                'Odśwież aplikację',
+                () => window.location.reload()
+            )
+        }
     )
 
 export default async role => {
@@ -41,6 +49,10 @@ export default async role => {
                 )
         }
     } catch (error) {
-        setFeedbackData('Wystąpił niespodziewany problem przy udostępnianiu lokalizacji!')
+        setFeedbackData(
+            'Wystąpił niespodziewany problem przy udostępnianiu lokalizacji!',
+            'Odśwież aplikację',
+            () => window.location.reload()
+        )
     }
 }
