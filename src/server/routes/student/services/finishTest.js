@@ -1,11 +1,22 @@
 import { check } from 'express-validator'
 
-import { GradingSystem, Question } from '@database'
+import webpush from 'web-push'
+
+import { GradingSystem, Question, Subscription } from '@database'
 
 import { detectSanitization } from '@utils'
 
+const { NODEMAILER_USERNAME, REACT_APP_PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY } = process.env
+
+webpush.setVapidDetails(
+    `mailto:${NODEMAILER_USERNAME}`,
+    REACT_APP_PUBLIC_VAPID_KEY,
+    PRIVATE_VAPID_KEY
+)
+
 export default async (req, res, next) => {
     try {
+        const { id, name, surname } = req.user
         const { questions } = req.body
         const foundQuestions = await Question.findAll({
             where: {
@@ -28,6 +39,34 @@ export default async (req, res, next) => {
         await req.user.createResult({
             grade,
             questions: questions.map(({ id }) => id).join()
+        })
+        const subscriptions = await Subscription.findAll({
+            where: {
+                teacherId
+            }
+        })
+        subscriptions.map(subscription => {
+            webpush
+                .sendNotification(
+                    {
+                        endpoint: subscription.endpoint,
+                        keys: {
+                            p256dh: subscription.p256dh,
+                            auth: subscription.auth
+                        }
+                    },
+                    JSON.stringify({
+                        title: 'Reemteach',
+                        body: `Uczeń ${name} ${surname} z id ${id} zakończył test z oceną ${grade}!`,
+                        image: 'https://picsum.photos/1920/1080',
+                        icon: 'https://picsum.photos/1920/1080'
+                    })
+                )
+                .catch(async ({ statusCode }) => {
+                    if (statusCode === 410) {
+                        await subscription.destroy()
+                    }
+                })
         })
         res.send({
             grade

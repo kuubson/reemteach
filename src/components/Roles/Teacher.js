@@ -10,7 +10,7 @@ import APMenu from '@components/AdminProfile/styled/Menu'
 
 import APComposed from '@components/AdminProfile/composed'
 
-import { redirectTo, delayedRedirectTo, handleApiError } from '@utils'
+import { redirectTo, delayedRedirectTo, handleApiError, subscribePushNotifications } from '@utils'
 
 const TeacherContainer = styled.div`
     ${({ blurred }) => {
@@ -93,6 +93,7 @@ const Teacher = ({
                             }
                         ])
                     }
+                    subscribePushNotifications('/api/teacher/createSubscription')
                 }
             } catch (error) {
                 handleApiError(error)

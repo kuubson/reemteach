@@ -119,4 +119,12 @@ router.post(
     Services.updateGradingSystem.default
 )
 
+router.post(
+    '/teacher/createSubscription',
+    authWithJwt,
+    Services.createSubscription.validation(),
+    checkValidationResult,
+    Services.createSubscription.default
+)
+
 export default router

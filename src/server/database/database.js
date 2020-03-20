@@ -47,6 +47,9 @@ Student.belongsTo(Grade)
 Student.hasMany(Subscription)
 Subscription.belongsTo(Student)
 
+Teacher.hasMany(Subscription)
+Subscription.belongsTo(Teacher)
+
 const initializeDatabaseConnection = async () => {
     try {
         // await connection.sync({ alter: true })
