@@ -12,14 +12,7 @@ import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 import HTSCComposed from '@components/HeadTeacherSchoolCreator/composed'
 import Composed from './composed'
 
-import {
-    apiAxios,
-    delayedApiAxios,
-    redirectTo,
-    delayedRedirectTo,
-    setFeedbackData,
-    detectSanitization
-} from '@utils'
+import { apiAxios, delayedApiAxios, setFeedbackData, detectSanitization } from '@utils'
 
 const TeacherQuestionCreatorContainer = styled(APDashboard.Container)`
     min-height: 100vh;

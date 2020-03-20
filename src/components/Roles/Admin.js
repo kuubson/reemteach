@@ -9,7 +9,7 @@ import APMenu from '@components/AdminProfile/styled/Menu'
 
 import APComposed from '@components/AdminProfile/composed'
 
-import { redirectTo, delayedRedirectTo } from '@utils'
+import { redirectTo, delayedRedirectTo, handleApiError } from '@utils'
 
 const AdminContainer = styled.div`
     ${({ blurred }) => {
@@ -39,13 +39,17 @@ const Admin = ({ children, location, shouldFeedbackHandlerAppear, closeMenuOnCli
     ])
     useEffect(() => {
         const confirmToken = async () => {
-            const url = '/api/confirmToken'
-            const response = await axios.get(url)
-            if (response) {
-                const { role } = response.data
-                if (role === 'guest' || role !== 'admin') {
-                    return delayedRedirectTo('/')
+            try {
+                const url = '/api/confirmToken'
+                const response = await axios.get(url)
+                if (response) {
+                    const { role } = response.data
+                    if (role === 'guest' || role !== 'admin') {
+                        return delayedRedirectTo('/')
+                    }
                 }
+            } catch (error) {
+                handleApiError(error)
             }
         }
         confirmToken()

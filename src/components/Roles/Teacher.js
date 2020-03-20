@@ -10,7 +10,7 @@ import APMenu from '@components/AdminProfile/styled/Menu'
 
 import APComposed from '@components/AdminProfile/composed'
 
-import { redirectTo, delayedRedirectTo } from '@utils'
+import { redirectTo, delayedRedirectTo, handleApiError } from '@utils'
 
 const TeacherContainer = styled.div`
     ${({ blurred }) => {
@@ -45,6 +45,10 @@ const Teacher = ({
             pathname: '/nauczyciel/zarządzanie-pytaniami'
         },
         {
+            option: 'Zarządzaj systemem oceniania',
+            pathname: '/nauczyciel/zarządzanie-systemem-oceniania'
+        },
+        {
             option: 'Utwórz pytanie',
             pathname: '/nauczyciel/tworzenie-pytania'
         }
@@ -54,40 +58,44 @@ const Teacher = ({
             setSocket(io('/teacher'))
         }
         const confirmToken = async () => {
-            const url = '/api/confirmToken'
-            const response = await axios.get(url)
-            if (response) {
-                const profilePathname = '/nauczyciel/profil'
-                const { role, isActivated, hasSchools } = response.data
-                if (role === 'guest' || role !== 'teacher') {
-                    return delayedRedirectTo('/')
+            try {
+                const url = '/api/confirmToken'
+                const response = await axios.get(url)
+                if (response) {
+                    const profilePathname = '/nauczyciel/profil'
+                    const { role, isActivated, hasSchools } = response.data
+                    if (role === 'guest' || role !== 'teacher') {
+                        return delayedRedirectTo('/')
+                    }
+                    if (!isActivated && location.pathname !== profilePathname) {
+                        return setTimeout(() => {
+                            delayedRedirectTo(profilePathname)
+                        }, 800)
+                    }
+                    if (hasSchools) {
+                        setMenuOptions([
+                            ...menuOptions,
+                            {
+                                option: 'Utwórz test',
+                                pathname: '/nauczyciel/tworzenie-testu'
+                            },
+                            {
+                                option: 'Lista szkół',
+                                pathname: '/nauczyciel/lista-szkół'
+                            },
+                            {
+                                option: 'Lista uczniów',
+                                pathname: '/nauczyciel/lista-uczniów'
+                            },
+                            {
+                                option: 'Utwórz ucznia',
+                                pathname: '/nauczyciel/tworzenie-ucznia'
+                            }
+                        ])
+                    }
                 }
-                if (!isActivated && location.pathname !== profilePathname) {
-                    return setTimeout(() => {
-                        delayedRedirectTo(profilePathname)
-                    }, 800)
-                }
-                if (hasSchools) {
-                    setMenuOptions([
-                        ...menuOptions,
-                        {
-                            option: 'Utwórz test',
-                            pathname: '/nauczyciel/tworzenie-testu'
-                        },
-                        {
-                            option: 'Lista szkół',
-                            pathname: '/nauczyciel/lista-szkół'
-                        },
-                        {
-                            option: 'Lista uczniów',
-                            pathname: '/nauczyciel/lista-uczniów'
-                        },
-                        {
-                            option: 'Utwórz ucznia',
-                            pathname: '/nauczyciel/tworzenie-ucznia'
-                        }
-                    ])
-                }
+            } catch (error) {
+                handleApiError(error)
             }
         }
         confirmToken()

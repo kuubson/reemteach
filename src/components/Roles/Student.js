@@ -14,7 +14,8 @@ import {
     redirectTo,
     delayedRedirectTo,
     subscribePushNotifications,
-    updateGeolocation
+    updateGeolocation,
+    handleApiError
 } from '@utils'
 
 const StudentContainer = styled.div`
@@ -59,21 +60,25 @@ const Student = ({
             setSocket(io('/student'))
         }
         const confirmToken = async () => {
-            const url = '/api/confirmToken'
-            const response = await axios.get(url)
-            if (response) {
-                const profilePathname = '/uczeń/profil'
-                const { role, isActivated } = response.data
-                if (role === 'guest' || role !== 'student') {
-                    return delayedRedirectTo('/')
+            try {
+                const url = '/api/confirmToken'
+                const response = await axios.get(url)
+                if (response) {
+                    const profilePathname = '/uczeń/profil'
+                    const { role, isActivated } = response.data
+                    if (role === 'guest' || role !== 'student') {
+                        return delayedRedirectTo('/')
+                    }
+                    if (!isActivated && location.pathname !== profilePathname) {
+                        return setTimeout(() => {
+                            delayedRedirectTo(profilePathname)
+                        }, 800)
+                    }
+                    subscribePushNotifications('/api/student/subscribeSchoolBells')
+                    updateGeolocation(role)
                 }
-                if (!isActivated && location.pathname !== profilePathname) {
-                    return setTimeout(() => {
-                        delayedRedirectTo(profilePathname)
-                    }, 800)
-                }
-                subscribePushNotifications('/api/student/subscribeSchoolBells')
-                updateGeolocation(role)
+            } catch (error) {
+                handleApiError(error)
             }
         }
         confirmToken()

@@ -14,7 +14,7 @@ import StyledMenu from '@components/AdminProfile/styled/Menu'
 import HTPComposed from '@components/HeadTeacherProfile/composed'
 import HTSCComposed from '@components/HeadTeacherSchoolCreator/composed'
 
-import { delayedApiAxios, setFeedbackData } from '@utils'
+import { apiAxios, setFeedbackData } from '@utils'
 
 const StudentTestContainer = styled(APDashboard.Container)`
     min-height: 100vh;
@@ -25,8 +25,9 @@ const StudentTestContainer = styled(APDashboard.Container)`
 `
 
 const StudentTest = ({ socket, shouldMenuAppear }) => {
-    const [testMode, setTestMode] = useState()
+    const [testMode, setTestMode] = useState('')
     const [questions, setQuestions] = useState([])
+    const [grade, setGrade] = useState('')
     useEffect(() => {
         socket.once('sendTest', ({ teacher, questions }) => {
             setFeedbackData(
@@ -46,7 +47,7 @@ const StudentTest = ({ socket, shouldMenuAppear }) => {
                     ? {
                           ...question,
                           answer,
-                          answerError: ''
+                          error: ''
                       }
                     : question
             )
@@ -59,12 +60,12 @@ const StudentTest = ({ socket, shouldMenuAppear }) => {
                     isValidated = false
                     return {
                         ...question,
-                        answerError: 'Zaznacz Twoją odpowiedź!'
+                        error: 'Zaznacz Twoją odpowiedź!'
                     }
                 } else {
                     return {
                         ...question,
-                        answerError: ''
+                        error: ''
                     }
                 }
             })
@@ -78,18 +79,27 @@ const StudentTest = ({ socket, shouldMenuAppear }) => {
         }, 0)
         return isValidated
     }
+    const finishTest = async () => {
+        if (validate()) {
+            const url = '/api/student/finishTest'
+            const response = await apiAxios.post(url, {
+                questions
+            })
+            if (response) {
+                const { grade } = response.data
+                setGrade(grade)
+                window.scrollTo(0, 0)
+            }
+        }
+    }
     return (
         <StudentTestContainer withMenu={shouldMenuAppear}>
-            {testMode ? (
+            {grade ? (
+                <AHTLDashboard.Warning>Otrzymałeś ocenę {grade} z testu!</AHTLDashboard.Warning>
+            ) : testMode ? (
                 questions.length > 0 ? (
                     <AHTLDashboard.DetailsContainer>
-                        <StyledMenu.Button
-                            onClick={() => {
-                                if (validate()) {
-                                }
-                            }}
-                            right
-                        >
+                        <StyledMenu.Button onClick={finishTest} right>
                             Zakończ
                         </StyledMenu.Button>
                         {questions.map(
@@ -102,7 +112,7 @@ const StudentTest = ({ socket, shouldMenuAppear }) => {
                                 answerD,
                                 image,
                                 answer,
-                                answerError
+                                error
                             }) => (
                                 <TQMDashboard.DetailOuterContainer key={id}>
                                     {image && (
@@ -121,7 +131,7 @@ const StudentTest = ({ socket, shouldMenuAppear }) => {
                                         value={answer}
                                         placeholder="Zaznacz Twoją odpowiedź..."
                                         options={['A', 'B', 'C', 'D']}
-                                        error={answerError}
+                                        error={error}
                                         onChange={answer => updateQuestions(id, answer)}
                                         withoutPadding
                                         shorter

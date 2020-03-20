@@ -50,4 +50,12 @@ router.post(
 
 router.get('/student/getSchoolBells', authWithJwt, Services.getSchoolBells.default)
 
+router.post(
+    '/student/finishTest',
+    authWithJwt,
+    Services.finishTest.validation(),
+    checkValidationResult,
+    Services.finishTest.default
+)
+
 export default router

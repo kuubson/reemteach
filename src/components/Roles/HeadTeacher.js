@@ -9,7 +9,7 @@ import APMenu from '@components/AdminProfile/styled/Menu'
 
 import APComposed from '@components/AdminProfile/composed'
 
-import { redirectTo, delayedRedirectTo } from '@utils'
+import { redirectTo, delayedRedirectTo, handleApiError } from '@utils'
 
 const HeadTeacherContainer = styled.div`
     ${({ blurred }) => {
@@ -31,49 +31,53 @@ const HeadTeacher = ({ children, location, shouldFeedbackHandlerAppear, closeMen
     ])
     useEffect(() => {
         const confirmToken = async () => {
-            const url = '/api/confirmToken'
-            const response = await axios.get(url)
-            if (response) {
-                const profilePathname = '/dyrektor/profil'
-                const { role, isActivated, hasSchool } = response.data
-                if (role === 'guest' || role !== 'headTeacher') {
-                    return delayedRedirectTo('/')
+            try {
+                const url = '/api/confirmToken'
+                const response = await axios.get(url)
+                if (response) {
+                    const profilePathname = '/dyrektor/profil'
+                    const { role, isActivated, hasSchool } = response.data
+                    if (role === 'guest' || role !== 'headTeacher') {
+                        return delayedRedirectTo('/')
+                    }
+                    if (!isActivated && location.pathname !== profilePathname) {
+                        return setTimeout(() => {
+                            delayedRedirectTo(profilePathname)
+                        }, 800)
+                    }
+                    if (!hasSchool) {
+                        setMenuOptions([
+                            ...menuOptions,
+                            {
+                                option: 'Utwórz szkołę',
+                                pathname: '/dyrektor/tworzenie-szkoły'
+                            }
+                        ])
+                    }
+                    if (hasSchool) {
+                        setMenuOptions([
+                            ...menuOptions,
+                            {
+                                option: 'Twoja szkoła',
+                                pathname: '/dyrektor/zarządzanie-szkołą'
+                            },
+                            {
+                                option: 'Zarządzaj dzwonkami',
+                                pathname: '/dyrektor/zarządzanie-dzwonkami-w-szkole'
+                            },
+                            {
+                                option: 'Lista nauczycieli',
+                                pathname: '/dyrektor/lista-nauczycieli'
+                            },
+                            {
+                                option: 'Utwórz nauczyciela',
+                                pathname: '/dyrektor/tworzenie-nauczyciela'
+                            }
+                        ])
+                    }
                 }
-                if (!isActivated && location.pathname !== profilePathname) {
-                    return setTimeout(() => {
-                        delayedRedirectTo(profilePathname)
-                    }, 800)
-                }
-                if (!hasSchool) {
-                    setMenuOptions([
-                        ...menuOptions,
-                        {
-                            option: 'Utwórz szkołę',
-                            pathname: '/dyrektor/tworzenie-szkoły'
-                        }
-                    ])
-                }
-                if (hasSchool) {
-                    setMenuOptions([
-                        ...menuOptions,
-                        {
-                            option: 'Twoja szkoła',
-                            pathname: '/dyrektor/zarządzanie-szkołą'
-                        },
-                        {
-                            option: 'Zarządzaj dzwonkami',
-                            pathname: '/dyrektor/zarządzanie-dzwonkami-w-szkole'
-                        },
-                        {
-                            option: 'Lista nauczycieli',
-                            pathname: '/dyrektor/lista-nauczycieli'
-                        },
-                        {
-                            option: 'Utwórz nauczyciela',
-                            pathname: '/dyrektor/tworzenie-nauczyciela'
-                        }
-                    ])
-                }
+            } catch (error) {
+                handleApiError(error)
             }
         }
         confirmToken()

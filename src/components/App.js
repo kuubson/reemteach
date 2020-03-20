@@ -35,6 +35,7 @@ import TeacherQuestionCreator from './TeacherQuestionCreator/TeacherQuestionCrea
 import TeacherQuestionsManager from './TeacherQuestionsManager/TeacherQuestionsManager'
 import TeacherQuestionsDatabase from './TeacherQuestionsDatabase/TeacherQuestionsDatabase'
 import TeacherTestCreator from './TeacherTestCreator/TeacherTestCreator'
+import TeacherGradingSystemManager from './TeacherGradingSystemManager/TeacherGradingSystemManager'
 
 import StudentProfile from './StudentProfile/StudentProfile'
 import StudentLecturesList from './StudentLecturesList/StudentLecturesList'
@@ -213,6 +214,15 @@ const App = ({
             render: () => (
                 <Roles.Teacher>
                     <TeacherTestCreator />
+                </Roles.Teacher>
+            )
+        },
+        {
+            pathname: '/nauczyciel/zarządzanie-systemem-oceniania',
+            order: 9,
+            render: () => (
+                <Roles.Teacher>
+                    <TeacherGradingSystemManager />
                 </Roles.Teacher>
             )
         },

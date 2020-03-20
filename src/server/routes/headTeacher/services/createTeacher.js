@@ -2,7 +2,7 @@ import { check } from 'express-validator'
 import nodemailer from 'nodemailer'
 import crypto from 'crypto'
 
-import { Teacher } from '@database'
+import { GradingSystem, Teacher } from '@database'
 
 import { ApiError } from '@utils'
 
@@ -25,10 +25,48 @@ export default async (req, res, next) => {
         })
         if (!teacher) {
             const password = crypto.randomBytes(20).toString('hex')
-            await school.createTeacher({
-                email,
-                password
-            })
+            const teacher = await Teacher.create(
+                {
+                    email,
+                    password,
+                    gradingSystems: [
+                        {
+                            grade: '6',
+                            from: 99,
+                            to: 100
+                        },
+                        {
+                            grade: '5',
+                            from: 91,
+                            to: 98
+                        },
+                        {
+                            grade: '4',
+                            from: 76,
+                            to: 90
+                        },
+                        {
+                            grade: '3',
+                            from: 51,
+                            to: 75
+                        },
+                        {
+                            grade: '2',
+                            from: 34,
+                            to: 50
+                        },
+                        {
+                            grade: '1',
+                            from: 0,
+                            to: 33
+                        }
+                    ]
+                },
+                {
+                    include: GradingSystem
+                }
+            )
+            await school.addTeacher(teacher)
             const mailOptions = {
                 from: process.env.NODEMAILER_USERNAME,
                 to: email,

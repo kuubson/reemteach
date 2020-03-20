@@ -109,4 +109,14 @@ router.post(
     Services.sendLectureNotification.default
 )
 
+router.get('/teacher/getGradingSystem', authWithJwt, Services.getGradingSystem.default)
+
+router.post(
+    '/teacher/updateGradingSystem',
+    authWithJwt,
+    Services.updateGradingSystem.validation(),
+    checkValidationResult,
+    Services.updateGradingSystem.default
+)
+
 export default router

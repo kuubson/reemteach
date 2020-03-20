@@ -1,6 +1,6 @@
 import { check } from 'express-validator'
 
-import { Grade, Question } from '@database'
+import { Grade } from '@database'
 
 export default async (req, res, next) => {
     try {
@@ -14,7 +14,7 @@ export default async (req, res, next) => {
                 }
             ]
         })
-        const questions = await Question.findAll({
+        const questions = await req.user.getQuestions({
             where: {
                 id: test.map(({ id }) => id)
             }

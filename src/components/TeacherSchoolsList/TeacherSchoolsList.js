@@ -47,21 +47,23 @@ const TeacherSchoolsList = ({ shouldMenuAppear }) => {
                         <HForm.CloseButton onClick={() => setSchoolBells([])} black />
                         {schoolBells.map(({ id, from, to, isRecess }) => {
                             return (
-                                <HTSBMDashboard.InputsContainer key={id}>
-                                    <AHTCComposed.Input
-                                        label={`${isRecess ? 'Przerwa' : 'Lekcja'} od`}
-                                        value={from}
-                                        placeholder="Wprowadź godzinę..."
-                                        double
-                                        readOnly
-                                    />
-                                    <AHTCComposed.Input
-                                        label="Do"
-                                        value={to}
-                                        placeholder="Wprowadź godzinę..."
-                                        readOnly
-                                    />
-                                </HTSBMDashboard.InputsContainer>
+                                <HTSBMDashboard.InputsOuterContainer key={id}>
+                                    <HTSBMDashboard.InputsContainer withoutError>
+                                        <AHTCComposed.Input
+                                            label={`${isRecess ? 'Przerwa' : 'Lekcja'} od`}
+                                            value={from}
+                                            placeholder="Wprowadź godzinę..."
+                                            double
+                                            readOnly
+                                        />
+                                        <AHTCComposed.Input
+                                            label="Do"
+                                            value={to}
+                                            placeholder="Wprowadź godzinę..."
+                                            readOnly
+                                        />
+                                    </HTSBMDashboard.InputsContainer>
+                                </HTSBMDashboard.InputsOuterContainer>
                             )
                         })}
                     </AHTCForm.Form>

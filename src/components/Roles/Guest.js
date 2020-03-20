@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components/macro'
 import axios from 'axios'
 
 import { compose } from 'redux'
-import { withSocket, withFeedbackHandler } from '@hoc'
+import { withSocket, withFeedbackHandler, handleApiError } from '@hoc'
 
 import { redirectTo } from '@utils'
 
@@ -25,22 +25,26 @@ const Guest = ({ children, socket, setSocket, shouldFeedbackHandlerAppear }) => 
             setSocket()
         }
         const confirmToken = async () => {
-            const url = '/api/confirmToken'
-            const response = await axios.get(url)
-            if (response) {
-                const { role } = response.data
-                if (role === 'admin') {
-                    redirectTo('/admin/profil')
+            try {
+                const url = '/api/confirmToken'
+                const response = await axios.get(url)
+                if (response) {
+                    const { role } = response.data
+                    if (role === 'admin') {
+                        redirectTo('/admin/profil')
+                    }
+                    if (role === 'headTeacher') {
+                        redirectTo('/dyrektor/profil')
+                    }
+                    if (role === 'teacher') {
+                        redirectTo('/nauczyciel/profil')
+                    }
+                    if (role === 'student') {
+                        redirectTo('/uczeń/profil')
+                    }
                 }
-                if (role === 'headTeacher') {
-                    redirectTo('/dyrektor/profil')
-                }
-                if (role === 'teacher') {
-                    redirectTo('/nauczyciel/profil')
-                }
-                if (role === 'student') {
-                    redirectTo('/uczeń/profil')
-                }
+            } catch (error) {
+                handleApiError(error)
             }
         }
         confirmToken()

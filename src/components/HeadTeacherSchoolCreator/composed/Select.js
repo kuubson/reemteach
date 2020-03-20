@@ -16,7 +16,7 @@ const SelectContainer = styled.div`
                 :last-of-type {
                     margin: 0px 25% 0px 25%;
                 }
-                @media (max-width: 600px) {
+                @media (max-width: 700px) {
                     margin: 0px 15% 20px 15%;
                     :last-of-type {
                         margin: 0px 15% 0px 15%;

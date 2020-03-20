@@ -120,11 +120,11 @@ const HeadTeacherSchoolBellsManager = ({ shouldMenuAppear }) => {
         <HeadTeacherSchoolBellsManagerContainer withMenu={shouldMenuAppear}>
             {!isLoading && (
                 <>
-                    <APDashboard.Header>Zaktualizuj dzwonki w szkole</APDashboard.Header>
+                    <APDashboard.Header>Rozkład dzwonków w Twojej szkole</APDashboard.Header>
                     <AHTCForm.Form onSubmit={handleSubmit}>
                         {schoolBells.map(({ id, from, to, isRecess, error }, index) => {
                             return (
-                                <div key={id}>
+                                <Dashboard.InputsOuterContainer key={id}>
                                     <Dashboard.InputsContainer>
                                         <AHTCComposed.Input
                                             label={`${isRecess ? 'Przerwa' : 'Lekcja'} od`}
@@ -147,7 +147,7 @@ const HeadTeacherSchoolBellsManager = ({ shouldMenuAppear }) => {
                                         />
                                     </Dashboard.InputsContainer>
                                     {error && <Dashboard.Error>{error}</Dashboard.Error>}
-                                </div>
+                                </Dashboard.InputsOuterContainer>
                             )
                         })}
                         <AHTCForm.Submit

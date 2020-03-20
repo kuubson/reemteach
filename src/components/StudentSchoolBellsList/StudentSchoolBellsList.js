@@ -44,27 +44,32 @@ const StudentSchoolBellsList = ({ shouldMenuAppear }) => {
         <StudentSchoolBellsListContainer withMenu={shouldMenuAppear}>
             {!isLoading &&
                 (schoolBells.length > 0 ? (
-                    <AHTCForm.Form withLessMargin>
-                        {schoolBells.map(({ id, from, to, isRecess }) => {
-                            return (
-                                <HTSBMDashboard.InputsContainer key={id}>
-                                    <AHTCComposed.Input
-                                        label={`${isRecess ? 'Przerwa' : 'Lekcja'} od`}
-                                        value={from}
-                                        placeholder="Wprowadź godzinę..."
-                                        double
-                                        readOnly
-                                    />
-                                    <AHTCComposed.Input
-                                        label="Do"
-                                        value={to}
-                                        placeholder="Wprowadź godzinę..."
-                                        readOnly
-                                    />
-                                </HTSBMDashboard.InputsContainer>
-                            )
-                        })}
-                    </AHTCForm.Form>
+                    <>
+                        <APDashboard.Header>Rozkład dzwonków w Twojej szkole</APDashboard.Header>
+                        <AHTCForm.Form>
+                            {schoolBells.map(({ id, from, to, isRecess }) => {
+                                return (
+                                    <HTSBMDashboard.InputsOuterContainer key={id}>
+                                        <HTSBMDashboard.InputsContainer withoutError>
+                                            <AHTCComposed.Input
+                                                label={`${isRecess ? 'Przerwa' : 'Lekcja'} od`}
+                                                value={from}
+                                                placeholder="Wprowadź godzinę..."
+                                                double
+                                                readOnly
+                                            />
+                                            <AHTCComposed.Input
+                                                label="Do"
+                                                value={to}
+                                                placeholder="Wprowadź godzinę..."
+                                                readOnly
+                                            />
+                                        </HTSBMDashboard.InputsContainer>
+                                    </HTSBMDashboard.InputsOuterContainer>
+                                )
+                            })}
+                        </AHTCForm.Form>
+                    </>
                 ) : (
                     <AHTLDashboard.Warning>
                         W szkole nie ma jeszcze żadnego dzwonka!
