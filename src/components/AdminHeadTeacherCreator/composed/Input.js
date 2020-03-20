@@ -21,7 +21,8 @@ const Input = ({
     textarea,
     secure,
     trim,
-    double
+    double,
+    readOnly
 }) => {
     const textareaRef = useRef()
     useEffect(() => {
@@ -57,6 +58,7 @@ const Input = ({
                     value={value}
                     placeholder={placeholder}
                     onChange={handleOnChange}
+                    readOnly={readOnly}
                 />
             )}
             {error && <Form.Error>{error}</Form.Error>}

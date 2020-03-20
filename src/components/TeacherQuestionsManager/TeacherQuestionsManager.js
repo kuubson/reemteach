@@ -99,7 +99,9 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
             )
         )
     }
-    const validateQuestion = (content, answerA, answerB, answerC, answerD, properAnswer) =>
+    const validateQuestion = (subject, content, answerA, answerB, answerC, answerD, properAnswer) =>
+        subject &&
+        !detectSanitization(subject) &&
         content &&
         !detectSanitization(content) &&
         answerA &&
@@ -114,6 +116,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
         !detectSanitization(properAnswer)
     const updateQuestion = async (
         id,
+        subject,
         content,
         answerA,
         answerB,
@@ -127,6 +130,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
         const url = '/api/teacher/updateQuestion'
         const data = new FormData()
         data.append('id', id)
+        data.append('subject', subject)
         data.append('content', content)
         data.append('answerA', answerA)
         data.append('answerB', answerB)
@@ -171,12 +175,14 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                             {chosenQuestions.map(
                                 ({
                                     id,
+                                    subject,
                                     content,
                                     answerA,
                                     answerB,
                                     answerC,
                                     answerD,
                                     properAnswer,
+                                    subjectError,
                                     contentError,
                                     answerAError,
                                     answerBError,
@@ -205,6 +211,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                                             '',
                                                             '',
                                                             validateQuestion(
+                                                                subject,
                                                                 content,
                                                                 answerA,
                                                                 answerB,
@@ -232,6 +239,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                                     initialImage,
                                                     newImage,
                                                     validateQuestion(
+                                                        subject,
                                                         content,
                                                         answerA,
                                                         answerB,
@@ -241,6 +249,54 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                                     )
                                                 )
                                             }}
+                                        />
+                                        <HTPComposed.EditableDetail
+                                            id="subject"
+                                            label="Przedmiot pytania"
+                                            value={subject}
+                                            placeholder="Zaznacz przedmiot pytania..."
+                                            options={[
+                                                'Religia',
+                                                'Język polski',
+                                                'Język angielski',
+                                                'Język niemiecki',
+                                                'Język rosyjski',
+                                                'Język francuski',
+                                                'Matematyka',
+                                                'Fizyka',
+                                                'Biologia',
+                                                'Chemia',
+                                                'Geografia',
+                                                'Wiedza o społeczeństwie',
+                                                'Historia',
+                                                'Informatyka'
+                                            ]}
+                                            error={subjectError}
+                                            onChange={subject =>
+                                                updateQuestions(
+                                                    id,
+                                                    'subject',
+                                                    subject,
+                                                    'subjectError',
+                                                    !subject
+                                                        ? 'Zaznacz przedmiot pytania!'
+                                                        : detectSanitization(subject)
+                                                        ? 'Przedmiot pytania zawiera niedozwolone znaki!'
+                                                        : '',
+                                                    initialImage,
+                                                    newImage,
+                                                    validateQuestion(
+                                                        subject,
+                                                        content,
+                                                        answerA,
+                                                        answerB,
+                                                        answerC,
+                                                        answerD,
+                                                        properAnswer
+                                                    )
+                                                )
+                                            }
+                                            select
                                         />
                                         <HTPComposed.EditableDetail
                                             label="Treść pytania"
@@ -260,6 +316,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                                     initialImage,
                                                     newImage,
                                                     validateQuestion(
+                                                        subject,
                                                         content,
                                                         answerA,
                                                         answerB,
@@ -289,6 +346,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                                     initialImage,
                                                     newImage,
                                                     validateQuestion(
+                                                        subject,
                                                         content,
                                                         answerA,
                                                         answerB,
@@ -318,6 +376,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                                     initialImage,
                                                     newImage,
                                                     validateQuestion(
+                                                        subject,
                                                         content,
                                                         answerA,
                                                         answerB,
@@ -347,6 +406,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                                     initialImage,
                                                     newImage,
                                                     validateQuestion(
+                                                        subject,
                                                         content,
                                                         answerA,
                                                         answerB,
@@ -376,6 +436,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                                     initialImage,
                                                     newImage,
                                                     validateQuestion(
+                                                        subject,
                                                         content,
                                                         answerA,
                                                         answerB,
@@ -408,6 +469,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                                     initialImage,
                                                     newImage,
                                                     validateQuestion(
+                                                        subject,
                                                         content,
                                                         answerA,
                                                         answerB,
@@ -425,6 +487,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                                     onClick={() =>
                                                         updateQuestion(
                                                             id,
+                                                            subject,
                                                             content,
                                                             answerA,
                                                             answerB,
@@ -442,6 +505,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                             )}
                                             {!shouldSaveButtonAppear &&
                                                 validateQuestion(
+                                                    subject,
                                                     content,
                                                     answerA,
                                                     answerB,

@@ -127,7 +127,7 @@ const HeadTeacherSchoolBellsManager = ({ shouldMenuAppear }) => {
                                 <div key={id}>
                                     <Dashboard.InputsContainer>
                                         <AHTCComposed.Input
-                                            label="Od"
+                                            label={`${isRecess ? 'Przerwa' : 'Lekcja'} od`}
                                             value={from}
                                             placeholder="Wprowadź godzinę..."
                                             onChange={from => updateSchoolBell(id, 'from', from)}

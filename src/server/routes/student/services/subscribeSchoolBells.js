@@ -51,31 +51,37 @@ export default async (req, res, next) => {
             const [hours, minutes] = from.split(':')
             schoolBellsNotificationsTasks.push(
                 cron.schedule(`${minutes} ${hours} * * *`, () => {
-                    subscriptions.map(async ({ studentId, endpoint, p256dh, auth }) => {
+                    subscriptions.map(async subscription => {
                         if (
                             students.some(
                                 student =>
-                                    student.id === studentId &&
+                                    student.id === subscription.studentId &&
                                     student.grade.school.name === school.name
                             )
                         ) {
-                            webpush.sendNotification(
-                                {
-                                    endpoint,
-                                    keys: {
-                                        p256dh,
-                                        auth
+                            webpush
+                                .sendNotification(
+                                    {
+                                        endpoint: subscription.endpoint,
+                                        keys: {
+                                            p256dh: subscription.p256dh,
+                                            auth: subscription.auth
+                                        }
+                                    },
+                                    JSON.stringify({
+                                        title: 'Reemteach',
+                                        body: `W Twojej szkole rozpoczyna się właśnie ${
+                                            isRecess ? 'przerwa' : 'lekcja'
+                                        } od ${from} do ${to}`,
+                                        image: 'https://picsum.photos/1920/1080',
+                                        icon: 'https://picsum.photos/1920/1080'
+                                    })
+                                )
+                                .catch(async ({ statusCode }) => {
+                                    if (statusCode === 410) {
+                                        await subscription.destroy()
                                     }
-                                },
-                                JSON.stringify({
-                                    title: 'Reemteach',
-                                    body: `Rozpoczyna się właśnie kolejna ${
-                                        isRecess ? 'przerwa' : 'lekcja'
-                                    } w szkole ${school.name} od ${from} do ${to}`,
-                                    image: 'https://picsum.photos/1920/1080',
-                                    icon: 'https://picsum.photos/1920/1080'
                                 })
-                            )
                         }
                     })
                 })

@@ -89,7 +89,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                     localStream.getTracks().map(track => track.stop())
                     setTeacher(new RTCPeerConnection())
                     socket.emit('leaveLecture')
-                    setFeedbackData('Uczeń opuścił wykład!', 'Ok')
+                    setFeedbackData('Uczeń opuścił rozmowę!', 'Ok')
                     updateLectures(
                         lecture.school,
                         lecture.grade,
@@ -103,6 +103,13 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
         })
         return () => socket.removeListener('studentLeavesLecture')
     }, [lectures])
+    const sendLectureNotification = async (school, grade) => {
+        const url = '/api/teacher/sendLectureNotification'
+        await delayedApiAxios.post(url, {
+            school,
+            grade
+        })
+    }
     const startLecture = async (school, grade) => {
         try {
             const { mediaDevices } = navigator
@@ -122,6 +129,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                 school,
                 grade
             })
+            sendLectureNotification(school, grade)
             socket.once('call', async ({ student, offer }) => {
                 teacher.onicecandidate = ({ candidate }) => socket.emit('candidate', candidate)
                 teacher.ontrack = ({ streams: [remoteStream] }) =>
@@ -136,12 +144,15 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                 localStream.getTracks().map(track => track.stop())
                 setTeacher(new RTCPeerConnection())
                 socket.emit('leaveLecture')
-                setFeedbackData('Uczeń opuścił wykład!', 'Ok')
+                setFeedbackData('Uczeń opuścił rozmowę!', 'Ok')
                 updateLectures(school, grade, undefined, undefined, undefined, false)
             })
             updateLectures(school, grade, undefined, localStream, undefined, true)
         } catch (error) {
-            setFeedbackData('Wystąpił niespodziewany problem przy rozpoczynaniu wykładu!', 'Ok')
+            setFeedbackData(
+                'Wystąpił niespodziewany problem przy rozpoczynaniu indywidualnego wykładu!',
+                'Ok'
+            )
         }
     }
     return (

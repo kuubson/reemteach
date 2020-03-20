@@ -16,7 +16,7 @@ export default async (req, res, next) => {
             image: req.file
                 ? process.env.NODE_ENV === 'development'
                     ? `http://localhost:3001/uploads/${req.user.id}/${req.file.filename}`
-                    : `https://flirt-app-test.herokuapp.com/uploads/${req.user.id}/${req.file.filename}`
+                    : `https://reemteach.herokuapp.com/uploads/${req.user.id}/${req.file.filename}`
                 : ''
         })
         res.send({

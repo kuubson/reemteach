@@ -48,4 +48,6 @@ router.post(
     Services.updateGeolocation.default
 )
 
+router.get('/student/getSchoolBells', authWithJwt, Services.getSchoolBells.default)
+
 export default router

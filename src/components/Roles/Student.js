@@ -42,12 +42,16 @@ const Student = ({
             pathname: '/uczeń/profil'
         },
         {
-            option: 'Lista wykładów',
-            pathname: '/uczeń/lista-wykładów'
-        },
-        {
             option: 'Dołącz do testu',
             pathname: '/uczeń/test'
+        },
+        {
+            option: 'Lista indywidualnych wykładów',
+            pathname: '/uczeń/lista-indywidualnych-wykładów'
+        },
+        {
+            option: 'Rozkład dzwonków',
+            pathname: '/uczeń/rozkład-dzwonków'
         }
     ])
     useEffect(() => {

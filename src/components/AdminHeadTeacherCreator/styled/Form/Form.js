@@ -2,7 +2,7 @@ import styled from 'styled-components/macro'
 
 export default styled.form`
     width: 450px;
-    margin-top: 80px;
+    margin-top: ${({ withLessMargin }) => (withLessMargin ? 30 : 80)}px;
     @media (max-width: 1050px) {
         width: 400px;
     }

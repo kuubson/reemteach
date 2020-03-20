@@ -49,9 +49,11 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
     }, [])
     useEffect(() => {
         socket.on('studentLeavesTest', id => {
-            const { name, surname } = students.find(student => student.id === id)
-            setFeedbackData(`Uczeń ${name} ${surname} opuścił test!`, 'Ok')
-            setStudents(students.filter(student => student.id !== id))
+            const student = students.find(student => student.id === id)
+            if (student) {
+                setFeedbackData(`Uczeń ${student.name} ${student.surname} opuścił test!`, 'Ok')
+                setStudents(students.filter(student => student.id !== id))
+            }
         })
         socket.on('newStudent', student => setStudents([...students, student]))
         socket.on('receiveTest', id => updateStudent(id, true))
@@ -61,6 +63,13 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
             socket.removeListener('receiveTest')
         }
     }, [students])
+    const sendTestNotification = async (school, grade) => {
+        const url = '/api/teacher/sendtestNotification'
+        await delayedApiAxios.post(url, {
+            school,
+            grade
+        })
+    }
     const updateStudent = (id, hasTest) =>
         setStudents(
             students.map(student =>
@@ -203,7 +212,14 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
                                               .grades.map(({ grade }) => grade)
                                         : schools.map(({ name }) => name)
                                 }
-                                onChange={school ? setGrade : setSchool}
+                                onChange={
+                                    school
+                                        ? grade => {
+                                              setGrade(grade)
+                                              sendTestNotification(school, grade)
+                                          }
+                                        : setSchool
+                                }
                             />
                         </AHTCForm.Form>
                     </>

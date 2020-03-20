@@ -45,7 +45,7 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
                 localStream.getTracks().map(track => track.stop())
                 setStudent(new RTCPeerConnection())
                 socket.emit('leaveRoom', room)
-                setFeedbackData('Nauczyciel zakończył wykład!', 'Ok')
+                setFeedbackData('Nauczyciel zakończył rozmowę!', 'Ok')
             }
             setLectures(lectures.filter(lecture => lecture.socketId !== socketId))
         })
@@ -54,7 +54,7 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
             localStream.getTracks().map(track => track.stop())
             setStudent(new RTCPeerConnection())
             socket.emit('leaveRoom', room)
-            setFeedbackData('Nauczyciel zakończył wykład!', 'Ok')
+            setFeedbackData('Nauczyciel zakończył rozmowę!', 'Ok')
         })
         return () => {
             socket.removeListener('finishLecture')
@@ -94,7 +94,7 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
             }
             socket.emit('checkRoom', room, async isRoomTaken => {
                 if (isRoomTaken) {
-                    setFeedbackData('Wykład jest już zajęty przez innego ucznia!', 'Ok')
+                    setFeedbackData('Nauczyciel prowadzi już rozmowę z innym uczniem!', 'Ok')
                 } else {
                     const localStream = await mediaDevices.getUserMedia({
                         video: true,
@@ -115,7 +115,10 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
                 }
             })
         } catch (error) {
-            setFeedbackData('Wystąpił niespodziewany problem przy dołączaniu do wykładu!', 'Ok')
+            setFeedbackData(
+                'Wystąpił niespodziewany problem przy dołączaniu do indywidualnego wykładu!',
+                'Ok'
+            )
         }
     }
     return (
@@ -149,8 +152,9 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
                     {lectures.length > 0 ? (
                         lectures.map(({ lecturer: { id, name, surname, room } }) => (
                             <div key={id}>
+                                <HTPComposed.Detail label="Id prowadzącego" value={id} />
                                 <HTPComposed.Detail
-                                    label="Wykładowca"
+                                    label="Prowadzący"
                                     value={`${name} ${surname}`}
                                 />
                                 <AHTCForm.Submit onClick={() => joinLecture(room)} withLessMargin>
@@ -160,7 +164,7 @@ const StudentLecturesList = ({ socket, shouldMenuAppear }) => {
                         ))
                     ) : (
                         <AHTLDashboard.Warning>
-                            Aktualnie nie jest prowadzony żaden wykład!
+                            Aktualnie nie jest prowadzony żaden indywidualny wykład!
                         </AHTLDashboard.Warning>
                     )}
                 </AHTLDashboard.DetailsContainer>

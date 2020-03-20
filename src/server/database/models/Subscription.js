@@ -17,10 +17,6 @@ export default sequelize => {
             auth: {
                 type: STRING,
                 allowNull: false
-            },
-            isActivated: {
-                type: BOOLEAN,
-                defaultValue: true
             }
         },
         {

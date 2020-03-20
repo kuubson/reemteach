@@ -93,4 +93,20 @@ router.post(
     Services.getTest.default
 )
 
+router.post(
+    '/teacher/sendTestNotification',
+    authWithJwt,
+    Services.sendTestNotification.validation(),
+    checkValidationResult,
+    Services.sendTestNotification.default
+)
+
+router.post(
+    '/teacher/sendLectureNotification',
+    authWithJwt,
+    Services.sendLectureNotification.validation(),
+    checkValidationResult,
+    Services.sendLectureNotification.default
+)
+
 export default router

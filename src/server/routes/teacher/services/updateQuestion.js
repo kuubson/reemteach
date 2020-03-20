@@ -5,7 +5,17 @@ import { Op, ApiError, detectSanitization, baseUrl } from '@utils'
 
 export default async (req, res, next) => {
     try {
-        const { id, content, answerA, answerB, answerC, answerD, properAnswer, image } = req.body
+        const {
+            id,
+            subject,
+            content,
+            answerA,
+            answerB,
+            answerC,
+            answerD,
+            properAnswer,
+            image
+        } = req.body
         const [question] = await req.user.getQuestions({
             where: {
                 id
@@ -25,6 +35,7 @@ export default async (req, res, next) => {
                 }
             } catch (error) {}
             await question.update({
+                subject,
                 content,
                 answerA,
                 answerB,
@@ -34,7 +45,7 @@ export default async (req, res, next) => {
                 image: req.file
                     ? process.env.NODE_ENV === 'development'
                         ? `http://localhost:3001/uploads/${req.user.id}/${req.file.filename}`
-                        : `https://flirt-app-test.herokuapp.com/uploads/${req.user.id}/${req.file.filename}`
+                        : `https://reemteach.herokuapp.com/uploads/${req.user.id}/${req.file.filename}`
                     : image
             })
             res.send({
@@ -58,6 +69,31 @@ export const validation = () => [
         .bail()
         .isInt()
         .escape(),
+    check('subject')
+        .trim()
+        .notEmpty()
+        .withMessage('Zaznacz przedmiot pytania!')
+        .bail()
+        .custom(detectSanitization)
+        .withMessage('Przedmiot pytania zawiera niedozwolone znaki!')
+        .bail()
+        .isIn([
+            'Religia',
+            'Język polski',
+            'Język angielski',
+            'Język niemiecki',
+            'Język rosyjski',
+            'Język francuski',
+            'Matematyka',
+            'Fizyka',
+            'Biologia',
+            'Chemia',
+            'Geografia',
+            'Wiedza o społeczeństwie',
+            'Historia',
+            'Informatyka'
+        ])
+        .withMessage('Zaznacz poprawny przedmiot pytania!'),
     check('content')
         .trim()
         .notEmpty()

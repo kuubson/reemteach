@@ -18,7 +18,7 @@ const FeedbackHandlerContainer = styled.div`
     position: fixed;
     top: 0px;
     left: 0px;
-    z-index: 3;
+    z-index: 4;
 `
 
 const FeedbackHandler = ({

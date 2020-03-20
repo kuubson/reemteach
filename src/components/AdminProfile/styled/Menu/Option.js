@@ -5,6 +5,8 @@ export default styled.li`
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
+    line-height: 1.5;
+    text-align: center;
     margin-bottom: 35px;
     :last-of-type {
         margin-bottom: 0px;

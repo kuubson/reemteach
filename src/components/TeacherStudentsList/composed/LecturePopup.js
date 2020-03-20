@@ -19,7 +19,7 @@ const LecturePopupContainer = styled.div`
     left: 50%;
     transform: translate(-50%, 0%);
     transition: transform 0.7s ease-in-out, top 0.7s ease-in-out;
-    z-index: 1;
+    z-index: 3;
     ${({ shouldSlideIn }) => {
         if (shouldSlideIn)
             return css`
@@ -85,7 +85,7 @@ const LecturePopup = ({
                     </>
                 ) : (
                     <StyledLecturePopup.Warning>
-                        Uczeń nie dołączył jeszcze do wykładu!
+                        Uczeń nie dołączył jeszcze do rozmowy!
                     </StyledLecturePopup.Warning>
                 )}
                 {student && (

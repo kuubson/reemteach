@@ -39,6 +39,7 @@ import TeacherTestCreator from './TeacherTestCreator/TeacherTestCreator'
 import StudentProfile from './StudentProfile/StudentProfile'
 import StudentLecturesList from './StudentLecturesList/StudentLecturesList'
 import StudentTest from './StudentTest/StudentTest'
+import StudentSchoolBellsList from './StudentSchoolBellsList/StudentSchoolBellsList'
 
 setConfig({
     reloadHooks: false
@@ -225,7 +226,16 @@ const App = ({
             )
         },
         {
-            pathname: '/uczeń/lista-wykładów',
+            pathname: '/uczeń/test',
+            order: 3,
+            render: () => (
+                <Roles.Student>
+                    <StudentTest />
+                </Roles.Student>
+            )
+        },
+        {
+            pathname: '/uczeń/lista-indywidualnych-wykładów',
             order: 3,
             render: () => (
                 <Roles.Student>
@@ -234,11 +244,11 @@ const App = ({
             )
         },
         {
-            pathname: '/uczeń/test',
-            order: 3,
+            pathname: '/uczeń/rozkład-dzwonków',
+            order: 4,
             render: () => (
                 <Roles.Student>
-                    <StudentTest />
+                    <StudentSchoolBellsList />
                 </Roles.Student>
             )
         },
