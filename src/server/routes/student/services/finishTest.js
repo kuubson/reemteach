@@ -25,6 +25,10 @@ export default async (req, res, next) => {
             }
         })
         const { grade } = gradingSystem.find(({ from, to }) => result >= from && result <= to)
+        await req.user.createResult({
+            grade,
+            questions: questions.map(({ id }) => id).join()
+        })
         res.send({
             grade
         })

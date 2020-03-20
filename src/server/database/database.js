@@ -16,6 +16,7 @@ const Grade = connection.import('./models/Grade')
 const GradingSystem = connection.import('./models/GradingSystem')
 const Teacher = connection.import('./models/Teacher')
 const Question = connection.import('./models/Question')
+const Result = connection.import('./models/Result')
 const Student = connection.import('./models/Student')
 const Subscription = connection.import('./models/Subscription')
 
@@ -30,6 +31,9 @@ Teacher.belongsToMany(School, { through: 'composedSchools' })
 
 Teacher.hasMany(Question)
 Question.belongsTo(Teacher)
+
+Student.hasMany(Result)
+Result.belongsTo(Student)
 
 Teacher.hasMany(GradingSystem)
 GradingSystem.belongsTo(Teacher)
@@ -67,6 +71,7 @@ export {
     GradingSystem,
     Teacher,
     Question,
+    Result,
     Student,
     Subscription
 }

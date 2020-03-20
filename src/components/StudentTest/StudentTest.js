@@ -34,7 +34,16 @@ const StudentTest = ({ socket, shouldMenuAppear }) => {
                 `Nauczyciel ${teacher} przesłał Ci test z liczbą pytań wynoszącą: ${questions.length}!`,
                 'Ok'
             )
-            setQuestions(questions)
+            const shuffleArray = array => {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1))
+                    const temp = array[i]
+                    array[i] = array[j]
+                    array[j] = temp
+                }
+                return array
+            }
+            setQuestions(shuffleArray(questions))
             socket.emit('receiveTest')
         })
         socket.emit('joinTest')
@@ -126,7 +135,7 @@ const StudentTest = ({ socket, shouldMenuAppear }) => {
                                     <HTPComposed.Detail label="Odpowiedź C" value={answerC} />
                                     <HTPComposed.Detail label="Odpowiedź D" value={answerD} />
                                     <HTSCComposed.Select
-                                        id="answer"
+                                        id={content}
                                         label="Twoja odpowiedź"
                                         value={answer}
                                         placeholder="Zaznacz Twoją odpowiedź..."

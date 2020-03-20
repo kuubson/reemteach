@@ -9,6 +9,7 @@ import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
 import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
 import HForm from '@components/Home/styled/Form'
 import StyledFileInput from '@components/TeacherQuestionCreator/styled/FileInput'
+import StyledMenu from '@components/AdminProfile/styled/Menu'
 import Dashboard from './styled/Dashboard'
 
 import HTPComposed from '@components/HeadTeacherProfile/composed'
@@ -575,6 +576,29 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                         </AHTLDashboard.DetailsContainer>
                     ) : (
                         <>
+                            <StyledMenu.Button
+                                onClick={() =>
+                                    setConfirmationPopupData(
+                                        'Czy napewno chcesz wyczyścić wszystkie zaznaczone pytania do testu?',
+                                        'Tak',
+                                        'Nie',
+                                        () => {
+                                            setTest([])
+                                            setQuestions(
+                                                questions.map(question => {
+                                                    return {
+                                                        ...question,
+                                                        isSelected: false
+                                                    }
+                                                })
+                                            )
+                                        }
+                                    )
+                                }
+                                right
+                            >
+                                Wyczyść
+                            </StyledMenu.Button>
                             <APDashboard.Header>Zaznacz przedmiot pytań</APDashboard.Header>
                             <AHTCForm.Form>
                                 <HTSCComposed.Select

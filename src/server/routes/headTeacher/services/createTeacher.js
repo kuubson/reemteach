@@ -31,14 +31,9 @@ export default async (req, res, next) => {
                     password,
                     gradingSystems: [
                         {
-                            grade: '6',
-                            from: 99,
-                            to: 100
-                        },
-                        {
                             grade: '5',
                             from: 91,
-                            to: 98
+                            to: 100
                         },
                         {
                             grade: '4',
