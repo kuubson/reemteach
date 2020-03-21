@@ -76,12 +76,12 @@ const Teacher = ({
                         setMenuOptions([
                             ...menuOptions,
                             {
-                                option: 'Czat',
-                                pathname: '/nauczyciel/czat'
-                            },
-                            {
                                 option: 'Utwórz test',
                                 pathname: '/nauczyciel/tworzenie-testu'
+                            },
+                            {
+                                option: 'Czat',
+                                pathname: '/nauczyciel/czat'
                             },
                             {
                                 option: 'Lista szkół',
