@@ -51,6 +51,14 @@ const Teacher = ({
         {
             option: 'Utwórz pytanie',
             pathname: '/nauczyciel/tworzenie-pytania'
+        },
+        {
+            option: 'Czat z nauczycielami',
+            pathname: '/nauczyciel/czat-z-nauczycielami'
+        },
+        {
+            option: 'Czat z uczniami',
+            pathname: '/nauczyciel/czat-z-uczniami'
         }
     ])
     useEffect(() => {

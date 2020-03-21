@@ -1,7 +1,6 @@
 import { check } from 'express-validator'
-import moment from 'moment'
 
-import { GradingSystem, Student } from '@database'
+import { GradingSystem } from '@database'
 
 import { detectSanitization } from '@utils'
 

@@ -595,6 +595,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                         }
                                     )
                                 }
+                                visible
                                 right
                             >
                                 Wyczyść

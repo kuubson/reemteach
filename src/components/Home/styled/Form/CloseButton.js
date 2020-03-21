@@ -12,17 +12,27 @@ const CloseButtonContainer = styled.button`
     @media (max-width: 500px) {
         font-size: 18px;
     }
-    ${({ withBoxShadow }) => {
+    ${({ withBoxShadow, left }) => {
         if (withBoxShadow)
             return css`
                 filter: drop-shadow(0px 0px 1px black);
             `
+        if (left)
+            return css`
+                right: auto;
+                left: 20px;
+            `
     }}
 `
 
-const CloseButton = ({ onClick, black, withBoxShadow }) => {
+const CloseButton = ({ onClick, black, withBoxShadow, left }) => {
     return (
-        <CloseButtonContainer onClick={onClick} black={black} withBoxShadow={withBoxShadow}>
+        <CloseButtonContainer
+            onClick={onClick}
+            black={black}
+            withBoxShadow={withBoxShadow}
+            left={left}
+        >
             ✕
         </CloseButtonContainer>
     )

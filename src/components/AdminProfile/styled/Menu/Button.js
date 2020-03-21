@@ -31,7 +31,6 @@ export default styled.button`
         if (right)
             return css`
                 font-size: 9px;
-                opacity: 1;
                 left: auto;
                 right: 30px;
                 @media (max-width: 500px) {

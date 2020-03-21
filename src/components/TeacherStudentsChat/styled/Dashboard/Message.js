@@ -1,15 +1,18 @@
 import styled from 'styled-components/macro'
 
-export default styled.li`
-    color: white;
-    font-size: 12px;
+export default styled.p`
+    font-size: 13px;
     font-weight: 700;
-    cursor: pointer;
     line-height: 1.5;
-    text-align: center;
-    margin-bottom: 35px;
+    color: ${({ withTeacher }) => (withTeacher ? '#f24b4b' : 'black')};
+    text-align: left;
+    text-transform: initial;
+    margin-bottom: 10px;
     :last-of-type {
         margin-bottom: 0px;
+    }
+    @media (max-width: 1050px) {
+        font-size: 12px;
     }
     @media (max-width: 800px) {
         font-size: 11px;

@@ -314,7 +314,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                         ))
                     ) : (
                         <AHTLDashboard.Warning>
-                            Nie należysz do żadnej szkoły!
+                            Nie należysz jeszcze do żadnej szkoły!
                         </AHTLDashboard.Warning>
                     )}
                 </AHTLDashboard.DetailsContainer>

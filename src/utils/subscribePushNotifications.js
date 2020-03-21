@@ -16,7 +16,7 @@ const handleSubscribtion = async (url, serviceWorker) => {
         const { pushManager } = await serviceWorker.ready
         if (!pushManager) {
             return setFeedbackData(
-                'Twoja przeglądarka nie wspiera powiadomień! Nie będziesz otrzymywał powiadomień z aktualnymi dzwonkami w szkole!',
+                'Twoja przeglądarka nie wspiera powiadomień! Nie będziesz otrzymywał powiadomień!',
                 'Ok'
             )
         }
@@ -35,7 +35,7 @@ export default async url => {
         const { permissions, serviceWorker } = navigator
         if (!permissions || !serviceWorker) {
             return setFeedbackData(
-                'Twoja przeglądarka nie wspiera powiadomień! Nie będziesz otrzymywał powiadomień z aktualnymi dzwonkami w szkole!',
+                'Twoja przeglądarka nie wspiera powiadomień! Nie będziesz otrzymywał powiadomień!',
                 'Ok'
             )
         }

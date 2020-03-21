@@ -127,4 +127,27 @@ router.post(
     Services.createSubscription.default
 )
 
+router.get(
+    '/teacher/getStudentsForChat',
+    authWithJwt,
+    checkForSchools,
+    Services.getStudentsForChat.default
+)
+
+router.post(
+    '/teacher/sendMessageForStudents',
+    authWithJwt,
+    Services.sendMessageForStudents.validation(),
+    checkValidationResult,
+    Services.sendMessageForStudents.default
+)
+
+router.post(
+    '/teacher/getMessages',
+    authWithJwt,
+    Services.getMessages.validation(),
+    checkValidationResult,
+    Services.getMessages.default
+)
+
 export default router

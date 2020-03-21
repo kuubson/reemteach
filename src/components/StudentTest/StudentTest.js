@@ -97,6 +97,7 @@ const StudentTest = ({ socket, shouldMenuAppear }) => {
             if (response) {
                 const { grade } = response.data
                 setGrade(grade)
+                setQuestions([])
                 window.scrollTo(0, 0)
             }
         }
@@ -108,7 +109,7 @@ const StudentTest = ({ socket, shouldMenuAppear }) => {
             ) : testMode ? (
                 questions.length > 0 ? (
                     <AHTLDashboard.DetailsContainer>
-                        <StyledMenu.Button onClick={finishTest} right>
+                        <StyledMenu.Button onClick={finishTest} visible right>
                             Zakończ
                         </StyledMenu.Button>
                         {questions.map(

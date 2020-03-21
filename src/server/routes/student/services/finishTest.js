@@ -2,7 +2,7 @@ import { check } from 'express-validator'
 
 import webpush from 'web-push'
 
-import { GradingSystem, Question, Subscription } from '@database'
+import { School, GradingSystem, Question, Subscription } from '@database'
 
 import { detectSanitization } from '@utils'
 
@@ -45,6 +45,9 @@ export default async (req, res, next) => {
                 teacherId
             }
         })
+        const { grade: studentGrade, school } = await req.user.getGrade({
+            include: School
+        })
         subscriptions.map(subscription => {
             webpush
                 .sendNotification(
@@ -57,7 +60,7 @@ export default async (req, res, next) => {
                     },
                     JSON.stringify({
                         title: 'Reemteach',
-                        body: `Uczeń ${name} ${surname} z id ${id} zakończył test z oceną ${grade}!`,
+                        body: `Uczeń ${name} ${surname} z klasy ${studentGrade} (${school.name}) zakończył test z oceną ${grade}!`,
                         image: 'https://picsum.photos/1920/1080',
                         icon: 'https://picsum.photos/1920/1080'
                     })

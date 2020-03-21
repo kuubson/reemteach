@@ -25,7 +25,7 @@ const TeacherTestCreatorContainer = styled(APDashboard.Container)`
 `
 
 const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [schools, setSchools] = useState([])
     const [school, setSchool] = useState('')
     const [grade, setGrade] = useState('')
@@ -96,6 +96,7 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
                                             questions
                                         })
                                     }}
+                                    visible
                                     right
                                 >
                                     Wyślij
@@ -136,6 +137,7 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
                                     students => setStudents(students)
                                 )
                             }}
+                            visible
                             right
                         >
                             Dalej

@@ -19,6 +19,7 @@ const Question = connection.import('./models/Question')
 const Result = connection.import('./models/Result')
 const Student = connection.import('./models/Student')
 const Subscription = connection.import('./models/Subscription')
+const Message = connection.import('./models/Message')
 
 HeadTeacher.hasOne(School)
 School.belongsTo(HeadTeacher)
@@ -50,6 +51,12 @@ Subscription.belongsTo(Student)
 Teacher.hasMany(Subscription)
 Subscription.belongsTo(Teacher)
 
+Student.hasMany(Message)
+Message.belongsTo(Student)
+
+Teacher.hasMany(Message)
+Message.belongsTo(Teacher)
+
 const initializeDatabaseConnection = async () => {
     try {
         // await connection.sync({ alter: true })
@@ -76,5 +83,6 @@ export {
     Question,
     Result,
     Student,
-    Subscription
+    Subscription,
+    Message
 }

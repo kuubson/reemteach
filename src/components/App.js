@@ -36,6 +36,7 @@ import TeacherQuestionsManager from './TeacherQuestionsManager/TeacherQuestionsM
 import TeacherQuestionsDatabase from './TeacherQuestionsDatabase/TeacherQuestionsDatabase'
 import TeacherTestCreator from './TeacherTestCreator/TeacherTestCreator'
 import TeacherGradingSystemManager from './TeacherGradingSystemManager/TeacherGradingSystemManager'
+import TeacherStudentsChat from './TeacherStudentsChat/TeacherStudentsChat'
 
 import StudentProfile from './StudentProfile/StudentProfile'
 import StudentLecturesList from './StudentLecturesList/StudentLecturesList'
@@ -223,6 +224,15 @@ const App = ({
             render: () => (
                 <Roles.Teacher>
                     <TeacherGradingSystemManager />
+                </Roles.Teacher>
+            )
+        },
+        {
+            pathname: '/nauczyciel/czat-z-uczniami',
+            order: 9,
+            render: () => (
+                <Roles.Teacher>
+                    <TeacherStudentsChat />
                 </Roles.Teacher>
             )
         },
