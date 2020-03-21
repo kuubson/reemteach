@@ -83,154 +83,162 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
         )
     return (
         <TeacherTestCreatorContainer withMenu={shouldMenuAppear}>
-            {!isLoading && isTestReady ? (
-                <>
-                    <AHTLDashboard.DetailsContainer>
-                        {students.length > 0 ? (
-                            <>
-                                <StyledMenu.Button
-                                    onClick={() => {
-                                        socket.emit('sendTest', {
-                                            school,
-                                            grade,
-                                            questions
-                                        })
-                                    }}
-                                    visible
-                                    right
-                                >
-                                    Wyślij
-                                </StyledMenu.Button>
-                                {students.map(({ id, name, surname, hasTest }) => (
-                                    <div key={id}>
-                                        <HTPComposed.Detail label="Id ucznia" value={id} />
-                                        <HTPComposed.Detail
-                                            label="Uczeń"
-                                            value={`${name} ${surname}`}
-                                        />
-                                        <HTPComposed.Detail
-                                            label="Otrzymał test"
-                                            value={hasTest ? 'Tak' : 'Nie'}
-                                        />
-                                    </div>
-                                ))}
-                            </>
-                        ) : (
-                            <AHTLDashboard.Warning>
-                                Do testu nie dołączył jeszcze żaden uczeń!
-                            </AHTLDashboard.Warning>
-                        )}
-                    </AHTLDashboard.DetailsContainer>
-                </>
-            ) : questions.length > 0 ? (
-                grade ? (
-                    <AHTLDashboard.DetailsContainer>
-                        <StyledMenu.Button
-                            onClick={() => {
-                                setIsTestReady(true)
-                                socket.emit(
-                                    'getStudents',
-                                    {
-                                        school,
-                                        grade
-                                    },
-                                    students => setStudents(students)
-                                )
-                            }}
-                            visible
-                            right
-                        >
-                            Dalej
-                        </StyledMenu.Button>
-                        {questions.map(
-                            ({
-                                id,
-                                content,
-                                answerA,
-                                answerB,
-                                answerC,
-                                answerD,
-                                properAnswer,
-                                image
-                            }) => (
-                                <TQMDashboard.DetailOuterContainer key={id}>
-                                    <HTPComposed.Detail label="Id pytania" value={id} />
-                                    {image && (
-                                        <StyledFileInput.ImageContainer>
-                                            <StyledFileInput.Image src={image} />
-                                        </StyledFileInput.ImageContainer>
-                                    )}
-                                    <HTPComposed.Detail label="Treść pytania" value={content} />
-                                    <HTPComposed.Detail label="Odpowiedź A" value={answerA} />
-                                    <HTPComposed.Detail label="Odpowiedź B" value={answerB} />
-                                    <HTPComposed.Detail label="Odpowiedź C" value={answerC} />
-                                    <HTPComposed.Detail label="Odpowiedź D" value={answerD} />
-                                    <HTPComposed.Detail id="properAnswer" value={properAnswer} />
-                                    <AHTLDashboard.ButtonsContainer>
-                                        <AHTLDashboard.Button
-                                            onClick={() => {
-                                                setConfirmationPopupData(
-                                                    `Czy napewno chcesz usunąć pytanie o id ${id} z testu?`,
-                                                    'Tak',
-                                                    'Nie',
-                                                    () => {
-                                                        setQuestions(
-                                                            questions.filter(
-                                                                question => question.id !== id
-                                                            )
-                                                        )
-                                                        setTest(
-                                                            test.filter(
-                                                                ({ id: questionId }) =>
-                                                                    questionId !== id
-                                                            )
-                                                        )
-                                                    }
-                                                )
-                                            }}
-                                        >
-                                            Usuń z testu
-                                        </AHTLDashboard.Button>
-                                    </AHTLDashboard.ButtonsContainer>
-                                </TQMDashboard.DetailOuterContainer>
-                            )
-                        )}
-                    </AHTLDashboard.DetailsContainer>
-                ) : (
+            {!isLoading &&
+                (isTestReady ? (
                     <>
-                        <APDashboard.Header>
-                            Zaznacz {school ? 'klasę' : 'szkołę'}
-                        </APDashboard.Header>
-                        <AHTCForm.Form>
-                            <HTSCComposed.Select
-                                id={school ? 'grade' : 'school'}
-                                label={school ? 'Klasa' : 'Szkoła'}
-                                value={grade}
-                                placeholder={`Zaznacz ${school ? 'klasę' : 'szkołę'}...`}
-                                options={
-                                    school
-                                        ? schools
-                                              .find(({ name }) => name === school)
-                                              .grades.map(({ grade }) => grade)
-                                        : schools.map(({ name }) => name)
-                                }
-                                onChange={
-                                    school
-                                        ? grade => {
-                                              setGrade(grade)
-                                              sendTestNotification(school, grade)
-                                          }
-                                        : setSchool
-                                }
-                            />
-                        </AHTCForm.Form>
+                        <AHTLDashboard.DetailsContainer>
+                            {students.length > 0 ? (
+                                <>
+                                    <StyledMenu.Button
+                                        onClick={() => {
+                                            socket.emit('sendTest', {
+                                                school,
+                                                grade,
+                                                questions
+                                            })
+                                        }}
+                                        visible
+                                        right
+                                    >
+                                        Wyślij
+                                    </StyledMenu.Button>
+                                    {students.map(({ id, name, surname, hasTest }) => (
+                                        <div key={id}>
+                                            <HTPComposed.Detail label="Id ucznia" value={id} />
+                                            <HTPComposed.Detail
+                                                label="Uczeń"
+                                                value={`${name} ${surname}`}
+                                            />
+                                            <HTPComposed.Detail
+                                                label="Otrzymał test"
+                                                value={hasTest ? 'Tak' : 'Nie'}
+                                            />
+                                        </div>
+                                    ))}
+                                </>
+                            ) : (
+                                <AHTLDashboard.Warning>
+                                    Do testu nie dołączył jeszcze żaden uczeń!
+                                </AHTLDashboard.Warning>
+                            )}
+                        </AHTLDashboard.DetailsContainer>
                     </>
-                )
-            ) : (
-                <AHTLDashboard.Warning>
-                    Nie dodałeś jeszcze żadnego pytania do testu!
-                </AHTLDashboard.Warning>
-            )}
+                ) : questions.length > 0 ? (
+                    grade ? (
+                        <AHTLDashboard.DetailsContainer>
+                            <StyledMenu.Button
+                                onClick={() => {
+                                    setIsTestReady(true)
+                                    socket.emit(
+                                        'getStudents',
+                                        {
+                                            school,
+                                            grade
+                                        },
+                                        students => setStudents(students)
+                                    )
+                                }}
+                                visible
+                                right
+                            >
+                                Dalej
+                            </StyledMenu.Button>
+                            {questions.map(
+                                ({
+                                    id,
+                                    content,
+                                    answerA,
+                                    answerB,
+                                    answerC,
+                                    answerD,
+                                    properAnswer,
+                                    image
+                                }) => (
+                                    <TQMDashboard.DetailOuterContainer key={id}>
+                                        <HTPComposed.Detail label="Id pytania" value={id} />
+                                        {image && (
+                                            <StyledFileInput.ImageContainer>
+                                                <StyledFileInput.Image src={image} />
+                                            </StyledFileInput.ImageContainer>
+                                        )}
+                                        <HTPComposed.Detail label="Treść pytania" value={content} />
+                                        <HTPComposed.Detail label="Odpowiedź A" value={answerA} />
+                                        <HTPComposed.Detail label="Odpowiedź B" value={answerB} />
+                                        <HTPComposed.Detail label="Odpowiedź C" value={answerC} />
+                                        <HTPComposed.Detail label="Odpowiedź D" value={answerD} />
+                                        <HTPComposed.Detail
+                                            id="properAnswer"
+                                            value={properAnswer}
+                                        />
+                                        <AHTLDashboard.ButtonsContainer>
+                                            <AHTLDashboard.Button
+                                                onClick={() => {
+                                                    setConfirmationPopupData(
+                                                        `Czy napewno chcesz usunąć pytanie o id ${id} z testu?`,
+                                                        'Tak',
+                                                        'Nie',
+                                                        () => {
+                                                            setQuestions(
+                                                                questions.filter(
+                                                                    question => question.id !== id
+                                                                )
+                                                            )
+                                                            setTest(
+                                                                test.filter(
+                                                                    ({ id: questionId }) =>
+                                                                        questionId !== id
+                                                                )
+                                                            )
+                                                        }
+                                                    )
+                                                }}
+                                            >
+                                                Usuń z testu
+                                            </AHTLDashboard.Button>
+                                        </AHTLDashboard.ButtonsContainer>
+                                    </TQMDashboard.DetailOuterContainer>
+                                )
+                            )}
+                        </AHTLDashboard.DetailsContainer>
+                    ) : schools.length > 0 ? (
+                        <>
+                            <APDashboard.Header>
+                                Zaznacz {school ? 'klasę' : 'szkołę'}
+                            </APDashboard.Header>
+                            <AHTCForm.Form>
+                                <HTSCComposed.Select
+                                    id={school ? 'grade' : 'school'}
+                                    label={school ? 'Klasa' : 'Szkoła'}
+                                    value={grade}
+                                    placeholder={`Zaznacz ${school ? 'klasę' : 'szkołę'}...`}
+                                    options={
+                                        school
+                                            ? schools
+                                                  .find(({ name }) => name === school)
+                                                  .grades.map(({ grade }) => grade)
+                                            : schools.map(({ name }) => name)
+                                    }
+                                    onChange={
+                                        school
+                                            ? grade => {
+                                                  setGrade(grade)
+                                                  sendTestNotification(school, grade)
+                                              }
+                                            : setSchool
+                                    }
+                                />
+                            </AHTCForm.Form>
+                        </>
+                    ) : (
+                        <AHTLDashboard.Warning>
+                            Nie należysz jeszcze do żadnej szkoły w której są utworzone klasy!
+                        </AHTLDashboard.Warning>
+                    )
+                ) : (
+                    <AHTLDashboard.Warning>
+                        Nie dodałeś jeszcze żadnego pytania do testu!
+                    </AHTLDashboard.Warning>
+                ))}
         </TeacherTestCreatorContainer>
     )
 }

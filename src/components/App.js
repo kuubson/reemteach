@@ -42,6 +42,7 @@ import StudentProfile from './StudentProfile/StudentProfile'
 import StudentLecturesList from './StudentLecturesList/StudentLecturesList'
 import StudentTest from './StudentTest/StudentTest'
 import StudentSchoolBellsList from './StudentSchoolBellsList/StudentSchoolBellsList'
+import StudentChat from './StudentChat/StudentChat'
 
 setConfig({
     reloadHooks: false
@@ -228,7 +229,7 @@ const App = ({
             )
         },
         {
-            pathname: '/nauczyciel/czat-z-uczniami',
+            pathname: '/nauczyciel/czat',
             order: 9,
             render: () => (
                 <Roles.Teacher>
@@ -269,6 +270,15 @@ const App = ({
             render: () => (
                 <Roles.Student>
                     <StudentSchoolBellsList />
+                </Roles.Student>
+            )
+        },
+        {
+            pathname: '/uczeń/czat',
+            order: 4,
+            render: () => (
+                <Roles.Student>
+                    <StudentChat />
                 </Roles.Student>
             )
         },

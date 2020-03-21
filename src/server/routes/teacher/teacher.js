@@ -135,11 +135,11 @@ router.get(
 )
 
 router.post(
-    '/teacher/sendMessageForStudents',
+    '/teacher/sendMessage',
     authWithJwt,
-    Services.sendMessageForStudents.validation(),
+    Services.sendMessage.validation(),
     checkValidationResult,
-    Services.sendMessageForStudents.default
+    Services.sendMessage.default
 )
 
 router.post(

@@ -20,4 +20,10 @@ export default styled.p`
     @media (max-width: 600px) {
         font-size: 10px;
     }
+    span {
+        text-transform: initial;
+        color: black;
+        white-space: pre-line;
+        word-break: break-all;
+    }
 `

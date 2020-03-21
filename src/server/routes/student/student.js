@@ -58,4 +58,14 @@ router.post(
     Services.finishTest.default
 )
 
+router.get('/student/getMessages', authWithJwt, Services.getMessages.default)
+
+router.post(
+    '/student/sendMessage',
+    authWithJwt,
+    Services.sendMessage.validation(),
+    checkValidationResult,
+    Services.sendMessage.default
+)
+
 export default router

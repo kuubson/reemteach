@@ -6,6 +6,8 @@ import { getCookie } from '@utils'
 
 let lectures = []
 let takenRooms = []
+let teachers = []
+let studentsForTest = []
 let students = []
 
 const getLectures = (school, grade) =>
@@ -89,8 +91,14 @@ export default io => {
         }
     })
     teacherIo.on('connection', socket => {
-        const { id, name, surname } = socket.teacher
+        const { id, name, surname, email } = socket.teacher
         const room = `${id} ${name} ${surname}`
+        if (!teachers.some(teacher => teacher.id === id)) {
+            teachers.push({
+                id
+            })
+            studentIo.emit('updateOnlineTeachers', teachers)
+        }
         socket.on('startLecture', ({ school, grade }) => {
             if (!lectures.some(({ lecturer }) => lecturer.id === id)) {
                 socket.join(room)
@@ -107,6 +115,19 @@ export default io => {
                 })
                 studentIo.to(grade).emit('updateLectures', getLectures(school, grade))
             }
+        })
+        socket.on('getOnlineStudents', returnOnlineStudents => returnOnlineStudents(students))
+        socket.on('joinRoom', room => socket.join(room))
+        socket.on('leaveRoom', room => socket.leave(room))
+        socket.on('sendMessage', ({ school, grade, content }) => {
+            studentIo.to(`${school} ${grade}`).emit('sendMessage', {
+                content,
+                teacher: {
+                    name,
+                    surname,
+                    email
+                }
+            })
         })
         socket.on('answer', answer => studentIo.emit('answer', answer))
         socket.on('candidate', candidate => studentIo.emit('candidate', candidate))
@@ -130,7 +151,9 @@ export default io => {
         socket.on('getStudents', ({ school, grade }, returnStudents) => {
             socket.join(`${school} ${grade}`)
             returnStudents(
-                students.filter(student => student.school === school && student.grade === grade)
+                studentsForTest.filter(
+                    student => student.school === school && student.grade === grade
+                )
             )
         })
         socket.on('sendTest', ({ school, grade, questions }) => {
@@ -150,6 +173,8 @@ export default io => {
                 socketId: socket.id,
                 room
             })
+            teachers = teachers.filter(teacher => teacher.id !== id)
+            studentIo.emit('updateOnlineTeachers', teachers)
         })
     })
     studentIo.on('connection', socket => {
@@ -157,15 +182,33 @@ export default io => {
             id,
             name,
             surname,
+            nick,
             grade: { grade, school }
         } = socket.student
         const room = `${school.name} ${grade}`
+        if (!students.some(student => student.id === id)) {
+            students.push({
+                id
+            })
+            teacherIo.emit('updateOnlineStudents', students)
+        }
+        socket.on('sendMessage', ({ content }) => {
+            teacherIo.to(room).emit('sendMessage', {
+                content,
+                student: {
+                    name,
+                    surname,
+                    nick
+                }
+            })
+        })
         socket.join(room)
         socket.on('getLectures', sendLectures => {
             const { grade, school } = socket.student.grade
             socket.join(grade)
             sendLectures(getLectures(school.name, grade))
         })
+        socket.on('getOnlineTeachers', returnOnlineTeachers => returnOnlineTeachers(teachers))
         socket.on('checkRoom', (room, callback) => {
             if (takenRooms.some(takenRoom => takenRoom === room)) {
                 callback(true)
@@ -191,7 +234,7 @@ export default io => {
         })
         socket.on('candidate', candidate => teacherIo.emit('candidate', candidate))
         socket.on('joinTest', () => {
-            if (!students.some(student => student.id === id)) {
+            if (!studentsForTest.some(student => student.id === id)) {
                 const student = {
                     id,
                     name,
@@ -199,13 +242,13 @@ export default io => {
                     school: school.name,
                     grade
                 }
-                students.push(student)
+                studentsForTest.push(student)
                 teacherIo.to(room).emit('newStudent', student)
             }
         })
         socket.on('receiveTest', () => teacherIo.to(room).emit('receiveTest', id))
         socket.on('leaveTest', () => {
-            students = students.filter(student => student.id !== id)
+            studentsForTest = studentsForTest.filter(student => student.id !== id)
             teacherIo.emit('studentLeavesTest', id)
         })
         socket.on('disconnect', () => {
@@ -213,8 +256,10 @@ export default io => {
                 name,
                 surname
             })
+            studentsForTest = studentsForTest.filter(student => student.id !== id)
             students = students.filter(student => student.id !== id)
             teacherIo.emit('studentLeavesTest', id)
+            teacherIo.emit('updateOnlineStudents', students)
         })
     })
 }

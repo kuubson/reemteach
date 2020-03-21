@@ -4,6 +4,8 @@ export default styled.p`
     color: white;
     font-size: 12px;
     text-transform: initial;
+    white-space: pre-line;
+    word-break: keep-all;
     font-weight: 700;
     line-height: 1.5;
     text-align: center;

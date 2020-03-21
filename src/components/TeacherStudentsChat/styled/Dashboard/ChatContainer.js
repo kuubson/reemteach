@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components/macro'
 export default styled.div`
     width: 100%;
     height: 100%;
-    transition: width 0.8s ease-in-out;
+    transition: width 0.7s ease-in-out;
     padding: 114.8px 30px 50px 30px;
     position: absolute;
     bottom: 0px;

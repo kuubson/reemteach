@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components/macro'
 export default styled.section`
     width: 100%;
     padding: 50px 30px;
-    transition: width 0.8s ease-in-out, margin-left 0.8s ease-in-out, padding 0.8s ease-in-out;
+    transition: width 0.7s ease-in-out, margin-left 0.7s ease-in-out, padding 0.7s ease-in-out;
     @media (max-width: 850px) {
         padding: 126.4px 30px 50px 30px;
     }

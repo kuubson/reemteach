@@ -1,10 +1,9 @@
 import { check } from 'express-validator'
-
 import webpush from 'web-push'
 
 import { School, GradingSystem, Question, Subscription } from '@database'
 
-import { detectSanitization } from '@utils'
+import { ApiError, detectSanitization } from '@utils'
 
 const { NODEMAILER_USERNAME, REACT_APP_PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY } = process.env
 
@@ -16,7 +15,10 @@ webpush.setVapidDetails(
 
 export default async (req, res, next) => {
     try {
-        const { id, name, surname } = req.user
+        const { name, surname, isActivated } = req.user
+        if (!isActivated) {
+            throw new ApiError('Uzupełnij najpierw swoje dane!', 409)
+        }
         const { questions } = req.body
         const foundQuestions = await Question.findAll({
             where: {

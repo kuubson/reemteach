@@ -15,7 +15,7 @@ export default async (req, res, next) => {
             include: [
                 {
                     model: Teacher,
-                    attributes: ['id', 'name', 'surname']
+                    attributes: ['id', 'email', 'name', 'surname']
                 },
                 {
                     model: Student,

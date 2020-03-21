@@ -6,6 +6,6 @@ export default styled.div`
     align-items: center;
     margin-bottom: 25px;
     :last-of-type {
-        margin-bottom: 0px;
+        margin-bottom: 35px;
     }
 `
