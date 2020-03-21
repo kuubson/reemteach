@@ -8,6 +8,7 @@ import adapter from 'webrtc-adapter'
 
 import { store, persistor } from '@redux'
 
+import 'leaflet/dist/leaflet.css'
 import '@styles/fontello/css/fontello.css'
 import theme from '@styles/theme'
 import 'destyle.css'

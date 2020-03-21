@@ -11,6 +11,6 @@ export default styled.form`
     }
     @media (max-width: 600px) {
         width: 100%;
-        margin-top: 60px;
+        margin-top: ${({ withLessMargin }) => (withLessMargin ? 0 : 60)}px;
     }
 `

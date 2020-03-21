@@ -37,6 +37,7 @@ import TeacherQuestionsDatabase from './TeacherQuestionsDatabase/TeacherQuestion
 import TeacherTestCreator from './TeacherTestCreator/TeacherTestCreator'
 import TeacherGradingSystemManager from './TeacherGradingSystemManager/TeacherGradingSystemManager'
 import TeacherStudentsChat from './TeacherStudentsChat/TeacherStudentsChat'
+import TeacherStudentsMap from './TeacherStudentsMap/TeacherStudentsMap'
 
 import StudentProfile from './StudentProfile/StudentProfile'
 import StudentLecturesList from './StudentLecturesList/StudentLecturesList'
@@ -234,6 +235,15 @@ const App = ({
             render: () => (
                 <Roles.Teacher>
                     <TeacherStudentsChat />
+                </Roles.Teacher>
+            )
+        },
+        {
+            pathname: '/nauczyciel/mapa-uczniów',
+            order: 9,
+            render: () => (
+                <Roles.Teacher>
+                    <TeacherStudentsMap />
                 </Roles.Teacher>
             )
         },

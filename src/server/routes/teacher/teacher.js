@@ -127,12 +127,7 @@ router.post(
     Services.createSubscription.default
 )
 
-router.get(
-    '/teacher/getStudentsForChat',
-    authWithJwt,
-    checkForSchools,
-    Services.getStudentsForChat.default
-)
+router.get('/teacher/getGrades', authWithJwt, checkForSchools, Services.getGrades.default)
 
 router.post(
     '/teacher/sendMessage',

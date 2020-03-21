@@ -61,13 +61,13 @@ const TeacherGradingSystemManager = ({ shouldMenuAppear }) => {
                     const currentTo = currentGradingSystem.to
                     const nextTo = nextGradingSystem.to
                     if (
-                        currentFrom < 0 ||
-                        currentFrom > 100 ||
-                        currentTo < 0 ||
-                        currentTo > 100 ||
-                        currentTo < currentFrom ||
-                        currentFrom <= nextTo ||
-                        currentFrom - nextTo > 1
+                        parseInt(currentFrom) < 0 ||
+                        parseInt(currentFrom) > 100 ||
+                        parseInt(currentTo) < 0 ||
+                        parseInt(currentTo) > 100 ||
+                        parseInt(currentTo) < parseInt(currentFrom) ||
+                        parseInt(currentFrom) <= parseInt(nextTo) ||
+                        parseInt(currentFrom) - parseInt(nextTo) > 1
                     ) {
                         isValidated = false
                         return {
@@ -98,8 +98,9 @@ const TeacherGradingSystemManager = ({ shouldMenuAppear }) => {
                 gradingSystem
             })
             if (response) {
-                const { successMessage } = response.data
+                const { successMessage, gradingSystem } = response.data
                 setFeedbackData(successMessage, 'Ok')
+                setGradingSystem(gradingSystem)
             }
         }
     }

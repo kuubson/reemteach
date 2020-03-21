@@ -44,7 +44,10 @@ export default async (req, res, next) => {
                         },
                         JSON.stringify({
                             title: 'Reemteach',
-                            body: `Nauczyciel ${name} ${surname} rozpoczął właśnie indywidualny wykład! Dołącz do niego jeśli masz jakieś pytania / problemy w nauce!`,
+                            body: `Nauczyciel ${name.substring(0, 8)} ${surname.substring(
+                                0,
+                                8
+                            )} rozpoczął właśnie indywidualny wykład! Dołącz do niego jeśli masz jakieś pytania / problemy w nauce!`,
                             image: 'https://picsum.photos/1920/1080',
                             icon: 'https://picsum.photos/1920/1080',
                             data: {

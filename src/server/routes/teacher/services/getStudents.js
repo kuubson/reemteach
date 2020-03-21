@@ -1,4 +1,4 @@
-import { Grade, Student } from '@database'
+import { Grade, Student, Result } from '@database'
 
 export default async (req, res, next) => {
     try {
@@ -8,7 +8,16 @@ export default async (req, res, next) => {
                     model: Grade,
                     include: {
                         model: Student,
-                        attributes: ['id', 'email', 'name', 'surname', 'age', 'nick', 'isActivated']
+                        attributes: [
+                            'id',
+                            'email',
+                            'name',
+                            'surname',
+                            'age',
+                            'nick',
+                            'isActivated'
+                        ],
+                        include: Result
                     }
                 }
             ],

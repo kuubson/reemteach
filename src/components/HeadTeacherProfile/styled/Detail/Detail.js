@@ -4,6 +4,9 @@ export default styled.p`
     width: 100%;
     overflow: hidden;
     margin: 20px auto 0px auto;
+    max-width: 300px;
+    text-overflow: ellipsis;
+    overflow: hidden;
     white-space: pre-line;
     word-break: keep-all;
     font-size: 15px;
@@ -15,6 +18,7 @@ export default styled.p`
     }
     @media (max-width: 500px) {
         width: 100%;
+        max-width: 200px;
         font-size: 13px;
     }
 `

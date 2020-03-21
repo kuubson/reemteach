@@ -12,7 +12,15 @@ export default async (req, res, next) => {
                         attributes: ['grade'],
                         include: {
                             model: Student,
-                            attributes: ['id', 'email', 'name', 'surname', 'nick', 'isActivated']
+                            attributes: [
+                                'id',
+                                'email',
+                                'name',
+                                'surname',
+                                'nick',
+                                'geolocation',
+                                'isActivated'
+                            ]
                         }
                     }
                 ],

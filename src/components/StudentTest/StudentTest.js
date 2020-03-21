@@ -163,7 +163,7 @@ const StudentTest = ({ socket, shouldMenuAppear }) => {
                             id="testMode"
                             label="Sposób rozwiązywania testu"
                             placeholder="Zaznacz sposób rozwiązywania testu..."
-                            options={['Standardowy', 'Z pomocą głosową']}
+                            options={['Standardowy']}
                             onChange={setTestMode}
                         />
                     </AHTCForm.Form>

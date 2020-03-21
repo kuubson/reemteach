@@ -55,6 +55,10 @@ const Teacher = ({
         {
             option: 'Czat',
             pathname: '/nauczyciel/czat'
+        },
+        {
+            option: 'Mapa uczniów',
+            pathname: '/nauczyciel/mapa-uczniów'
         }
     ])
     useEffect(() => {

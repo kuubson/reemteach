@@ -3,6 +3,10 @@ import styled from 'styled-components/macro'
 export default styled.p`
     font-size: 13px;
     font-weight: 700;
+    max-width: 500px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
     line-height: 1.5;
     color: ${({ withTeacher }) => (withTeacher ? '#f24b4b' : 'black')};
     text-align: left;
@@ -19,6 +23,10 @@ export default styled.p`
     }
     @media (max-width: 600px) {
         font-size: 10px;
+        max-width: 250px;
+    }
+    @media (max-width: 500px) {
+        max-width: 200px;
     }
     span {
         text-transform: initial;

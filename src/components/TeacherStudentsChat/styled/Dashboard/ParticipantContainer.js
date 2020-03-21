@@ -5,6 +5,7 @@ export default styled.div`
     justify-content: center;
     align-items: center;
     margin-bottom: 25px;
+    position: relative;
     :last-of-type {
         margin-bottom: 35px;
     }

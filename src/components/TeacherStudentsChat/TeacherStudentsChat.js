@@ -16,7 +16,7 @@ import HTSCComposed from '@components/HeadTeacherSchoolCreator/composed'
 
 import { delayedApiAxios, apiAxios, handleApiError } from '@utils'
 
-const TeacherTestCreatorContainer = styled(APDashboard.Container)`
+const TeacherStudentsChatContainer = styled(APDashboard.Container)`
     height: 100vh;
     position: relative;
     display: flex;
@@ -25,7 +25,7 @@ const TeacherTestCreatorContainer = styled(APDashboard.Container)`
     flex-direction: column;
 `
 
-const TeacherTestCreator = ({ socket, shouldMenuAppear, setShouldMenuAppear }) => {
+const TeacherStudentsChat = ({ socket, shouldMenuAppear, setShouldMenuAppear }) => {
     const messagesEnd = useRef()
     const [isLoading, setIsLoading] = useState(true)
     const [shouldParticipantsListAppear, setShouldParticipantsListAppear] = useState(false)
@@ -38,8 +38,8 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, setShouldMenuAppear }) =
     const [message, setMessage] = useState('')
     const [onlineStudents, setOnlineStudents] = useState([])
     useEffect(() => {
-        const getStudentsForChat = async () => {
-            const url = '/api/teacher/getStudentsForChat'
+        const getGrades = async () => {
+            const url = '/api/teacher/getGrades'
             const response = await delayedApiAxios.get(url)
             if (response) {
                 setIsLoading(false)
@@ -48,7 +48,7 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, setShouldMenuAppear }) =
                 setSchools(schools)
             }
         }
-        getStudentsForChat()
+        getGrades()
         socket.emit('getOnlineStudents', onlineStudents => setOnlineStudents(onlineStudents))
     }, [])
     useEffect(() => {
@@ -132,7 +132,7 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, setShouldMenuAppear }) =
         }
     }
     return (
-        <TeacherTestCreatorContainer withMenu={shouldMenuAppear}>
+        <TeacherStudentsChatContainer withMenu={shouldMenuAppear}>
             {!isLoading &&
                 (schools.length > 0 ? (
                     grade ? (
@@ -320,8 +320,8 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, setShouldMenuAppear }) =
                         Nie należysz jeszcze do żadnej szkoły w której są utworzone klasy!
                     </AHTLDashboard.Warning>
                 ))}
-        </TeacherTestCreatorContainer>
+        </TeacherStudentsChatContainer>
     )
 }
 
-export default compose(withSocket, withMenu)(TeacherTestCreator)
+export default compose(withSocket, withMenu)(TeacherStudentsChat)

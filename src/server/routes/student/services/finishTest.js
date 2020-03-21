@@ -62,7 +62,12 @@ export default async (req, res, next) => {
                     },
                     JSON.stringify({
                         title: 'Reemteach',
-                        body: `Uczeń ${name} ${surname} z klasy ${studentGrade} (${school.name}) zakończył test z oceną ${grade}!`,
+                        body: `Uczeń ${name.substring(0, 8)} ${surname.substring(
+                            0,
+                            8
+                        )} z klasy ${studentGrade} (${
+                            school.name
+                        }) zakończył test z oceną ${grade}!`,
                         image: 'https://picsum.photos/1920/1080',
                         icon: 'https://picsum.photos/1920/1080'
                     })

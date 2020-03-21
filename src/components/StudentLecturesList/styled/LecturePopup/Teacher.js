@@ -4,6 +4,9 @@ export default styled.p`
     font-weight: 800;
     color: white;
     font-size: 13px;
+    max-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
     filter: drop-shadow(0px 0px 1px black);
     position: absolute;
     bottom: 25px;

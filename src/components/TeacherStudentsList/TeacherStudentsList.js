@@ -28,6 +28,7 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
     const [teacher, setTeacher] = useState(new RTCPeerConnection())
     const [schools, setSchools] = useState([])
     const [students, setStudents] = useState([])
+    const [results, setResults] = useState([])
     const [lectures, setLectures] = useState([])
     const [localStream, setLocalStream] = useState()
     useEffect(() => {
@@ -253,28 +254,71 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                 <AHTLDashboard.DetailsContainer>
                     {students.length > 0 ? (
                         <>
-                            <HForm.CloseButton onClick={() => setStudents([])} black />
-                            {students.map(
-                                ({ id, email, name, surname, age, nick, isActivated }) => (
-                                    <div key={id}>
-                                        <HTPComposed.Detail label="E-mail" value={email} />
-                                        {isActivated && (
-                                            <>
-                                                <HTPComposed.Detail label="Imię" value={name} />
-                                                <HTPComposed.Detail
-                                                    label="Nazwisko"
-                                                    value={surname}
-                                                />
-                                                <HTPComposed.Detail label="Wiek" value={age} />
-                                                <HTPComposed.Detail
-                                                    label="Pseudonim"
-                                                    value={nick}
-                                                />
-                                            </>
-                                        )}
-                                    </div>
-                                )
-                            )}
+                            <HForm.CloseButton
+                                onClick={() => {
+                                    if (results.length > 0) {
+                                        setResults([])
+                                    } else {
+                                        setStudents([])
+                                    }
+                                }}
+                                black
+                            />
+                            {results.length > 0
+                                ? results.map(({ id, grade, questions, createdAt }) => (
+                                      <div key={id}>
+                                          <HTPComposed.Detail label="Ocena" value={grade} />
+                                          <HTPComposed.Detail label="Id pytań" value={questions} />
+                                          <HTPComposed.Detail
+                                              label="Data otrzymania"
+                                              value={new Date(createdAt).toLocaleString()}
+                                          />
+                                      </div>
+                                  ))
+                                : students.map(
+                                      ({
+                                          id,
+                                          email,
+                                          name,
+                                          surname,
+                                          age,
+                                          nick,
+                                          isActivated,
+                                          results
+                                      }) => (
+                                          <div key={id}>
+                                              <HTPComposed.Detail label="E-mail" value={email} />
+                                              {isActivated && (
+                                                  <>
+                                                      <HTPComposed.Detail
+                                                          label="Imię"
+                                                          value={name}
+                                                      />
+                                                      <HTPComposed.Detail
+                                                          label="Nazwisko"
+                                                          value={surname}
+                                                      />
+                                                      <HTPComposed.Detail
+                                                          label="Wiek"
+                                                          value={age}
+                                                      />
+                                                      <HTPComposed.Detail
+                                                          label="Pseudonim"
+                                                          value={nick}
+                                                      />
+                                                      {results.length > 0 && (
+                                                          <AHTCForm.Submit
+                                                              onClick={() => setResults(results)}
+                                                              withLessMargin
+                                                          >
+                                                              Pokaż oceny
+                                                          </AHTCForm.Submit>
+                                                      )}
+                                                  </>
+                                              )}
+                                          </div>
+                                      )
+                                  )}
                         </>
                     ) : schools.length > 0 ? (
                         schools.map(({ id, name, grades }) => (

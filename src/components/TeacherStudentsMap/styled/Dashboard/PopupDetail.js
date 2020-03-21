@@ -1,20 +1,17 @@
 import styled from 'styled-components/macro'
 
-export default styled.p`
-    color: white;
-    font-size: 12px;
+export default styled.div`
+    min-width: 150px;
     max-width: 200px;
-    overflow: hidden;
+    height: 100%;
+    padding: 15px 20px;
     text-overflow: ellipsis;
+    overflow: hidden;
+    color: white;
     text-transform: initial;
     white-space: pre-line;
-    word-break: keep-all;
-    font-weight: 700;
-    line-height: 1.5;
     text-align: center;
-    @media (max-width: 800px) {
-        font-size: 11px;
-    }
+    font-weight: 800;
     @media (max-width: 500px) {
         font-size: 10px;
     }
