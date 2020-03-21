@@ -3,7 +3,7 @@ import webpush from 'web-push'
 
 import { School, GradingSystem, Question, Subscription } from '@database'
 
-import { ApiError, detectSanitization } from '@utils'
+import { detectSanitization } from '@utils'
 
 const { NODEMAILER_USERNAME, REACT_APP_PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY } = process.env
 
@@ -15,10 +15,7 @@ webpush.setVapidDetails(
 
 export default async (req, res, next) => {
     try {
-        const { name, surname, isActivated } = req.user
-        if (!isActivated) {
-            throw new ApiError('Uzupełnij najpierw swoje dane!', 409)
-        }
+        const { name, surname } = req.user
         const { questions } = req.body
         const foundQuestions = await Question.findAll({
             where: {

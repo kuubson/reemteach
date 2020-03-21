@@ -43,6 +43,10 @@ const Student = ({
             pathname: '/uczeń/profil'
         },
         {
+            option: 'Czat',
+            pathname: '/uczeń/czat'
+        },
+        {
             option: 'Dołącz do testu',
             pathname: '/uczeń/test'
         },
@@ -53,10 +57,6 @@ const Student = ({
         {
             option: 'Rozkład dzwonków',
             pathname: '/uczeń/rozkład-dzwonków'
-        },
-        {
-            option: 'Czat',
-            pathname: '/uczeń/czat'
         }
     ])
     useEffect(() => {

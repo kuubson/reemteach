@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled, { css } from 'styled-components/macro'
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+import L from 'leaflet'
+import { Map, TileLayer, Popup } from 'react-leaflet'
 
 import { compose } from 'redux'
 import { withSocket, withMenu } from '@hoc'

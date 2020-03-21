@@ -13,6 +13,7 @@ import multer from './multer'
 import handleMulterErrors from './handleMulterErrors'
 import checkForSchool from './checkForSchool'
 import checkForSchools from './checkForSchools'
+import checkForGrade from './checkForGrade'
 
 import initializePassport from './passport'
 import initializeSocketio from '../socketio/socketio'
@@ -54,5 +55,6 @@ export {
     multer,
     handleMulterErrors,
     checkForSchool,
-    checkForSchools
+    checkForSchools,
+    checkForGrade
 }

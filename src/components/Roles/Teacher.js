@@ -51,14 +51,6 @@ const Teacher = ({
         {
             option: 'Utwórz pytanie',
             pathname: '/nauczyciel/tworzenie-pytania'
-        },
-        {
-            option: 'Czat',
-            pathname: '/nauczyciel/czat'
-        },
-        {
-            option: 'Mapa uczniów',
-            pathname: '/nauczyciel/mapa-uczniów'
         }
     ])
     useEffect(() => {
@@ -84,6 +76,10 @@ const Teacher = ({
                         setMenuOptions([
                             ...menuOptions,
                             {
+                                option: 'Czat',
+                                pathname: '/nauczyciel/czat'
+                            },
+                            {
                                 option: 'Utwórz test',
                                 pathname: '/nauczyciel/tworzenie-testu'
                             },
@@ -94,6 +90,10 @@ const Teacher = ({
                             {
                                 option: 'Lista uczniów',
                                 pathname: '/nauczyciel/lista-uczniów'
+                            },
+                            {
+                                option: 'Mapa uczniów',
+                                pathname: '/nauczyciel/mapa-uczniów'
                             },
                             {
                                 option: 'Utwórz ucznia',

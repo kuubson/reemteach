@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { rateLimiter, authWithJwt, checkValidationResult } from '@middlewares'
+import { rateLimiter, authWithJwt, checkValidationResult, checkForGrade } from '@middlewares'
 
 import Services from './services'
 
@@ -48,21 +48,23 @@ router.post(
     Services.updateGeolocation.default
 )
 
-router.get('/student/getSchoolBells', authWithJwt, Services.getSchoolBells.default)
+router.get('/student/getSchoolBells', authWithJwt, checkForGrade, Services.getSchoolBells.default)
 
 router.post(
     '/student/finishTest',
     authWithJwt,
+    checkForGrade,
     Services.finishTest.validation(),
     checkValidationResult,
     Services.finishTest.default
 )
 
-router.get('/student/getMessages', authWithJwt, Services.getMessages.default)
+router.get('/student/getMessages', authWithJwt, checkForGrade, Services.getMessages.default)
 
 router.post(
     '/student/sendMessage',
     authWithJwt,
+    checkForGrade,
     Services.sendMessage.validation(),
     checkValidationResult,
     Services.sendMessage.default

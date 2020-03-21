@@ -3,8 +3,6 @@ import webpush from 'web-push'
 
 import { School, Teacher, Subscription } from '@database'
 
-import { ApiError } from '@utils'
-
 const { NODEMAILER_USERNAME, REACT_APP_PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY } = process.env
 
 webpush.setVapidDetails(
@@ -15,10 +13,7 @@ webpush.setVapidDetails(
 
 export default async (req, res, next) => {
     try {
-        const { name, surname, isActivated } = req.user
-        if (!isActivated) {
-            throw new ApiError('Uzupełnij najpierw swoje dane!', 409)
-        }
+        const { name, surname } = req.user
         const { content } = req.body
         const grade = await req.user.getGrade({
             include: [
