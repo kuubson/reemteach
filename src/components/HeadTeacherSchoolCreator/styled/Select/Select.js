@@ -16,6 +16,6 @@ export default styled.div`
         color: black;
     }
     @media (max-width: 600px) {
-        font-size: 11px;
+        font-size: 10px;
     }
 `

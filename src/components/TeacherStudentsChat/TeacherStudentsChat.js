@@ -58,7 +58,7 @@ const TeacherStudentsChat = ({ socket, shouldMenuAppear, setShouldMenuAppear }) 
         if (messagesEnd.current) {
             setTimeout(() => {
                 messagesEnd.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
-            }, 0)
+            }, 700)
         }
     }, [messages])
     useEffect(() => {

@@ -287,6 +287,12 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                                           results
                                       }) => (
                                           <div key={id}>
+                                              {!isActivated && (
+                                                  <HTPComposed.Detail
+                                                      label="Status konta"
+                                                      value="Nieaktywowane"
+                                                  />
+                                              )}
                                               <HTPComposed.Detail label="E-mail" value={email} />
                                               {isActivated && (
                                                   <>
@@ -337,15 +343,19 @@ const TeacherStudentsList = ({ socket, shouldMenuAppear }) => {
                                                 <Dashboard.Warning>
                                                     W klasie {grade} nie ma jeszcze żadnego ucznia!
                                                 </Dashboard.Warning>
+                                            ) : students.some(student => student.isActivated) ? (
+                                                <AHTCForm.Submit
+                                                    onClick={() => startLecture(name, grade)}
+                                                    withLessMargin
+                                                >
+                                                    Rozpocznij wykład
+                                                </AHTCForm.Submit>
                                             ) : (
-                                                students.some(student => student.isActivated) && (
-                                                    <AHTCForm.Submit
-                                                        onClick={() => startLecture(name, grade)}
-                                                        withLessMargin
-                                                    >
-                                                        Rozpocznij wykład
-                                                    </AHTCForm.Submit>
-                                                )
+                                                <Dashboard.Warning>
+                                                    W klasie {grade} nie ma jeszcze żadnego ucznia z
+                                                    aktywnym kontem więc nie możesz jeszcze
+                                                    prowadzić wykładów!
+                                                </Dashboard.Warning>
                                             )}
                                         </Dashboard.DetailOuterContainer>
                                     ))

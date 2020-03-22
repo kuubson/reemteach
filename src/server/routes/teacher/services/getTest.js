@@ -1,6 +1,6 @@
 import { check } from 'express-validator'
 
-import { Grade } from '@database'
+import { Grade, Student } from '@database'
 
 export default async (req, res, next) => {
     try {
@@ -11,7 +11,11 @@ export default async (req, res, next) => {
                 include: [
                     {
                         model: Grade,
-                        attributes: ['grade']
+                        attributes: ['grade'],
+                        include: {
+                            model: Student,
+                            attributes: ['id']
+                        }
                     }
                 ]
             })

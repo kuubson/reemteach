@@ -31,6 +31,7 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
     const [grade, setGrade] = useState('')
     const [questions, setQuestions] = useState([])
     const [students, setStudents] = useState([])
+    const [onlineStudents, setOnlineStudents] = useState([])
     const [isTestReady, setIsTestReady] = useState(false)
     useEffect(() => {
         const getTest = async () => {
@@ -49,20 +50,20 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
     }, [])
     useEffect(() => {
         socket.on('studentLeavesTest', id => {
-            const student = students.find(student => student.id === id)
+            const student = onlineStudents.find(student => student.id === id)
             if (student) {
                 setFeedbackData(`Uczeń ${student.name} ${student.surname} opuścił test!`, 'Ok')
-                setStudents(students.filter(student => student.id !== id))
+                setOnlineStudents(onlineStudents.filter(student => student.id !== id))
             }
         })
-        socket.on('newStudent', student => setStudents([...students, student]))
+        socket.on('newStudent', student => setOnlineStudents([...onlineStudents, student]))
         socket.on('receiveTest', id => updateStudent(id, true))
         return () => {
             socket.removeListener('studentLeavesTest')
             socket.removeListener('newStudent')
             socket.removeListener('receiveTest')
         }
-    }, [students])
+    }, [onlineStudents])
     const sendTestNotification = async (school, grade) => {
         const url = '/api/teacher/sendtestNotification'
         await delayedApiAxios.post(url, {
@@ -71,8 +72,8 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
         })
     }
     const updateStudent = (id, hasTest) =>
-        setStudents(
-            students.map(student =>
+        setOnlineStudents(
+            onlineStudents.map(student =>
                 student.id === id
                     ? {
                           ...student,
@@ -88,37 +89,44 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
                     <>
                         <AHTLDashboard.DetailsContainer>
                             {students.length > 0 ? (
-                                <>
-                                    <StyledMenu.Button
-                                        onClick={() => {
-                                            socket.emit('sendTest', {
-                                                school,
-                                                grade,
-                                                questions
-                                            })
-                                        }}
-                                        visible
-                                        right
-                                    >
-                                        Wyślij
-                                    </StyledMenu.Button>
-                                    {students.map(({ id, name, surname, hasTest }) => (
-                                        <div key={id}>
-                                            <HTPComposed.Detail label="Id ucznia" value={id} />
-                                            <HTPComposed.Detail
-                                                label="Uczeń"
-                                                value={`${name} ${surname}`}
-                                            />
-                                            <HTPComposed.Detail
-                                                label="Otrzymał test"
-                                                value={hasTest ? 'Tak' : 'Nie'}
-                                            />
-                                        </div>
-                                    ))}
-                                </>
+                                onlineStudents.length > 0 ? (
+                                    <>
+                                        <StyledMenu.Button
+                                            onClick={() => {
+                                                socket.emit('sendTest', {
+                                                    school,
+                                                    grade,
+                                                    questions
+                                                })
+                                            }}
+                                            visible
+                                            right
+                                        >
+                                            Wyślij
+                                        </StyledMenu.Button>
+                                        {onlineStudents.map(({ id, name, surname, hasTest }) => (
+                                            <div key={id}>
+                                                <HTPComposed.Detail label="Id ucznia" value={id} />
+                                                <HTPComposed.Detail
+                                                    label="Uczeń"
+                                                    value={`${name} ${surname}`}
+                                                />
+                                                <HTPComposed.Detail
+                                                    label="Otrzymał test"
+                                                    value={hasTest ? 'Tak' : 'Nie'}
+                                                />
+                                            </div>
+                                        ))}
+                                    </>
+                                ) : (
+                                    <AHTLDashboard.Warning>
+                                        Do testu nie dołączył jeszcze żaden uczeń!
+                                    </AHTLDashboard.Warning>
+                                )
                             ) : (
                                 <AHTLDashboard.Warning>
-                                    Do testu nie dołączył jeszcze żaden uczeń!
+                                    W klasie {grade} w szkole {school} nie ma jeszcze żadnego ucznia
+                                    z aktywnym kontem!
                                 </AHTLDashboard.Warning>
                             )}
                         </AHTLDashboard.DetailsContainer>
@@ -135,7 +143,7 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
                                             school,
                                             grade
                                         },
-                                        students => setStudents(students)
+                                        onlineStudents => setOnlineStudents(onlineStudents)
                                     )
                                 }}
                                 visible
@@ -222,6 +230,13 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
                                         school
                                             ? grade => {
                                                   setGrade(grade)
+                                                  const foundSchool = schools.find(
+                                                      ({ name }) => name === school
+                                                  )
+                                                  const { students } = foundSchool.grades.find(
+                                                      schoolGrade => schoolGrade.grade === grade
+                                                  )
+                                                  setStudents(students)
                                                   sendTestNotification(school, grade)
                                               }
                                             : setSchool
