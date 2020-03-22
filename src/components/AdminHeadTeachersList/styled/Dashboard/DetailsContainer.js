@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled, { css } from 'styled-components/macro'
 
 export default styled.div`
     width: 100%;
@@ -12,4 +12,10 @@ export default styled.div`
     @media (max-width: 700px) {
         grid-template-columns: 1fr;
     }
+    ${({ fullContent }) => {
+        if (fullContent)
+            return css`
+                grid-template-columns: 1fr;
+            `
+    }}
 `

@@ -6,16 +6,12 @@ import { withMenu } from '@hoc'
 
 import APDashboard from '@components/AdminProfile/styled/Dashboard'
 import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
-import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
-import HForm from '@components/Home/styled/Form'
-import HTSBMDashboard from '@components/HeadTeacherSchoolBellsManager/styled/Dashboard'
 
 import HTPComposed from '@components/HeadTeacherProfile/composed'
-import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
 
 import { delayedApiAxios } from '@utils'
 
-const StudentResultsContainer = styled(APDashboard.Container)`
+const StudentGradesContainer = styled(APDashboard.Container)`
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -23,7 +19,7 @@ const StudentResultsContainer = styled(APDashboard.Container)`
     flex-direction: column;
 `
 
-const StudentResults = ({ shouldMenuAppear }) => {
+const StudentGrades = ({ shouldMenuAppear }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [results, setResults] = useState([])
     useEffect(() => {
@@ -39,7 +35,7 @@ const StudentResults = ({ shouldMenuAppear }) => {
         getResults()
     }, [])
     return (
-        <StudentResultsContainer withMenu={shouldMenuAppear}>
+        <StudentGradesContainer withMenu={shouldMenuAppear}>
             {!isLoading && (
                 <AHTLDashboard.DetailsContainer>
                     {results.length > 0 ? (
@@ -63,13 +59,13 @@ const StudentResults = ({ shouldMenuAppear }) => {
                         )
                     ) : (
                         <AHTLDashboard.Warning>
-                            Nie masz jeszcze żadnych ocen!
+                            Nie masz jeszcze żadnej oceny!
                         </AHTLDashboard.Warning>
                     )}
                 </AHTLDashboard.DetailsContainer>
             )}
-        </StudentResultsContainer>
+        </StudentGradesContainer>
     )
 }
 
-export default compose(withMenu)(StudentResults)
+export default compose(withMenu)(StudentGrades)

@@ -95,4 +95,15 @@ router.post(
     Services.updateTeacher.default
 )
 
+router.post(
+    '/headTeacher/createNews',
+    authWithJwt,
+    checkForSchool,
+    Services.createNews.validation(),
+    checkValidationResult,
+    Services.createNews.default
+)
+
+router.get('/headTeacher/getNews', authWithJwt, checkForSchool, Services.getNews.default)
+
 export default router

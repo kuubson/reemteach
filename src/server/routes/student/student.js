@@ -72,4 +72,6 @@ router.post(
 
 router.get('/student/getResults', authWithJwt, Services.getResults.default)
 
+router.get('/student/getNews', authWithJwt, Services.getNews.default)
+
 export default router

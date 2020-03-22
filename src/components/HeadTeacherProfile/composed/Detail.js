@@ -11,11 +11,13 @@ const DetailContainer = styled.div`
     }
 `
 
-const Detail = ({ label, value, onClick, withPointer }) => {
+const Detail = ({ label, value, onClick, withPointer, fullContent }) => {
     return (
         <DetailContainer withPointer={withPointer}>
             <StyledDetail.Label>{label}</StyledDetail.Label>
-            <StyledDetail.Detail onClick={onClick}>{value}</StyledDetail.Detail>
+            <StyledDetail.Detail onClick={onClick} fullContent={fullContent}>
+                {value}
+            </StyledDetail.Detail>
         </DetailContainer>
     )
 }

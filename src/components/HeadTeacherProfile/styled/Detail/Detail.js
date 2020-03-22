@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled, { css } from 'styled-components/macro'
 
 export default styled.p`
     width: 100%;
@@ -8,7 +8,6 @@ export default styled.p`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: pre-line;
-    word-break: keep-all;
     font-size: 15px;
     text-transform: initial;
     resize: none;
@@ -21,4 +20,19 @@ export default styled.p`
         max-width: 200px;
         font-size: 13px;
     }
+    ${({ fullContent }) => {
+        if (fullContent)
+            return css`
+                max-width: 700px;
+                @media (max-width: 1200px) {
+                    max-width: 500px;
+                }
+                @media (max-width: 1000px) {
+                    max-width: 100%;
+                }
+                text-overflow: initial;
+                overflow: initial;
+                word-break: break-all;
+            `
+    }}
 `

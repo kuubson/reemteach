@@ -55,6 +55,10 @@ const Student = ({
             pathname: '/uczeń/lista-indywidualnych-wykładów'
         },
         {
+            option: 'Aktualności',
+            pathname: '/uczeń/aktualności'
+        },
+        {
             option: 'Rozkład dzwonków',
             pathname: '/uczeń/rozkład-dzwonków'
         },

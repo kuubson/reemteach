@@ -1,4 +1,4 @@
-import { SchoolBell, HeadTeacher } from '@database'
+import { News, SchoolBell, HeadTeacher } from '@database'
 
 export default async (req, res, next) => {
     try {
@@ -12,8 +12,12 @@ export default async (req, res, next) => {
                 {
                     model: HeadTeacher,
                     attributes: ['email', 'name', 'surname']
+                },
+                {
+                    model: News
                 }
             ],
+            order: [[News, 'createdAt', 'DESC']],
             joinTableAttributes: []
         })
         res.send({

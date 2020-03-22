@@ -26,6 +26,8 @@ import HeadTeacherSchoolManager from './HeadTeacherSchoolManager/HeadTeacherScho
 import HeadTeacherSchoolBellsManager from './HeadTeacherSchoolBellsManager/HeadTeacherSchoolBellsManager'
 import HeadTeacherTeacherCreator from './HeadTeacherTeacherCreator/HeadTeacherTeacherCreator'
 import HeadTeacherTeachersList from './HeadTeacherTeachersList/HeadTeacherTeachersList'
+import HeadTeacherNewsCreator from './HeadTeacherNewsCreator/HeadTeacherNewsCreator'
+import HeadTeacherNewsList from './HeadTeacherNewsList/HeadTeacherNewsList'
 
 import TeacherProfile from './TeacherProfile/TeacherProfile'
 import TeacherStudentCreator from './TeacherStudentCreator/TeacherStudentCreator'
@@ -44,7 +46,8 @@ import StudentLecturesList from './StudentLecturesList/StudentLecturesList'
 import StudentTest from './StudentTest/StudentTest'
 import StudentSchoolBellsList from './StudentSchoolBellsList/StudentSchoolBellsList'
 import StudentChat from './StudentChat/StudentChat'
-import StudentResults from './StudentResults/StudentResults'
+import StudentGrades from './StudentGrades/StudentGrades'
+import StudentNewsList from './StudentNewsList/StudentNewsList'
 
 setConfig({
     reloadHooks: false
@@ -123,7 +126,7 @@ const App = ({
             )
         },
         {
-            pathname: '/dyrektor/zarządzanie-dzwonkami-w-szkole',
+            pathname: '/dyrektor/zarządzanie-dzwonkami',
             order: 5,
             render: () => (
                 <Roles.HeadTeacher>
@@ -146,6 +149,24 @@ const App = ({
             render: () => (
                 <Roles.HeadTeacher>
                     <HeadTeacherTeachersList />
+                </Roles.HeadTeacher>
+            )
+        },
+        {
+            pathname: '/dyrektor/lista-aktualności',
+            order: 7,
+            render: () => (
+                <Roles.HeadTeacher>
+                    <HeadTeacherNewsList />
+                </Roles.HeadTeacher>
+            )
+        },
+        {
+            pathname: '/dyrektor/tworzenie-aktualności',
+            order: 7,
+            render: () => (
+                <Roles.HeadTeacher>
+                    <HeadTeacherNewsCreator />
                 </Roles.HeadTeacher>
             )
         },
@@ -298,7 +319,16 @@ const App = ({
             order: 6,
             render: () => (
                 <Roles.Student>
-                    <StudentResults />
+                    <StudentGrades />
+                </Roles.Student>
+            )
+        },
+        {
+            pathname: '/uczeń/aktualności',
+            order: 6,
+            render: () => (
+                <Roles.Student>
+                    <StudentNewsList />
                 </Roles.Student>
             )
         },

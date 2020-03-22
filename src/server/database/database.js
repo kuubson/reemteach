@@ -11,6 +11,7 @@ const connection = new Sequelize(DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASS
 const Admin = connection.import('./models/Admin')
 const HeadTeacher = connection.import('./models/HeadTeacher')
 const School = connection.import('./models/School')
+const News = connection.import('./models/News')
 const SchoolBell = connection.import('./models/SchoolBell')
 const Grade = connection.import('./models/Grade')
 const GradingSystem = connection.import('./models/GradingSystem')
@@ -26,6 +27,9 @@ School.belongsTo(HeadTeacher)
 
 School.hasMany(SchoolBell)
 SchoolBell.belongsTo(School)
+
+School.hasMany(News)
+News.belongsTo(School)
 
 School.belongsToMany(Teacher, { through: 'composedSchools' })
 Teacher.belongsToMany(School, { through: 'composedSchools' })
@@ -62,8 +66,8 @@ Message.belongsTo(Teacher)
 
 const initializeDatabaseConnection = async () => {
     try {
-        // await connection.sync({ alter: true })
         // await connection.sync({ force: true })
+        // await connection.sync({ alter: true })
         await connection.sync()
         console.log('The database connection has been successfully established!')
     } catch (error) {
@@ -79,6 +83,7 @@ export {
     Admin,
     HeadTeacher,
     School,
+    News,
     SchoolBell,
     Grade,
     GradingSystem,

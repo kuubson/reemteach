@@ -28,7 +28,8 @@ const EditableDetail = ({
     onBlur,
     textarea,
     select,
-    trim
+    trim,
+    fullContent
 }) => {
     const textareaRef = useRef()
     const [shouldSelectAppear, setShouldSelectAppear] = useState(false)
@@ -57,6 +58,7 @@ const EditableDetail = ({
                 as={textarea ? 'textarea' : 'input'}
                 readOnly={select}
                 rows="1"
+                fullContent={fullContent}
             />
             {select && shouldSelectAppear && (
                 <HTSCComposed.Select
