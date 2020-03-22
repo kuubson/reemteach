@@ -88,8 +88,10 @@ export default async (req, res, next) => {
                                     0,
                                     10
                                 )} utworzył nową aktualność w szkole!`,
-                                image: 'https://picsum.photos/1920/1080',
-                                icon: 'https://picsum.photos/1920/1080',
+                                icon:
+                                    process.env.NODE_ENV === 'development'
+                                        ? `http://localhost:3001/uploads/Logo.png`
+                                        : `https://reemteach.herokuapp.com/uploads/Logo.png`,
                                 data: {
                                     url:
                                         process.env.NODE_ENV === 'development'

@@ -73,8 +73,10 @@ export default async (req, res, next) => {
                                         body: `W Twojej szkole rozpoczyna się właśnie ${
                                             isRecess ? 'przerwa' : 'lekcja'
                                         } od ${from} do ${to}`,
-                                        image: 'https://picsum.photos/1920/1080',
-                                        icon: 'https://picsum.photos/1920/1080'
+                                        icon:
+                                            process.env.NODE_ENV === 'development'
+                                                ? `http://localhost:3001/uploads/Logo.png`
+                                                : `https://reemteach.herokuapp.com/uploads/Logo.png`
                                     })
                                 )
                                 .catch(async ({ statusCode }) => {
