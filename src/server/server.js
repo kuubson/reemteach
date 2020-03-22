@@ -20,7 +20,8 @@ routes(app)
 
 errorsHandler(app)
 
-const developmentMode = (process.env.NODE_ENV = process.env.NODE_ENV || 'development')
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+const developmentMode = process.env.NODE_ENV === 'development'
 
 const buildPath = developmentMode ? '../../build' : '../build'
 const uploadsPath = developmentMode ? '../../uploads' : '../uploads'
