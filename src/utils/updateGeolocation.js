@@ -1,16 +1,22 @@
-import { delayedApiAxios, setIsLoading, setFeedbackData } from '@utils'
+import axios from 'axios'
+
+import { setIsLoading, setFeedbackData, handleApiError } from '@utils'
 
 const handleGeolocation = role =>
     navigator.geolocation.getCurrentPosition(
         async ({ coords: { latitude, longitude } }) => {
-            setIsLoading(true)
-            const url = `/api/${role}/updateGeolocation`
-            const response = await delayedApiAxios.post(url, {
-                latitude,
-                longitude
-            })
-            if (response) {
-                setIsLoading(false)
+            try {
+                setIsLoading(true)
+                const url = `/api/${role}/updateGeolocation`
+                const response = await axios.post(url, {
+                    latitude,
+                    longitude
+                })
+                if (response) {
+                    setIsLoading(false)
+                }
+            } catch (error) {
+                handleApiError(error)
             }
         },
         () => {
