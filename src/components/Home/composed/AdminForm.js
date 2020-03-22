@@ -11,7 +11,7 @@ import { apiAxios, redirectTo } from '@utils'
 const AdminFormContainer = styled(Form.FormsContainer)`
     top: 100%;
     left: 50%;
-    transform: translate(-50%, calc(0% + 5px));
+    transform: translate(-50%, calc(0% + 15px));
     ${({ shouldSlideIn, flipped }) => {
         if (flipped)
             return css`
