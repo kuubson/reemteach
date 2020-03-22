@@ -70,4 +70,6 @@ router.post(
     Services.sendMessage.default
 )
 
+router.get('/student/getResults', authWithJwt, Services.getResults.default)
+
 export default router

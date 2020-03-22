@@ -44,6 +44,7 @@ import StudentLecturesList from './StudentLecturesList/StudentLecturesList'
 import StudentTest from './StudentTest/StudentTest'
 import StudentSchoolBellsList from './StudentSchoolBellsList/StudentSchoolBellsList'
 import StudentChat from './StudentChat/StudentChat'
+import StudentResults from './StudentResults/StudentResults'
 
 setConfig({
     reloadHooks: false
@@ -285,10 +286,19 @@ const App = ({
         },
         {
             pathname: '/uczeń/czat',
-            order: 4,
+            order: 5,
             render: () => (
                 <Roles.Student>
                     <StudentChat />
+                </Roles.Student>
+            )
+        },
+        {
+            pathname: '/uczeń/oceny',
+            order: 6,
+            render: () => (
+                <Roles.Student>
+                    <StudentResults />
                 </Roles.Student>
             )
         },

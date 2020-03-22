@@ -46,7 +46,7 @@ export default async (req, res, next) => {
                         },
                         JSON.stringify({
                             title: 'Reemteach',
-                            body: `Uczeń ${name.substring(0, 8)} ${surname.substring(
+                            body: `Uczeń ${name.substring(0, 10)} ${surname.substring(
                                 0,
                                 8
                             )} z klasy ${grade.grade} (${school}) wysłał nową wiadomość!`,

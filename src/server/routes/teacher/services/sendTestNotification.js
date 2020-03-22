@@ -44,7 +44,7 @@ export default async (req, res, next) => {
                         },
                         JSON.stringify({
                             title: 'Reemteach',
-                            body: `Nauczyciel ${name.substring(0, 8)} ${surname.substring(
+                            body: `Nauczyciel ${name.substring(0, 10)} ${surname.substring(
                                 0,
                                 8
                             )} zaczął właśnie przygotowywać test!`,

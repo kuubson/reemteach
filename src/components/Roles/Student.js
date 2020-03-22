@@ -57,6 +57,10 @@ const Student = ({
         {
             option: 'Rozkład dzwonków',
             pathname: '/uczeń/rozkład-dzwonków'
+        },
+        {
+            option: 'Oceny',
+            pathname: '/uczeń/oceny'
         }
     ])
     useEffect(() => {

@@ -36,6 +36,9 @@ Question.belongsTo(Teacher)
 Student.hasMany(Result)
 Result.belongsTo(Student)
 
+Teacher.hasMany(Result)
+Result.belongsTo(Teacher)
+
 Teacher.hasMany(GradingSystem)
 GradingSystem.belongsTo(Teacher)
 

@@ -1,7 +1,7 @@
 import { check } from 'express-validator'
 import webpush from 'web-push'
 
-import { School, GradingSystem, Question, Subscription } from '@database'
+import { School, Teacher, GradingSystem, Question, Subscription } from '@database'
 
 import { detectSanitization } from '@utils'
 
@@ -35,10 +35,16 @@ export default async (req, res, next) => {
             }
         })
         const { grade } = gradingSystem.find(({ from, to }) => result >= from && result <= to)
-        await req.user.createResult({
+        const createdResult = await req.user.createResult({
             grade,
             questions: questions.map(({ id }) => id).join()
         })
+        const teacher = await Teacher.findOne({
+            where: {
+                id: teacherId
+            }
+        })
+        await createdResult.setTeacher(teacher)
         const subscriptions = await Subscription.findAll({
             where: {
                 teacherId
@@ -59,7 +65,7 @@ export default async (req, res, next) => {
                     },
                     JSON.stringify({
                         title: 'Reemteach',
-                        body: `Uczeń ${name.substring(0, 8)} ${surname.substring(
+                        body: `Uczeń ${name.substring(0, 10)} ${surname.substring(
                             0,
                             8
                         )} z klasy ${studentGrade} (${
