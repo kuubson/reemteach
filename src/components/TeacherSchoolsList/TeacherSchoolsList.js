@@ -142,12 +142,14 @@ const TeacherSchoolsList = ({ shouldMenuAppear }) => {
                                                 label="Rok utworzenia szkoły"
                                                 value={creationYear}
                                             />
-                                            <AHTCForm.Submit
-                                                onClick={() => setNews(news)}
-                                                withLessMargin
-                                            >
-                                                Pokaż aktualności
-                                            </AHTCForm.Submit>
+                                            {news.length > 0 && (
+                                                <AHTCForm.Submit
+                                                    onClick={() => setNews(news)}
+                                                    withLessMargin
+                                                >
+                                                    Pokaż aktualności
+                                                </AHTCForm.Submit>
+                                            )}
                                             <AHTCForm.Submit
                                                 onClick={() => setSchoolBells(schoolBells)}
                                                 withLessMargin
