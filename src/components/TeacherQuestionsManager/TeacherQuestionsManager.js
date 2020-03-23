@@ -328,6 +328,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                                 )
                                             }
                                             textarea
+                                            fullContent
                                         />
                                         <HTPComposed.EditableDetail
                                             label="Odpowiedź A"
@@ -358,6 +359,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                                 )
                                             }
                                             textarea
+                                            fullContent
                                         />
                                         <HTPComposed.EditableDetail
                                             label="Odpowiedź B"
@@ -388,6 +390,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                                 )
                                             }
                                             textarea
+                                            fullContent
                                         />
                                         <HTPComposed.EditableDetail
                                             label="Odpowiedź C"
@@ -418,6 +421,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                                 )
                                             }
                                             textarea
+                                            fullContent
                                         />
                                         <HTPComposed.EditableDetail
                                             label="Odpowiedź D"
@@ -448,6 +452,7 @@ const TeacherQuestionsManager = ({ shouldMenuAppear, test, setTest }) => {
                                                 )
                                             }
                                             textarea
+                                            fullContent
                                         />
                                         <HTPComposed.EditableDetail
                                             id="properAnswer"

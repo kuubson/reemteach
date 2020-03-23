@@ -372,6 +372,7 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                                 onChange={setDescription}
                                 onBlur={updateDetails}
                                 textarea
+                                fullContent
                             />
                             <HTPComposed.EditableDetail
                                 id="subject"
@@ -446,6 +447,7 @@ const TeacherProfile = ({ shouldMenuAppear }) => {
                                 error={descriptionError}
                                 onChange={setDescription}
                                 textarea
+                                fullContent
                             />
                             <HTSCComposed.Select
                                 id="subject"

@@ -232,6 +232,7 @@ const HeadTeacherSchoolManager = ({ shouldMenuAppear }) => {
                             onChange={setDescription}
                             onBlur={updateDetails}
                             textarea
+                            fullContent
                         />
                         <HTPComposed.EditableDetail
                             label="Adres szkoły"

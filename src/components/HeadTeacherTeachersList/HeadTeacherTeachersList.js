@@ -242,6 +242,7 @@ const HeadTeacherTeachersList = ({ shouldMenuAppear }) => {
                                                         )
                                                     }
                                                     textarea
+                                                    fullContent
                                                 />
                                                 <HTPComposed.EditableDetail
                                                     id="subject"
