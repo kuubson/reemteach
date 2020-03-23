@@ -71,6 +71,7 @@ const TeacherSchoolsList = ({ shouldMenuAppear }) => {
                         )}
                         {news.length > 0 && schoolBells.length <= 0 && (
                             <AHTLDashboard.DetailsContainer fullContent>
+                                <HForm.CloseButton onClick={() => setNews([])} black />
                                 {news.length > 0 ? (
                                     news.map(({ id, title, content, createdAt }) => {
                                         return (
