@@ -132,6 +132,7 @@ const TeacherSchoolsList = ({ shouldMenuAppear }) => {
                                             <HTPComposed.Detail
                                                 label="Opis szkoły"
                                                 value={description}
+                                                fullContent
                                             />
                                             <HTPComposed.Detail
                                                 label="Adres szkoły"
