@@ -106,4 +106,22 @@ router.post(
 
 router.get('/headTeacher/getNews', authWithJwt, checkForSchool, Services.getNews.default)
 
+router.post(
+    '/headTeacher/destroyNews',
+    authWithJwt,
+    checkForSchool,
+    Services.destroyNews.validation(),
+    checkValidationResult,
+    Services.destroyNews.default
+)
+
+router.post(
+    '/headTeacher/updateNews',
+    authWithJwt,
+    checkForSchool,
+    Services.updateNews.validation(),
+    checkValidationResult,
+    Services.updateNews.default
+)
+
 export default router
