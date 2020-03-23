@@ -15,7 +15,7 @@ webpush.setVapidDetails(
 
 export default async (req, res, next) => {
     try {
-        const { name, surname } = req.user
+        const { id, name, surname } = req.user
         const { teacherId, questions } = req.body
         const foundQuestions = await Question.findAll({
             where: {
@@ -23,6 +23,7 @@ export default async (req, res, next) => {
             }
         })
         const teacherIds = foundQuestions.map(({ teacherId }) => teacherId)
+        teacherIds.push(id)
         if (!teacherIds.includes(teacherId)) {
             throw new ApiError('Wystąpił niespodziewany problem przy zatwierdzaniu testu!')
         }
