@@ -162,6 +162,7 @@ export default io => {
                 return question
             })
             studentIo.to(`${school} ${grade}`).emit('sendTest', {
+                teacherId: id,
                 teacher: `${name} ${surname}`,
                 questions: questionsWithoutAnswer
             })

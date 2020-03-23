@@ -52,7 +52,7 @@ export default async (req, res, next) => {
                             title: 'Reemteach',
                             body: `Nauczyciel ${name.substring(0, 10)} ${surname.substring(
                                 0,
-                                8
+                                10
                             )} wysłał nową wiadomość!`,
                             icon:
                                 process.env.NODE_ENV === 'development'

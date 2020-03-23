@@ -3,7 +3,7 @@ import webpush from 'web-push'
 
 import { School, Teacher, GradingSystem, Question, Subscription } from '@database'
 
-import { detectSanitization } from '@utils'
+import { ApiError, detectSanitization } from '@utils'
 
 const { NODEMAILER_USERNAME, REACT_APP_PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY } = process.env
 
@@ -16,13 +16,16 @@ webpush.setVapidDetails(
 export default async (req, res, next) => {
     try {
         const { name, surname } = req.user
-        const { questions } = req.body
+        const { teacherId, questions } = req.body
         const foundQuestions = await Question.findAll({
             where: {
                 id: questions.map(({ id }) => id)
             }
         })
-        const [teacherId] = foundQuestions.map(({ teacherId }) => teacherId)
+        const teacherIds = foundQuestions.map(({ teacherId }) => teacherId)
+        if (!teacherIds.includes(teacherId)) {
+            throw new ApiError('Wystąpił niespodziewany problem przy zatwierdzaniu testu!')
+        }
         const results = questions.map(
             ({ answer }, index) => answer === foundQuestions[index].properAnswer
         )
@@ -67,7 +70,7 @@ export default async (req, res, next) => {
                         title: 'Reemteach',
                         body: `Uczeń ${name.substring(0, 10)} ${surname.substring(
                             0,
-                            8
+                            10
                         )} z klasy ${studentGrade} (${
                             school.name
                         }) zakończył test z oceną ${grade}!`,

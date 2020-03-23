@@ -27,13 +27,15 @@ const StudentTestContainer = styled(APDashboard.Container)`
 const StudentTest = ({ socket, shouldMenuAppear }) => {
     const [testMode, setTestMode] = useState('')
     const [questions, setQuestions] = useState([])
+    const [teacherId, setTeacherId] = useState('')
     const [grade, setGrade] = useState('')
     useEffect(() => {
-        socket.once('sendTest', ({ teacher, questions }) => {
+        socket.once('sendTest', ({ teacherId, teacher, questions }) => {
             setFeedbackData(
                 `Nauczyciel ${teacher} przesłał Ci test z liczbą pytań wynoszącą: ${questions.length}!`,
                 'Ok'
             )
+            setTeacherId(teacherId)
             const shuffleArray = array => {
                 for (let i = array.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1))
@@ -92,6 +94,7 @@ const StudentTest = ({ socket, shouldMenuAppear }) => {
         if (validate()) {
             const url = '/api/student/finishTest'
             const response = await apiAxios.post(url, {
+                teacherId,
                 questions
             })
             if (response) {
@@ -136,7 +139,7 @@ const StudentTest = ({ socket, shouldMenuAppear }) => {
                                     <HTPComposed.Detail label="Odpowiedź C" value={answerC} />
                                     <HTPComposed.Detail label="Odpowiedź D" value={answerD} />
                                     <HTSCComposed.Select
-                                        id={content}
+                                        id={`${content}${id}`}
                                         label="Twoja odpowiedź"
                                         value={answer}
                                         placeholder="Zaznacz Twoją odpowiedź..."
