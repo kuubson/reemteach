@@ -62,7 +62,10 @@ const TeacherStudentsChat = ({ shouldMenuAppear, setShouldMenuAppear }) => {
     }, [shouldMenuAppear, shouldMapMenuAppear])
     useEffect(() => {
         if (map.current) {
-            const markers = students.map(({ geolocation }) => new L.Marker(geolocation.split(',')))
+            const geolocations = students
+                .map(({ geolocation }) => geolocation)
+                .filter(geolocation => geolocation)
+            const markers = geolocations.map(geolocation => new L.Marker(geolocation.split(',')))
             if (markers.length > 0) {
                 const markersGroup = new L.featureGroup(markers)
                 map.current.leafletElement.fitBounds(markersGroup.getBounds(), {
