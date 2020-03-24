@@ -19,7 +19,8 @@ export default async (req, res, next) => {
                                 'surname',
                                 'nick',
                                 'geolocation',
-                                'isActivated'
+                                'isActivated',
+                                'updatedAt'
                             ]
                         }
                     }

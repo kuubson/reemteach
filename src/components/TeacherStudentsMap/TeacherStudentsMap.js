@@ -190,7 +190,7 @@ const TeacherStudentsChat = ({ shouldMenuAppear, setShouldMenuAppear }) => {
                                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                 />
                                 {students.map(
-                                    ({ id, name, surname, nick, geolocation }) =>
+                                    ({ id, name, surname, nick, geolocation, updatedAt }) =>
                                         geolocation && (
                                             <div key={id}>
                                                 <Popup
@@ -202,7 +202,9 @@ const TeacherStudentsChat = ({ shouldMenuAppear, setShouldMenuAppear }) => {
                                                 >
                                                     <Dashboard.PopupDetail>
                                                         {`${name} ${surname}
-                                                        ( ${nick} )`}
+                                                        ( ${nick} )
+                                                        
+                                                        ${new Date(updatedAt).toLocaleString()}`}
                                                     </Dashboard.PopupDetail>
                                                 </Popup>
                                             </div>

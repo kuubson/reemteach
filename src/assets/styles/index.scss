@@ -142,7 +142,9 @@ input:-webkit-autofill:active {
     .leaflet-popup-content-wrapper {
         background: #f24b4b;
         .leaflet-popup-content {
+            width: 100%;
             margin: 0px;
+            padding: 0px 10px;
         }
     }
     .leaflet-popup-tip {
