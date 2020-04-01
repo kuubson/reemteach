@@ -26,9 +26,9 @@ export default passport => {
                             }
                         })
                         if (!admin) {
-                            done(null, {})
+                            done(true, {})
                         } else {
-                            done(null, {
+                            done(false, {
                                 user: admin,
                                 role
                             })
@@ -47,9 +47,9 @@ export default passport => {
                             }
                         })
                         if (!headTeacher) {
-                            done(null, {})
+                            done(true, {})
                         } else {
-                            done(null, {
+                            done(false, {
                                 user: headTeacher,
                                 role
                             })
@@ -68,9 +68,9 @@ export default passport => {
                             }
                         })
                         if (!teacher) {
-                            done(null, {})
+                            done(true, {})
                         } else {
-                            done(null, {
+                            done(false, {
                                 user: teacher,
                                 role
                             })
@@ -89,9 +89,9 @@ export default passport => {
                             }
                         })
                         if (!student) {
-                            done(null, {})
+                            done(true, {})
                         } else {
-                            done(null, {
+                            done(false, {
                                 user: student,
                                 role
                             })
@@ -100,7 +100,7 @@ export default passport => {
                         done(true, {})
                     }
                 } else {
-                    done(null, {})
+                    done(true, {})
                 }
             }
         )
