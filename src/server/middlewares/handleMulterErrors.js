@@ -2,6 +2,8 @@ import { MulterError } from 'multer'
 
 import { multer } from '@middlewares'
 
+import { ApiError } from '@utils'
+
 export default image => (req, res, next) =>
     multer.single(image)(req, res, error => {
         switch (true) {

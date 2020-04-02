@@ -3,7 +3,7 @@ const rewireReactHotLoader = require('react-app-rewire-hot-loader')
 
 const resolve = directory => path.resolve(__dirname, directory)
 
-module.exports = function(config, env) {
+module.exports = (config, env) => {
     config = rewireReactHotLoader(config, env)
     config.resolve.alias = Object.assign(config.resolve.alias, {
         '@redux': resolve('src/redux/store'),
