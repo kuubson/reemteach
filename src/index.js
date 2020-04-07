@@ -35,4 +35,9 @@ ReactDOM.render(
     document.getElementById('root')
 )
 
-serviceWorker.register()
+serviceWorker.register({
+    onUpdate: async registration => {
+        await registration.unregister()
+        window.location.reload(true)
+    }
+})

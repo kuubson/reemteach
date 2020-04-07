@@ -26,7 +26,7 @@ export default passport => {
                             }
                         })
                         if (!admin) {
-                            done(true, {})
+                            done(false, {})
                         } else {
                             done(false, {
                                 user: admin,
@@ -34,7 +34,7 @@ export default passport => {
                             })
                         }
                     } catch (error) {
-                        done(true, {})
+                        done(false, {})
                     }
                 } else if (role === 'headTeacher') {
                     try {
@@ -47,7 +47,7 @@ export default passport => {
                             }
                         })
                         if (!headTeacher) {
-                            done(true, {})
+                            done(false, {})
                         } else {
                             done(false, {
                                 user: headTeacher,
@@ -55,7 +55,7 @@ export default passport => {
                             })
                         }
                     } catch (error) {
-                        done(true, {})
+                        done(false, {})
                     }
                 } else if (role === 'teacher') {
                     try {
@@ -68,7 +68,7 @@ export default passport => {
                             }
                         })
                         if (!teacher) {
-                            done(true, {})
+                            done(false, {})
                         } else {
                             done(false, {
                                 user: teacher,
@@ -76,7 +76,7 @@ export default passport => {
                             })
                         }
                     } catch (error) {
-                        done(true, {})
+                        done(false, {})
                     }
                 } else if (role === 'student') {
                     try {
@@ -89,7 +89,7 @@ export default passport => {
                             }
                         })
                         if (!student) {
-                            done(true, {})
+                            done(false, {})
                         } else {
                             done(false, {
                                 user: student,
@@ -97,10 +97,10 @@ export default passport => {
                             })
                         }
                     } catch (error) {
-                        done(true, {})
+                        done(false, {})
                     }
                 } else {
-                    done(true, {})
+                    done(false, {})
                 }
             }
         )

@@ -9,12 +9,18 @@ export default Component => {
         )
         const setShouldConfirmationPopupAppear = payload =>
             dispatch({ type: 'setShouldConfirmationPopupAppear', payload })
-        const setConfirmationPopupData = (message, buttonText, callback) =>
+        const setConfirmationPopupData = (
+            message,
+            confirmationButtonText,
+            rejectionButtonText,
+            callback
+        ) =>
             dispatch({
                 type: 'setConfirmationPopupData',
                 payload: {
                     message,
-                    buttonText,
+                    confirmationButtonText,
+                    rejectionButtonText,
                     callback
                 }
             })
