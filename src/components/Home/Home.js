@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 
+import Logo from '@images/Logo.png'
+
 import Dashboard from './styled/Dashboard'
 
 import Composed from './composed'
@@ -25,6 +27,7 @@ const Home = () => {
     return (
         <HomeContainer>
             <Dashboard.Header>Witaj w aplikacji Reemteach</Dashboard.Header>
+            <Dashboard.Image src={Logo} />
             <Dashboard.Annotation>Wybierz swoją pozycję w szkole</Dashboard.Annotation>
             <Dashboard.ButtonsContainer>
                 <Dashboard.AdminButton
