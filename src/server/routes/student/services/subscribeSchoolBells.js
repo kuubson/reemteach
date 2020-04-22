@@ -98,13 +98,7 @@ export default async (req, res, next) => {
 }
 
 export const validation = () => [
-    check('endpoint')
-        .trim()
-        .notEmpty(),
-    check('keys.p256dh')
-        .trim()
-        .notEmpty(),
-    check('keys.auth')
-        .trim()
-        .notEmpty()
+    check('endpoint').trim().notEmpty(),
+    check('keys.p256dh').trim().notEmpty(),
+    check('keys.auth').trim().notEmpty()
 ]

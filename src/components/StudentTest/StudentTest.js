@@ -111,7 +111,7 @@ const StudentTest = ({ socket, shouldMenuAppear }) => {
                 <AHTLDashboard.Warning>Otrzymałeś ocenę {grade} z testu!</AHTLDashboard.Warning>
             ) : testMode ? (
                 questions.length > 0 ? (
-                    <AHTLDashboard.DetailsContainer>
+                    <AHTLDashboard.DetailsContainer column>
                         <StyledMenu.Button onClick={finishTest} visible right>
                             Zakończ
                         </StyledMenu.Button>
@@ -139,7 +139,7 @@ const StudentTest = ({ socket, shouldMenuAppear }) => {
                                     <HTPComposed.Detail label="Odpowiedź C" value={answerC} />
                                     <HTPComposed.Detail label="Odpowiedź D" value={answerD} />
                                     <HTSCComposed.Select
-                                        id={`${content}${id}`}
+                                        id={`${content.replace(/[^a-zA-Z]/g, '')}`}
                                         label="Twoja odpowiedź"
                                         value={answer}
                                         placeholder="Zaznacz Twoją odpowiedź..."

@@ -18,4 +18,9 @@ export default styled.div`
                 grid-template-columns: 1fr;
             `
     }}
+    ${({ column }) =>
+        column &&
+        css`
+            grid-template-columns: 1fr;
+        `}
 `

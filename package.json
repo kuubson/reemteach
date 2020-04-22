@@ -59,7 +59,7 @@
     },
     "scripts": {
         "start": "babel src/server -d dist && node dist/server.js",
-        "build": "react-app-rewired build && cra-append-sw ./public/pushNotificationsWorker.js",
+        "build": "react-app-rewired build && npm run updateServiceWorker",
         "dev": "concurrently \"babel-watch src/server/server.js\" \"react-app-rewired start\"",
         "heroku-postbuild": "npm run build",
         "updateServiceWorker": "cra-append-sw ./public/pushNotificationsWorker.js"

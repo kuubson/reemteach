@@ -82,9 +82,7 @@ export default async (req, res, next) => {
 }
 
 export const validation = () => [
-    check('content')
-        .trim()
-        .notEmpty(),
+    check('content').trim().notEmpty(),
     check('school')
         .trim()
         .notEmpty()

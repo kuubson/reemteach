@@ -175,7 +175,7 @@ const TeacherTestCreator = ({ socket, shouldMenuAppear, test, setTest }) => {
                                         <HTPComposed.Detail label="Odpowiedź C" value={answerC} />
                                         <HTPComposed.Detail label="Odpowiedź D" value={answerD} />
                                         <HTPComposed.Detail
-                                            id="properAnswer"
+                                            label="Poprawna odpowiedź"
                                             value={properAnswer}
                                         />
                                         <AHTLDashboard.ButtonsContainer>

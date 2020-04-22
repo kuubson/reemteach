@@ -77,8 +77,4 @@ export default async (req, res, next) => {
     }
 }
 
-export const validation = () => [
-    check('content')
-        .trim()
-        .notEmpty()
-]
+export const validation = () => [check('content').trim().notEmpty()]

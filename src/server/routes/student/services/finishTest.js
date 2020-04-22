@@ -96,34 +96,12 @@ export default async (req, res, next) => {
 }
 
 export const validation = () => [
-    check('questions')
-        .notEmpty()
-        .isArray(),
-    check('questions.*.content')
-        .trim()
-        .notEmpty()
-        .bail()
-        .custom(detectSanitization),
-    check('questions.*.answerA')
-        .trim()
-        .notEmpty()
-        .bail()
-        .custom(detectSanitization),
-    check('questions.*.answerB')
-        .trim()
-        .notEmpty()
-        .bail()
-        .custom(detectSanitization),
-    check('questions.*.answerC')
-        .trim()
-        .notEmpty()
-        .bail()
-        .custom(detectSanitization),
-    check('questions.*.answerD')
-        .trim()
-        .notEmpty()
-        .bail()
-        .custom(detectSanitization),
+    check('questions').notEmpty().isArray(),
+    check('questions.*.content').trim().notEmpty().bail().custom(detectSanitization),
+    check('questions.*.answerA').trim().notEmpty().bail().custom(detectSanitization),
+    check('questions.*.answerB').trim().notEmpty().bail().custom(detectSanitization),
+    check('questions.*.answerC').trim().notEmpty().bail().custom(detectSanitization),
+    check('questions.*.answerD').trim().notEmpty().bail().custom(detectSanitization),
     check('questions.*.answer')
         .trim()
         .notEmpty()

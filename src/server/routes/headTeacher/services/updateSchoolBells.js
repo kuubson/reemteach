@@ -78,9 +78,7 @@ export default async (req, res, next) => {
 }
 
 export const validation = () => [
-    check('schoolBells')
-        .notEmpty()
-        .isArray(),
+    check('schoolBells').notEmpty().isArray(),
     check('schoolBells.*.from')
         .trim()
         .notEmpty()
@@ -101,7 +99,5 @@ export const validation = () => [
                 return to
             }
         }),
-    check('schoolBells.*.isRecess')
-        .notEmpty()
-        .isBoolean()
+    check('schoolBells.*.isRecess').notEmpty().isBoolean()
 ]

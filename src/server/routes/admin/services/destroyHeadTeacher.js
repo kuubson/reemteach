@@ -35,16 +35,6 @@ export default async (req, res, next) => {
 }
 
 export const validation = () => [
-    check('id')
-        .trim()
-        .notEmpty()
-        .bail()
-        .isInt()
-        .escape(),
-    check('email')
-        .trim()
-        .notEmpty()
-        .bail()
-        .isEmail()
-        .normalizeEmail()
+    check('id').trim().notEmpty().bail().isInt().escape(),
+    check('email').trim().notEmpty().bail().isEmail().normalizeEmail()
 ]
