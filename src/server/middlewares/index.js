@@ -39,7 +39,8 @@ const initializeMiddlewares = (app, server) => {
     app.use((req, res, next) => {
         res.cookie('XSRF-TOKEN', req.csrfToken(), {
             secure: process.env.NODE_ENV === 'production',
-            sameSite: true
+            sameSite: true,
+            maxAge: 604800000
         })
         next()
     })

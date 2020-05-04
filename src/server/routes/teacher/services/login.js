@@ -21,7 +21,8 @@ export default async (req, res, next) => {
         res.cookie('token', token, {
             secure: process.env.NODE_ENV === 'production',
             httpOnly: true,
-            sameSite: true
+            sameSite: true,
+            maxAge: 604800000
         }).send({
             success: true
         })
@@ -39,7 +40,5 @@ export const validation = () => [
         .isEmail()
         .withMessage('Wprowadź poprawny adres e-mail!')
         .normalizeEmail(),
-    check('password')
-        .notEmpty()
-        .withMessage('Wprowadź hasło!')
+    check('password').notEmpty().withMessage('Wprowadź hasło!')
 ]
