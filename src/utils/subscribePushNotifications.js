@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-import { setFeedbackData, handleApiError } from '@utils'
-
 const urlBase64ToUint8Array = base64String => {
     const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
     const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/')
@@ -13,53 +11,16 @@ const urlBase64ToUint8Array = base64String => {
     return outputArray
 }
 
-const handleSubscribtion = async (url, serviceWorker) => {
-    try {
-        const { pushManager } = await serviceWorker.ready
-        if (!pushManager) {
-            return setFeedbackData(
-                'Twoja przeglądarka nie wspiera powiadomień! Nie będziesz otrzymywał powiadomień!',
-                'Ok'
-            )
-        }
-        const subscription = await pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: urlBase64ToUint8Array(process.env.REACT_APP_PUBLIC_VAPID_KEY)
-        })
-        await axios.post(url, subscription)
-    } catch (error) {
-        handleApiError(error)
-        setFeedbackData('Wystąpił niespodziewany problem przy zezwalaniu na powiadomienia!', 'Ok')
-    }
-}
-
 export default async url => {
-    try {
-        const { permissions, serviceWorker } = navigator
-        if (!permissions || !serviceWorker) {
-            return setFeedbackData(
-                'Twoja przeglądarka nie wspiera powiadomień! Nie będziesz otrzymywał powiadomień!',
-                'Ok'
-            )
+    const { serviceWorker } = navigator
+    if (serviceWorker) {
+        const { pushManager } = await serviceWorker.ready
+        if (pushManager) {
+            const subscription = await pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array(process.env.REACT_APP_PUBLIC_VAPID_KEY)
+            })
+            await axios.post(url, subscription)
         }
-        const { state } = await permissions.query({ name: 'push', userVisibleOnly: true })
-        switch (state) {
-            case 'granted':
-                handleSubscribtion(url, serviceWorker)
-                break
-            case 'prompt':
-                setFeedbackData(
-                    'Aplikacja wymaga zgody na wyświetlanie powiadomień!',
-                    'Udostępnij',
-                    () => handleSubscribtion(url, serviceWorker)
-                )
-                break
-            default:
-                setFeedbackData(
-                    'Aplikacja wymaga zgody na wyświetlanie powiadomień! Udostępnij ją w ustawieniach przeglądarki!'
-                )
-        }
-    } catch (error) {
-        setFeedbackData('Wystąpił niespodziewany problem przy zezwalaniu na powiadomienia!', 'Ok')
     }
 }
