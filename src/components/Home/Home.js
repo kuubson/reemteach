@@ -10,7 +10,7 @@ import Composed from './composed'
 const HomeContainer = styled.section`
     width: 100%;
     min-height: 100vh;
-    padding: 50px;
+    padding: 40px;
     perspective: 1500px;
     overflow: hidden;
     display: flex;
