@@ -6,4 +6,3 @@
 .env
 
 /uploads/*
-!uploads/Logo.png

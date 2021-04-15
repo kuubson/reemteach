@@ -20,11 +20,8 @@ routes(app)
 
 errorsHandler(app)
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development'
-const developmentMode = process.env.NODE_ENV === 'development'
-
-const buildPath = developmentMode ? '../../build' : '../build'
-const uploadsPath = developmentMode ? '../../uploads' : '../uploads'
+const buildPath = '../build'
+const uploadsPath = '../uploads'
 
 app.use('/uploads', express.static(path.resolve(__dirname, uploadsPath)))
 

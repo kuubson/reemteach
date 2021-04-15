@@ -51,8 +51,8 @@ export default async (req, res, next) => {
                                 body: 'Rozkład dzwonków w Twojej szkole uległ zmianie!',
                                 icon:
                                     process.env.NODE_ENV === 'development'
-                                        ? `http://localhost:3001/uploads/Logo.png`
-                                        : `https://reemteach.herokuapp.com/uploads/Logo.png`,
+                                        ? `http://localhost:3001/Logo.png`
+                                        : `https://reemteach.herokuapp.com/Logo.png`,
                                 data: {
                                     url:
                                         process.env.NODE_ENV === 'development'

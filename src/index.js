@@ -25,11 +25,11 @@ import * as serviceWorker from './serviceWorker'
 ReactDOM.render(
     <Router history={history}>
         <Provider store={store}>
-            {/* <PersistGate loading={<Loader />} persistor={persistor}> */}
-            <ThemeProvider theme={theme}>
-                <App />
-            </ThemeProvider>
-            {/* </PersistGate> */}
+            <PersistGate loading={<Loader />} persistor={persistor}>
+                <ThemeProvider theme={theme}>
+                    <App />
+                </ThemeProvider>
+            </PersistGate>
         </Provider>
     </Router>,
     document.getElementById('root')

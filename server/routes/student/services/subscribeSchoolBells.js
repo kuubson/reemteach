@@ -75,8 +75,8 @@ export default async (req, res, next) => {
                                         } od ${from} do ${to}`,
                                         icon:
                                             process.env.NODE_ENV === 'development'
-                                                ? `http://localhost:3001/uploads/Logo.png`
-                                                : `https://reemteach.herokuapp.com/uploads/Logo.png`
+                                                ? `http://localhost:3001/Logo.png`
+                                                : `https://reemteach.herokuapp.com/Logo.png`
                                     })
                                 )
                                 .catch(async ({ statusCode }) => {

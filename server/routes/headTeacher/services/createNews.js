@@ -90,8 +90,8 @@ export default async (req, res, next) => {
                                 )} utworzył nową aktualność w szkole!`,
                                 icon:
                                     process.env.NODE_ENV === 'development'
-                                        ? `http://localhost:3001/uploads/Logo.png`
-                                        : `https://reemteach.herokuapp.com/uploads/Logo.png`,
+                                        ? `http://localhost:3001/Logo.png`
+                                        : `https://reemteach.herokuapp.com/Logo.png`,
                                 data: {
                                     url:
                                         process.env.NODE_ENV === 'development'

@@ -1,7 +1,7 @@
 import { check } from 'express-validator'
 import webpush from 'web-push'
 
-import { Student, Subscription } from '@database'
+import { Grade, Student, Subscription } from '@database'
 
 import { detectSanitization } from '@utils'
 
@@ -16,7 +16,13 @@ webpush.setVapidDetails(
 export default async (req, res, next) => {
     try {
         const { name, surname } = req.user
-        const { school, grade } = req.body
+        const { content, school, grade } = req.body
+        await req.user.createMessage({
+            content,
+            school,
+            grade,
+            isTeacher: true
+        })
         const [foundSchool] = await req.user.getSchools({
             where: {
                 name: school
@@ -47,16 +53,16 @@ export default async (req, res, next) => {
                             body: `Nauczyciel ${name.substring(0, 10)} ${surname.substring(
                                 0,
                                 10
-                            )} rozpoczął właśnie indywidualny wykład! Dołącz do niego jeśli masz jakieś pytania / problemy w nauce!`,
+                            )} wysłał nową wiadomość!`,
                             icon:
                                 process.env.NODE_ENV === 'development'
-                                    ? `http://localhost:3001/uploads/Logo.png`
-                                    : `https://reemteach.herokuapp.com/uploads/Logo.png`,
+                                    ? `http://localhost:3001/Logo.png`
+                                    : `https://reemteach.herokuapp.com/Logo.png`,
                             data: {
                                 url:
                                     process.env.NODE_ENV === 'development'
-                                        ? `http://localhost:3000/uczeń/lista-indywidualnych-wykładów`
-                                        : `https://reemteach.herokuapp.com/uczeń/lista-indywidualnych-wykładów`
+                                        ? `http://localhost:3000/uczeń/czat`
+                                        : `https://reemteach.herokuapp.com/uczeń/czat`
                             }
                         })
                     )
@@ -76,6 +82,7 @@ export default async (req, res, next) => {
 }
 
 export const validation = () => [
+    check('content').trim().notEmpty(),
     check('school')
         .trim()
         .notEmpty()
@@ -98,58 +105,21 @@ export const validation = () => [
         .bail()
         .custom(detectSanitization)
         .bail()
-        .isIn([
-            '1A',
-            '1B',
-            '1C',
-            '1D',
-            '1E',
-            '1F',
-            '1G',
-            '1H',
-            '1I',
-            '1J',
-            '1K',
-            '1L',
-            '1M',
-            '2A',
-            '2B',
-            '2C',
-            '2D',
-            '2E',
-            '2F',
-            '2G',
-            '2H',
-            '2I',
-            '2J',
-            '2K',
-            '2L',
-            '2M',
-            '3A',
-            '3B',
-            '3C',
-            '3D',
-            '3E',
-            '3F',
-            '3G',
-            '3H',
-            '3I',
-            '3J',
-            '3K',
-            '3L',
-            '3M',
-            '4A',
-            '4B',
-            '4C',
-            '4D',
-            '4E',
-            '4F',
-            '4G',
-            '4H',
-            '4I',
-            '4J',
-            '4K',
-            '4L',
-            '4M'
-        ])
+        .custom(async (grade, { req }) => {
+            const grades = await req.user
+                .getSchools({
+                    include: [Grade]
+                })
+                .then(schools =>
+                    schools
+                        .map(({ grades }) => grades)
+                        .flat()
+                        .map(({ grade }) => grade)
+                )
+            if (!grades.includes(grade)) {
+                throw new Error()
+            } else {
+                return grade
+            }
+        })
 ]
