@@ -6,7 +6,7 @@ import Form from '../styled/Form'
 
 import Composed from '../composed'
 
-import { apiAxios, redirectTo } from '@utils'
+import { apiAxios, redirectTo } from 'utils'
 
 const StudentFormContainer = styled(Form.FormsContainer)`
     top: 0%;

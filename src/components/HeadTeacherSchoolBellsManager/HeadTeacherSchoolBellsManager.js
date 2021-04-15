@@ -3,13 +3,13 @@ import styled from 'styled-components/macro'
 import moment from 'moment'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withMenu } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
+import AHTCForm from 'components/AdminHeadTeacherCreator/styled/Form'
 import Dashboard from './styled/Dashboard'
 
-import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
+import AHTCComposed from 'components/AdminHeadTeacherCreator/composed'
 
 import {
     apiAxios,
@@ -17,7 +17,7 @@ import {
     setFeedbackData,
     setConfirmationPopupData,
     usePrevious
-} from '@utils'
+} from 'utils'
 
 const HeadTeacherSchoolBellsManagerContainer = styled(APDashboard.Container)`
     min-height: 100vh;

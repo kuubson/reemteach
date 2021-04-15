@@ -2,12 +2,12 @@ import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withMenu } from 'hoc'
 
-import HForm from '@components/Home/styled/Form'
+import HForm from 'components/Home/styled/Form'
 import StyledMenu from '../styled/Menu'
 
-import { delayedApiAxios, delayedRedirectTo } from '@utils'
+import { delayedApiAxios, delayedRedirectTo } from 'utils'
 
 const MenuContainer = styled.div`
     width: 350px;

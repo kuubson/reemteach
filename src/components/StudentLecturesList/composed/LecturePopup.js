@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled, { css } from 'styled-components/macro'
 
-import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
-import HForm from '@components/Home/styled/Form'
-import TSLStyledLecturePopup from '@components/TeacherStudentsList/styled/LecturePopup'
+import AHTLDashboard from 'components/AdminHeadTeachersList/styled/Dashboard'
+import HForm from 'components/Home/styled/Form'
+import TSLStyledLecturePopup from 'components/TeacherStudentsList/styled/LecturePopup'
 import StyledLecturePopup from '../styled/LecturePopup'
 
-import TSLComposed from '@components/TeacherStudentsList/composed'
+import TSLComposed from 'components/TeacherStudentsList/composed'
 import Composed from '../composed'
 
 const LecturePopupContainer = styled.div`

@@ -3,18 +3,18 @@ import styled from 'styled-components/macro'
 import axios from 'axios'
 
 import { compose } from 'redux'
-import { withSocket, withMenu } from '@hoc'
+import { withSocket, withMenu } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
-import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
-import HForm from '@components/Home/styled/Form'
-import StyledMenu from '@components/AdminProfile/styled/Menu'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
+import AHTLDashboard from 'components/AdminHeadTeachersList/styled/Dashboard'
+import AHTCForm from 'components/AdminHeadTeacherCreator/styled/Form'
+import HForm from 'components/Home/styled/Form'
+import StyledMenu from 'components/AdminProfile/styled/Menu'
 import Dashboard from './styled/Dashboard'
 
-import HTSCComposed from '@components/HeadTeacherSchoolCreator/composed'
+import HTSCComposed from 'components/HeadTeacherSchoolCreator/composed'
 
-import { delayedApiAxios, apiAxios, handleApiError } from '@utils'
+import { delayedApiAxios, apiAxios, handleApiError } from 'utils'
 
 const TeacherStudentsChatContainer = styled(APDashboard.Container)`
     height: 100vh;

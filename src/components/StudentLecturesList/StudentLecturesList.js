@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withSocket, withMenu } from '@hoc'
+import { withSocket, withMenu } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
-import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
+import AHTLDashboard from 'components/AdminHeadTeachersList/styled/Dashboard'
+import AHTCForm from 'components/AdminHeadTeacherCreator/styled/Form'
 
-import HTPComposed from '@components/HeadTeacherProfile/composed'
+import HTPComposed from 'components/HeadTeacherProfile/composed'
 import Composed from './composed'
 
-import { setFeedbackData } from '@utils'
+import { setFeedbackData } from 'utils'
 
 const StudentLecturesListContainer = styled(APDashboard.Container)`
     min-height: 100vh;

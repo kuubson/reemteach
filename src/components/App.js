@@ -6,7 +6,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 import { compose } from 'redux'
-import { withRouter, withLoader, withFeedbackHandler, withConfirmationPopup } from '@hoc'
+import { withRouter, withLoader, withFeedbackHandler, withConfirmationPopup } from 'hoc'
 
 import Roles from './Roles'
 

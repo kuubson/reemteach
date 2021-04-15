@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 
-import Logo from '@images/Logo.png'
+import Logo from 'assets/images/Logo.png'
 
 import Dashboard from './styled/Dashboard'
 

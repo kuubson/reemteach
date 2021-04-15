@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withFeedbackHandler } from '@hoc'
+import { withFeedbackHandler } from 'hoc'
 
 import Dashboard from './styled/Dashboard'
 

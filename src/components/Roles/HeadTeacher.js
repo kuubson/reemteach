@@ -3,13 +3,13 @@ import styled, { css } from 'styled-components/macro'
 import axios from 'axios'
 
 import { compose } from 'redux'
-import { withRouter, withFeedbackHandler, withMenu } from '@hoc'
+import { withRouter, withFeedbackHandler, withMenu } from 'hoc'
 
-import APMenu from '@components/AdminProfile/styled/Menu'
+import APMenu from 'components/AdminProfile/styled/Menu'
 
-import APComposed from '@components/AdminProfile/composed'
+import APComposed from 'components/AdminProfile/composed'
 
-import { redirectTo, delayedRedirectTo, handleApiError } from '@utils'
+import { redirectTo, delayedRedirectTo, handleApiError } from 'utils'
 
 const HeadTeacherContainer = styled.div`
     ${({ blurred }) => {

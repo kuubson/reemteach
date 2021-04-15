@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withMenu } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
-import HTPDetail from '@components/HeadTeacherProfile/styled/Detail'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
+import AHTCForm from 'components/AdminHeadTeacherCreator/styled/Form'
+import HTPDetail from 'components/HeadTeacherProfile/styled/Detail'
 
-import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
-import HTPComposed from '@components/HeadTeacherProfile/composed'
-import HTSCComposed from '@components/HeadTeacherSchoolCreator/composed'
+import AHTCComposed from 'components/AdminHeadTeacherCreator/composed'
+import HTPComposed from 'components/HeadTeacherProfile/composed'
+import HTSCComposed from 'components/HeadTeacherSchoolCreator/composed'
 
 import {
     apiAxios,
@@ -19,7 +19,7 @@ import {
     usePrevious,
     detectWhiteSpaces,
     detectSanitization
-} from '@utils'
+} from 'utils'
 
 const TeacherProfileContainer = styled(APDashboard.Container)`
     min-height: 100vh;

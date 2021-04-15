@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 
-import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
+import AHTCForm from 'components/AdminHeadTeacherCreator/styled/Form'
 import StyledFileInput from '../styled/FileInput'
 
-import { setFeedbackData } from '@utils'
+import { setFeedbackData } from 'utils'
 
 const FileInputContainer = styled.div`
     margin-bottom: 25px;

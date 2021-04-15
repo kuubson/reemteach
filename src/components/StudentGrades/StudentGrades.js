@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withMenu } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
+import AHTLDashboard from 'components/AdminHeadTeachersList/styled/Dashboard'
 
-import HTPComposed from '@components/HeadTeacherProfile/composed'
+import HTPComposed from 'components/HeadTeacherProfile/composed'
 
-import { delayedApiAxios } from '@utils'
+import { delayedApiAxios } from 'utils'
 
 const StudentGradesContainer = styled(APDashboard.Container)`
     min-height: 100vh;

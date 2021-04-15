@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withMenu, withTest } from '@hoc'
+import { withMenu, withTest } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
-import TQMDashboard from '@components/TeacherQuestionsManager/styled/Dashboard'
-import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
-import HForm from '@components/Home/styled/Form'
-import StyledFileInput from '@components/TeacherQuestionCreator/styled/FileInput'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
+import AHTLDashboard from 'components/AdminHeadTeachersList/styled/Dashboard'
+import TQMDashboard from 'components/TeacherQuestionsManager/styled/Dashboard'
+import AHTCForm from 'components/AdminHeadTeacherCreator/styled/Form'
+import HForm from 'components/Home/styled/Form'
+import StyledFileInput from 'components/TeacherQuestionCreator/styled/FileInput'
 
-import HTPComposed from '@components/HeadTeacherProfile/composed'
-import HTSCComposed from '@components/HeadTeacherSchoolCreator/composed'
+import HTPComposed from 'components/HeadTeacherProfile/composed'
+import HTSCComposed from 'components/HeadTeacherSchoolCreator/composed'
 
-import { delayedApiAxios } from '@utils'
+import { delayedApiAxios } from 'utils'
 
 const TeacherQuestionsDatabaseContainer = styled(APDashboard.Container)`
     min-height: 100vh;

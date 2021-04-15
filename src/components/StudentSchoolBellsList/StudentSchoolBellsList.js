@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withMenu } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
-import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
-import HTSBMDashboard from '@components/HeadTeacherSchoolBellsManager/styled/Dashboard'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
+import AHTCForm from 'components/AdminHeadTeacherCreator/styled/Form'
+import AHTLDashboard from 'components/AdminHeadTeachersList/styled/Dashboard'
+import HTSBMDashboard from 'components/HeadTeacherSchoolBellsManager/styled/Dashboard'
 
-import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
+import AHTCComposed from 'components/AdminHeadTeacherCreator/composed'
 
-import { delayedApiAxios } from '@utils'
+import { delayedApiAxios } from 'utils'
 
 const StudentSchoolBellsListContainer = styled(APDashboard.Container)`
     min-height: 100vh;

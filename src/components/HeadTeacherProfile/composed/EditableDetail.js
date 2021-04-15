@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components/macro'
 
-import HTSCComposed from '@components/HeadTeacherSchoolCreator/composed'
+import HTSCComposed from 'components/HeadTeacherSchoolCreator/composed'
 import StyledDetail from '../styled/Detail'
 
 const EditableDetailContainer = styled.div`

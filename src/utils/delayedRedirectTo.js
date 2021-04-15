@@ -1,4 +1,4 @@
-import { history, setShouldMenuAppear } from '@utils'
+import { history, setShouldMenuAppear } from 'utils'
 
 export default (pathname, state) => {
     window.scrollTo(0, 0)

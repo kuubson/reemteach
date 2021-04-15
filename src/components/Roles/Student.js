@@ -4,11 +4,11 @@ import io from 'socket.io-client'
 import axios from 'axios'
 
 import { compose } from 'redux'
-import { withRouter, withSocket, withFeedbackHandler, withMenu } from '@hoc'
+import { withRouter, withSocket, withFeedbackHandler, withMenu } from 'hoc'
 
-import APMenu from '@components/AdminProfile/styled/Menu'
+import APMenu from 'components/AdminProfile/styled/Menu'
 
-import APComposed from '@components/AdminProfile/composed'
+import APComposed from 'components/AdminProfile/composed'
 
 import {
     redirectTo,
@@ -16,7 +16,7 @@ import {
     subscribePushNotifications,
     updateGeolocation,
     handleApiError
-} from '@utils'
+} from 'utils'
 
 const StudentContainer = styled.div`
     ${({ blurred }) => {

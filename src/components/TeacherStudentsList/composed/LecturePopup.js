@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled, { css } from 'styled-components/macro'
 
-import HForm from '@components/Home/styled/Form'
-import SLLStyledLecturePopup from '@components/StudentLecturesList/styled/LecturePopup'
+import HForm from 'components/Home/styled/Form'
+import SLLStyledLecturePopup from 'components/StudentLecturesList/styled/LecturePopup'
 import StyledLecturePopup from '../styled/LecturePopup'
 
-import SLLComposed from '@components/StudentLecturesList/composed'
+import SLLComposed from 'components/StudentLecturesList/composed'
 import Composed from '../composed'
 
 const LecturePopupContainer = styled.div`

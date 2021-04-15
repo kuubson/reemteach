@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withMenu } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
+import AHTCForm from 'components/AdminHeadTeacherCreator/styled/Form'
 import Detail from './styled/Detail'
 
-import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
+import AHTCComposed from 'components/AdminHeadTeacherCreator/composed'
 import Composed from './composed'
 
 import {
@@ -18,7 +18,7 @@ import {
     usePrevious,
     detectWhiteSpaces,
     detectSanitization
-} from '@utils'
+} from 'utils'
 
 const HeadTeacherProfileContainer = styled(APDashboard.Container)`
     min-height: 100vh;

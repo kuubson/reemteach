@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { setIsLoading, handleApiError } from '@utils'
+import { setIsLoading, handleApiError } from 'utils'
 
 export default async role => {
     navigator.geolocation.getCurrentPosition(async ({ coords: { latitude, longitude } }) => {

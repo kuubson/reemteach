@@ -3,14 +3,14 @@ import styled from 'styled-components/macro'
 import validator from 'validator'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withMenu } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
 import Form from './styled/Form'
 
 import Composed from './composed'
 
-import { apiAxios, setFeedbackData } from '@utils'
+import { apiAxios, setFeedbackData } from 'utils'
 
 const AdminHeadTeacherCreatorContainer = styled(APDashboard.Container)`
     height: 100vh;

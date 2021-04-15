@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withMenu } from 'hoc'
 
 import Dashboard from './styled/Dashboard'
 
-import { delayedApiAxios } from '@utils'
+import { delayedApiAxios } from 'utils'
 
 const AdminProfileContainer = styled(Dashboard.Container)`
     height: 100vh;

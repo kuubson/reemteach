@@ -3,9 +3,9 @@ import styled, { css } from 'styled-components/macro'
 import axios from 'axios'
 
 import { compose } from 'redux'
-import { withSocket, withFeedbackHandler, handleApiError } from '@hoc'
+import { withSocket, withFeedbackHandler, handleApiError } from 'hoc'
 
-import { redirectTo } from '@utils'
+import { redirectTo } from 'utils'
 
 const GuestContainer = styled.div`
     ${({ blurred }) => {

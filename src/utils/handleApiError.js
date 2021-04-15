@@ -1,4 +1,4 @@
-import { setFeedbackData, delayedRedirectTo } from '@utils'
+import { setFeedbackData, delayedRedirectTo } from 'utils'
 
 const reloadWindow = () => window.location.reload()
 

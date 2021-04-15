@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withMenu } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
-import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
-import HForm from '@components/Home/styled/Form'
-import HTSBMDashboard from '@components/HeadTeacherSchoolBellsManager/styled/Dashboard'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
+import AHTLDashboard from 'components/AdminHeadTeachersList/styled/Dashboard'
+import AHTCForm from 'components/AdminHeadTeacherCreator/styled/Form'
+import HForm from 'components/Home/styled/Form'
+import HTSBMDashboard from 'components/HeadTeacherSchoolBellsManager/styled/Dashboard'
 
-import HTPComposed from '@components/HeadTeacherProfile/composed'
-import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
+import HTPComposed from 'components/HeadTeacherProfile/composed'
+import AHTCComposed from 'components/AdminHeadTeacherCreator/composed'
 
-import { delayedApiAxios } from '@utils'
+import { delayedApiAxios } from 'utils'
 
 const TeacherSchoolsListContainer = styled(APDashboard.Container)`
     min-height: 100vh;

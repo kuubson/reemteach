@@ -4,19 +4,19 @@ import L from 'leaflet'
 import { Map, TileLayer, Popup } from 'react-leaflet'
 
 import { compose } from 'redux'
-import { withSocket, withMenu } from '@hoc'
+import { withSocket, withMenu } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
-import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
-import HForm from '@components/Home/styled/Form'
-import StyledMenu from '@components/AdminProfile/styled/Menu'
-import TSCDashboard from '@components/TeacherStudentsChat/styled/Dashboard'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
+import AHTLDashboard from 'components/AdminHeadTeachersList/styled/Dashboard'
+import AHTCForm from 'components/AdminHeadTeacherCreator/styled/Form'
+import HForm from 'components/Home/styled/Form'
+import StyledMenu from 'components/AdminProfile/styled/Menu'
+import TSCDashboard from 'components/TeacherStudentsChat/styled/Dashboard'
 import Dashboard from './styled/Dashboard'
 
-import HTSCComposed from '@components/HeadTeacherSchoolCreator/composed'
+import HTSCComposed from 'components/HeadTeacherSchoolCreator/composed'
 
-import { delayedApiAxios, setFeedbackData } from '@utils'
+import { delayedApiAxios, setFeedbackData } from 'utils'
 
 const TeacherStudentsChatContainer = styled(APDashboard.Container)`
     height: 100vh;

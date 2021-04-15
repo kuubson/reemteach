@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withMenu } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
 import Dashboard from './styled/Dashboard'
 
-import HTPComposed from '@components/HeadTeacherProfile/composed'
+import HTPComposed from 'components/HeadTeacherProfile/composed'
 
 import {
     apiAxios,
@@ -16,7 +16,7 @@ import {
     setConfirmationPopupData,
     detectWhiteSpaces,
     detectSanitization
-} from '@utils'
+} from 'utils'
 
 const AdminHeadTeachersListContainer = styled(APDashboard.Container)`
     min-height: 100vh;

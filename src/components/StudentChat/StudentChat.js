@@ -3,15 +3,15 @@ import styled from 'styled-components/macro'
 import axios from 'axios'
 
 import { compose } from 'redux'
-import { withSocket, withMenu } from '@hoc'
+import { withSocket, withMenu } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
-import HForm from '@components/Home/styled/Form'
-import StyledMenu from '@components/AdminProfile/styled/Menu'
-import TSCDashboard from '@components/TeacherStudentsChat/styled/Dashboard'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
+import AHTLDashboard from 'components/AdminHeadTeachersList/styled/Dashboard'
+import HForm from 'components/Home/styled/Form'
+import StyledMenu from 'components/AdminProfile/styled/Menu'
+import TSCDashboard from 'components/TeacherStudentsChat/styled/Dashboard'
 
-import { delayedApiAxios, handleApiError } from '@utils'
+import { delayedApiAxios, handleApiError } from 'utils'
 
 const StudentChatContainer = styled(APDashboard.Container)`
     height: 100vh;

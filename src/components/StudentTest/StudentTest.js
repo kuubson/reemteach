@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withSocket, withMenu } from '@hoc'
+import { withSocket, withMenu } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import AHTLDashboard from '@components/AdminHeadTeachersList/styled/Dashboard'
-import TQMDashboard from '@components/TeacherQuestionsManager/styled/Dashboard'
-import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
-import StyledFileInput from '@components/TeacherQuestionCreator/styled/FileInput'
-import StyledMenu from '@components/AdminProfile/styled/Menu'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
+import AHTLDashboard from 'components/AdminHeadTeachersList/styled/Dashboard'
+import TQMDashboard from 'components/TeacherQuestionsManager/styled/Dashboard'
+import AHTCForm from 'components/AdminHeadTeacherCreator/styled/Form'
+import StyledFileInput from 'components/TeacherQuestionCreator/styled/FileInput'
+import StyledMenu from 'components/AdminProfile/styled/Menu'
 
-import HTPComposed from '@components/HeadTeacherProfile/composed'
-import HTSCComposed from '@components/HeadTeacherSchoolCreator/composed'
+import HTPComposed from 'components/HeadTeacherProfile/composed'
+import HTSCComposed from 'components/HeadTeacherSchoolCreator/composed'
 
-import { apiAxios, setFeedbackData } from '@utils'
+import { apiAxios, setFeedbackData } from 'utils'
 
 const StudentTestContainer = styled(APDashboard.Container)`
     min-height: 100vh;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled, { css } from 'styled-components/macro'
 
-import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
+import AHTCForm from 'components/AdminHeadTeacherCreator/styled/Form'
 import StyledSelect from '../styled/Select'
 
 const SelectContainer = styled.div`

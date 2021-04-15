@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withMenu } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import AHTCForm from '@components/AdminHeadTeacherCreator/styled/Form'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
+import AHTCForm from 'components/AdminHeadTeacherCreator/styled/Form'
 import StyledFileInput from './styled/FileInput'
 
-import AHTCComposed from '@components/AdminHeadTeacherCreator/composed'
-import HTSCComposed from '@components/HeadTeacherSchoolCreator/composed'
+import AHTCComposed from 'components/AdminHeadTeacherCreator/composed'
+import HTSCComposed from 'components/HeadTeacherSchoolCreator/composed'
 import Composed from './composed'
 
-import { apiAxios, delayedApiAxios, setFeedbackData, detectSanitization } from '@utils'
+import { apiAxios, delayedApiAxios, setFeedbackData, detectSanitization } from 'utils'
 
 const TeacherQuestionCreatorContainer = styled(APDashboard.Container)`
     min-height: 100vh;

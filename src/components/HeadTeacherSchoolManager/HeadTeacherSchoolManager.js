@@ -3,12 +3,12 @@ import styled from 'styled-components/macro'
 import moment from 'moment'
 
 import { compose } from 'redux'
-import { withMenu } from '@hoc'
+import { withMenu } from 'hoc'
 
-import APDashboard from '@components/AdminProfile/styled/Dashboard'
-import HTPDetail from '@components/HeadTeacherProfile/styled/Detail'
+import APDashboard from 'components/AdminProfile/styled/Dashboard'
+import HTPDetail from 'components/HeadTeacherProfile/styled/Detail'
 
-import HTPComposed from '@components/HeadTeacherProfile/composed'
+import HTPComposed from 'components/HeadTeacherProfile/composed'
 
 import {
     delayedApiAxios,
@@ -16,7 +16,7 @@ import {
     setFeedbackData,
     usePrevious,
     detectSanitization
-} from '@utils'
+} from 'utils'
 
 const HeadTeacherSchoolManagerContainer = styled(APDashboard.Container)`
     min-height: 100vh;
